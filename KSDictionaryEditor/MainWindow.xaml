@@ -77,8 +77,7 @@
                     <ListView.View>
                         <GridView>
                             <GridView.Columns>
-                                <GridViewColumn Header="Id" DisplayMemberBinding="{Binding Path=ID}" />
-                                <GridViewColumn Header="Id" DisplayMemberBinding="{Binding Path=OPIS}" />
+                                <GridViewColumn Header="Id" DisplayMemberBinding="{Binding}" />
                             </GridView.Columns>
                         </GridView>
                     </ListView.View>

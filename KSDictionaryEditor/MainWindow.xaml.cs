@@ -152,19 +152,22 @@ namespace KSDictionaryEditor
                         */
 
                     string[] podzielone = info.Split(
-                            new string[] { AsciiConverter.HEX2ASCII("0D0A"), AsciiConverter.HEX2ASCII("0D"), AsciiConverter.HEX2ASCII("0A") },
+                            //new string[] { AsciiConverter.HEX2ASCII("0D0A"), AsciiConverter.HEX2ASCII("0D"), AsciiConverter.HEX2ASCII("0A") },
+                            new string[] { AsciiConverter.HEX2ASCII("0D0A") },
                             StringSplitOptions.None
                         );
 
+                    List<string> allItems = new List<string>();
+
                     foreach (string item in podzielone)
                     {
-                        string newItem = item.Replace(AsciiConverter.HEX2ASCII("CB99"), AsciiConverter.HEX2ASCII("0D0A"));
+                        //MessageBox.Show(AsciiConverter.ASCIITOHex(item));
+                        string newItem = item.Replace("˙", AsciiConverter.HEX2ASCII("0D0A"));
+                        allItems.Add(newItem);
                     }
-
-                    //MessageBox.Show(info);
-                    MessageBox.Show(podzielone[0]);
-
-                    panel.ItemsSource = table.DefaultView;
+                    
+                    //panel.ItemsSource = table.DefaultView;
+                    panel.ItemsSource = allItems;
                 }
                 
             }
