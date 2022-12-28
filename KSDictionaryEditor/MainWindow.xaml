@@ -5,15 +5,101 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:KSDictionaryEditor"
         mc:Ignorable="d"
-        Title="MainWindow" Height="350" Width="525">
-    <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition />
-            <ColumnDefinition />
-            <ColumnDefinition />
-        </Grid.ColumnDefinitions>
-        <StackPanel>
-            <DataGrid></DataGrid>
-        </StackPanel>
-    </Grid>
+        Title="MainWindow" Height="700" Width="1225">
+    <StackPanel>
+        <WrapPanel>
+            <Button Content="Connect" />
+        </WrapPanel>
+        <Grid x:Name="Main">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+            <StackPanel Grid.Column="0" Grid.Row="0">
+                <ListView x:Name="Personel_Left" SelectionMode="Extended" 
+                          Height="120" SelectionChanged="Personel_Left_SelectionChanged">
+                    <ListView.View>
+                        <GridView>
+                            <GridView.ColumnHeaderContainerStyle>
+                                <Style TargetType="GridViewColumnHeader">
+                                    <Setter Property="Foreground" Value="Red" />
+                                </Style>
+                            </GridView.ColumnHeaderContainerStyle>
+                            <GridView.Columns>
+                                <GridViewColumn Header="Id" DisplayMemberBinding="{Binding Path=ID}"
+                                                Width="30" />
+                                <GridViewColumn Header="Imie"  DisplayMemberBinding="{Binding Path=IMIE}" 
+                                                Width="120" />
+                                <GridViewColumn Header="Nazwisko"  DisplayMemberBinding="{Binding Path=NAZW}" 
+                                                Width="220"/>
+                            </GridView.Columns>
+                        </GridView>
+                    </ListView.View>
+                </ListView>
+                <WrapPanel>
+                    <CheckBox x:Name="SharedDictionaries_Left" Content="Wspólne" Click="SharedDictionaries_Left_Click" 
+                              Margin="10"/>
+                    <Button x:Name="AllPersonel_Left" Content="Zaznacz wszystkich" Click="AllPersonel_Left_Click" 
+                            Margin="10"/>
+                    <Button x:Name="ClearPersonel_Left" Content="Odznacz wszystkich" Click="ClearPersonel_Left_Click" 
+                            Margin="10"/>
+                </WrapPanel>
+            </StackPanel>
+            <StackPanel Grid.Column="0" Grid.Row="1">
+                <TextBlock>Usługa: RTG Klatki piersiowej</TextBlock>
+                <TextBlock>Wzorzec: RTG Klatki piersiowej</TextBlock>
+                <CheckBox x:Name="ChoosenServiceOnly_Left" Content="Pokaż tylko wzorce z wybranej usługi" />
+            </StackPanel>
+            <StackPanel Grid.Column="0" Grid.Row="2">
+                <ListView x:Name="Dictonaries_Left"
+                          Height="150" SelectionChanged="Dictonaries_Left_SelectionChanged">
+                    <ListView.View>
+                        <GridView>
+                            <GridView.Columns>
+                                <GridViewColumn Header="Słownik" DisplayMemberBinding="{Binding Path=SLOWNIK}"/>
+                                <GridViewColumn Header="Wzorzec" DisplayMemberBinding="{Binding Path=WZORZEC}"/>
+                                <GridViewColumn Header="Usługa" DisplayMemberBinding="{Binding Path=USLUGA}" />
+                                <GridViewColumn Header="Pracownik" DisplayMemberBinding="{Binding Path=PRACOWNIK}" />
+                            </GridView.Columns>
+                        </GridView>
+                    </ListView.View>
+                </ListView>
+            </StackPanel>
+            <StackPanel Grid.Column="0" Grid.Row="3">
+                <ListView x:Name="Items_Left">
+                    <ListView.View>
+                        <GridView>
+                            <GridView.Columns>
+                                <GridViewColumn Header="Id" DisplayMemberBinding="{Binding Path=ID}" />
+                                <GridViewColumn Header="Id" DisplayMemberBinding="{Binding Path=OPIS}" />
+                            </GridView.Columns>
+                        </GridView>
+                    </ListView.View>
+                </ListView>
+                <WrapPanel>
+                    <Button Content="Zaznacz wszystko" 
+                            Margin="10"/>
+                    <Button Content="Odznacz wszystko" 
+                            Margin="10"/>
+                </WrapPanel>
+                <WrapPanel>
+                    <Button Content="Dodaj pozycję" 
+                            Margin="10"/>
+                    <Button Content="Popraw pozycję" 
+                            Margin="10"/>
+                    <Button Content="Usuń pozycje" 
+                            Margin="10"/>
+                </WrapPanel>
+            </StackPanel>
+            <StackPanel Grid.Column="2">
+            </StackPanel>
+        </Grid>
+    </StackPanel>
 </Window>
