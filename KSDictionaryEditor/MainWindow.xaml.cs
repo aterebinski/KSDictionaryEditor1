@@ -206,5 +206,12 @@ namespace KSDictionaryEditor
         {
             ShowElements(Items_Left);
         }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            ItemWindow itemWindow = new ItemWindow();
+            itemWindow.ShowDialog();
+            MessageBox.Show(itemWindow.DictionaryItem.Text);
+        }
     }
 }

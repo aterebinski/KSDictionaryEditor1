@@ -53,8 +53,8 @@
                 </WrapPanel>
             </StackPanel>
             <StackPanel Grid.Column="0" Grid.Row="1">
-                <TextBlock>Usługa: RTG Klatki piersiowej</TextBlock>
-                <TextBlock>Wzorzec: RTG Klatki piersiowej</TextBlock>
+                <TextBlock FontWeight="Bold">Usługa: RTG Klatki piersiowej</TextBlock>
+                <TextBlock FontWeight="Bold">Wzorzec: RTG Klatki piersiowej</TextBlock>
                 <CheckBox x:Name="ChoosenServiceOnly_Left" Content="Pokaż tylko wzorce z wybranej usługi" />
             </StackPanel>
             <StackPanel Grid.Column="0" Grid.Row="2">
@@ -90,7 +90,7 @@
                 </WrapPanel>
                 <WrapPanel>
                     <Button Content="Dodaj pozycję" 
-                            Margin="10"/>
+                            Margin="10" Click="Button_Click"/>
                     <Button Content="Popraw pozycję" 
                             Margin="10"/>
                     <Button Content="Usuń pozycje" 
