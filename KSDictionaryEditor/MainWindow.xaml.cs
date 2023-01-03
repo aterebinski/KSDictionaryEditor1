@@ -29,6 +29,13 @@ namespace KSDictionaryEditor
         {
             InitializeComponent();
 
+            string path = KsConnector.getKsPlIniFilePath();
+
+            KsConnector.getKsPlIniFilePath();
+
+
+            MessageBox.Show(path);
+
             connection = new FbConnection(@"Server=localhost;User=gabinet;Password=flavamed;Database=C:\KS\KS-PLW\BAZY\med1250.KSB");
 
             ShowPersonel(Personel_Left);
