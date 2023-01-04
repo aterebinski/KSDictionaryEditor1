@@ -31,7 +31,7 @@ namespace KSDictionaryEditor
 
             string path = KsConnector.getKsPlIniFilePath();
 
-            KsConnector.getKsPlIniFilePath();
+            KsConnector.getConnectionString(path);
 
 
             MessageBox.Show(path);

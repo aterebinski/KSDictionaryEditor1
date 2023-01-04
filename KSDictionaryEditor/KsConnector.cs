@@ -1,6 +1,7 @@
 ﻿using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -43,7 +44,21 @@ namespace KSDictionaryEditor
 
             string connectionString = "";
 
-            FileStream file = File.Open(path, FileMode.Open);
+            string[] lines = File.ReadAllLines(path);
+
+            foreach (string line in lines)
+            {
+                Trace.WriteLine(line);
+                Trace.WriteLine(line.IndexOf("="));
+
+                int index = line.IndexOf("=");
+
+                if (index > -1)
+                {
+                    string[] Line = line.Substring(0, index);
+                }
+                
+            }
 
             
             return connectionString;
