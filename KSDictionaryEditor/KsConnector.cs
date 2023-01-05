@@ -6,6 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace KSDictionaryEditor
 {
@@ -40,8 +41,12 @@ namespace KSDictionaryEditor
 
         public static string getConnectionString(string path)
         {
+            string providerParameter = "";
+            string serverParameter = "";
+            string databaseParameter = "";
+            string userParameter = "";
+            string passwordParameter = "";
             path = path + "\\kspl.ini";
-
             string connectionString = "";
 
             string[] lines = File.ReadAllLines(path);
@@ -55,12 +60,50 @@ namespace KSDictionaryEditor
 
                 if (index > -1)
                 {
-                    string[] Line = line.Substring(0, index);
+                    string parameter = line.Substring(0, index);
+
+                    switch (parameter)
+                    {
+                        case "PROVIDER":
+                            providerParameter = line.Substring(index+1);
+                            //MessageBox.Show("aaa "+providerParameter);
+                            break;
+                        case "DATABASE":
+                            databaseParameter = line.Substring(index + 1);
+                            break;
+                        case "SERVER":
+                            serverParameter = line.Substring(index + 1);
+                            break;
+                        case "XUSER":
+                            userParameter = line.Substring(index + 1);
+                            break;
+                        default:
+                            break;
+                    }
                 }
                 
             }
 
-            
+            PasswordWindow passwordWindow = new PasswordWindow();
+            passwordWindow.ShowDialog();
+            passwordParameter = passwordWindow.Password.Text;
+
+            //MessageBox.Show("ccc " + providerParameter);
+
+            switch (providerParameter)
+            {
+                case "INTERBASE":
+                    //MessageBox.Show("bbb " + providerParameter);
+                    connectionString = "Server=localhost;User="+userParameter+";Password="+passwordParameter+";Database="+databaseParameter;
+                    break;
+                case "ORACLE":
+                    connectionString = "Server=localhost;User=gabinet;Password=flavamed;Database=C:\\KS\\KS-PLW\\BAZY\\med1250.KSB";
+                    break;
+                default:
+                    break;
+            }
+            //MessageBox.Show(connectionString);
+
             return connectionString;
         }
     }

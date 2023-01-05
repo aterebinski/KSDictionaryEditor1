@@ -31,12 +31,12 @@ namespace KSDictionaryEditor
 
             string path = KsConnector.getKsPlIniFilePath();
 
-            KsConnector.getConnectionString(path);
+            string connectionString =  KsConnector.getConnectionString(path);
 
 
-            MessageBox.Show(path);
+//            MessageBox.Show(connectionString);
 
-            connection = new FbConnection(@"Server=localhost;User=gabinet;Password=flavamed;Database=C:\KS\KS-PLW\BAZY\med1250.KSB");
+            connection = new FbConnection(connectionString);
 
             ShowPersonel(Personel_Left);
             ShowDictionaries(Dictonaries_Left);
