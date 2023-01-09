@@ -29,12 +29,22 @@ namespace KSDictionaryEditor
         {
             InitializeComponent();
 
-            string path = KsConnector.getKsPlIniFilePath();
+            ConnectionWindow connectionWindow = new ConnectionWindow();
+            connectionWindow.ShowDialog();
 
-            string connectionString =  KsConnector.getConnectionString(path);
+            string connectionString = connectionWindow.ConnectionString;
+
+            if(connectionString == "")
+            {
+                this.Close();
+            }
+
+            //string path = KsConnector.getKsPlIniFilePath();
+
+            //string connectionString =  KsConnector.getConnectionString(path);
 
 
-//            MessageBox.Show(connectionString);
+            //            MessageBox.Show(connectionString);
 
             connection = new FbConnection(connectionString);
 

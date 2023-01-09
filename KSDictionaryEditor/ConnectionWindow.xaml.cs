@@ -15,25 +15,30 @@ using System.Windows.Shapes;
 namespace KSDictionaryEditor
 {
     /// <summary>
-    /// Interaction logic for Password.xaml
+    /// Interaction logic for ConnectionWindow.xaml
     /// </summary>
-    public partial class PasswordWindow : Window
+    public partial class ConnectionWindow : Window
     {
-        public PasswordWindow()
+        public string ConnectionString = "";
+
+        public ConnectionWindow()
         {
             InitializeComponent();
         }
 
-        private void OKButton_Click(object sender, RoutedEventArgs e)
+        private void KSPLfromRegistry_Click(object sender, RoutedEventArgs e)
         {
-            this.Close();
+
         }
 
-        private void AnulujButton_Click(object sender, RoutedEventArgs e)
+        private void ChooseKSPL_Click(object sender, RoutedEventArgs e)
         {
-            //this.Close();
-            //((Window)this.Parent).Close();
-            App.Current.Shutdown();
+
+        }
+
+        private void EnterConnectionParameters_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }

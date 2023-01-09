@@ -86,7 +86,7 @@ namespace KSDictionaryEditor
 
             PasswordWindow passwordWindow = new PasswordWindow();
             passwordWindow.ShowDialog();
-            passwordParameter = passwordWindow.Password.Text;
+            passwordParameter = passwordWindow.Password.Password;
 
             //MessageBox.Show("ccc " + providerParameter);
 
