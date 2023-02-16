@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:KSDictionaryEditor"
         mc:Ignorable="d"
-        Title="Połączenie z bazą danych" Height="198.293" Width="300">
+        Title="Połączenie z bazą danych" Height="222.293" Width="376">
     <StackPanel Margin="30,30,30,30">
         <TextBlock HorizontalAlignment="Center" Margin="0,0,0,10">
             W jaki sposób połączyć się bazą danych?

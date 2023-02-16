@@ -7,10 +7,7 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="700" Width="1225">
     <StackPanel>
-        <WrapPanel>
-            <Button Content="Connect" />
-        </WrapPanel>
-        <Grid x:Name="Main">
+        <Grid x:Name="Main" Margin="30" >
             <Grid.ColumnDefinitions>
                 <ColumnDefinition />
                 <ColumnDefinition />
