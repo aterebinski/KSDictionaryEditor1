@@ -5,9 +5,9 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:KSDictionaryEditor"
         mc:Ignorable="d"
-        Title="MainWindow" Height="700" Width="1225">
+        Title="MainWindow" Height="800" Width="1800">
     <StackPanel>
-        <Grid x:Name="Main" Margin="30" >
+        <Grid x:Name="Main" Margin="30,30,29.6,30" Height="auto" >
             <Grid.ColumnDefinitions>
                 <ColumnDefinition />
                 <ColumnDefinition />
@@ -20,6 +20,7 @@
                 <RowDefinition />
             </Grid.RowDefinitions>
             <StackPanel Grid.Column="0" Grid.Row="0">
+                <TextBlock Foreground="Red" FontWeight="Bold">Pracownicy:</TextBlock>
                 <ListView x:Name="Personel_Left" SelectionMode="Extended" 
                           Height="120" SelectionChanged="Personel_Left_SelectionChanged">
                     <ListView.View>
@@ -50,6 +51,7 @@
                 </WrapPanel>
             </StackPanel>
             <StackPanel Grid.Column="0" Grid.Row="1">
+                <TextBlock FontWeight="Bold" Foreground="Red">Słownik, usługa, wzorzec:</TextBlock>
                 <TextBlock FontWeight="Bold">Usługa: RTG Klatki piersiowej</TextBlock>
                 <TextBlock FontWeight="Bold">Wzorzec: RTG Klatki piersiowej</TextBlock>
                 <CheckBox x:Name="ChoosenServiceOnly_Left" Content="Pokaż tylko wzorce z wybranej usługi" />
@@ -70,7 +72,8 @@
                 </ListView>
             </StackPanel>
             <StackPanel Grid.Column="0" Grid.Row="3">
-                <ListView x:Name="Items_Left">
+                <TextBlock Foreground="Red" FontWeight="Bold">Pozycje słownika:</TextBlock>
+                <ListView x:Name="Items_Left" Height="150" Panel.ZIndex="-3">
                     <ListView.View>
                         <GridView>
                             <GridView.Columns>
