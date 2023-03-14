@@ -24,33 +24,37 @@ namespace KSDictionaryEditor
     public partial class MainWindow : Window
     {
         FbConnection connection;
+        string connectionString = "";
 
         public MainWindow()
         {
             InitializeComponent();
+            try
+            {
+                ConnectionWindow connectionWindow = new ConnectionWindow();
+                connectionWindow.ShowDialog();
 
-            ConnectionWindow connectionWindow = new ConnectionWindow();
-            connectionWindow.ShowDialog();
+                connectionString = connectionWindow.ConnectionString;
+            }
+            catch (Exception e)
+            {
+                App.Current.Shutdown();
+            }
+            
 
-            string connectionString = connectionWindow.ConnectionString;
+            if(connectionString != "")
+            {
+                connection = new FbConnection(connectionString);
 
-            if(connectionString == "")
+                ShowPersonel(Personel_Left);
+                ShowDictionaries(Dictonaries_Left);
+            }
+            else
             {
                 this.Close();
             }
-
-            //string path = KsConnector.getKsPlIniFilePath();
-
-            //string connectionString =  KsConnector.getConnectionString(path);
-
-
-            //            MessageBox.Show(connectionString);
-
-            connection = new FbConnection(connectionString);
-
-            ShowPersonel(Personel_Left);
-            ShowDictionaries(Dictonaries_Left);
-            //ShowPersonel(Personel_Right);
+            
+            
         }
 
         public void ShowPersonel(ListView panel)
@@ -67,8 +71,6 @@ namespace KSDictionaryEditor
             {
                 MessageBox.Show("ShowPersonel: "+ex.ToString());
             }
-            
-            
         }
 
         public void ShowDictionaries(ListView panel)

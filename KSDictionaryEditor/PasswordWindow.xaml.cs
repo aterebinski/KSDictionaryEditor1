@@ -35,5 +35,13 @@ namespace KSDictionaryEditor
             //((Window)this.Parent).Close();
             App.Current.Shutdown();
         }
+
+        private void Password_KeyUp(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Return)
+            {
+                this.Close();
+            }
+        }
     }
 }
