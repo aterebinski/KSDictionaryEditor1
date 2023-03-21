@@ -95,6 +95,7 @@ namespace KSDictionaryEditor
             string userParameter = "";
             string passwordParameter = "";
             string connectionString = "";
+            bool isKSPLentry = false;
 
             if (path == "") return "";
 
@@ -110,6 +111,19 @@ namespace KSDictionaryEditor
 
                     int index = line.IndexOf("=");
 
+                    //jesli istnieje wpis w linii: [
+                    if (line.IndexOf("[") > -1)
+                    {
+                        if(line.Contains("[KSPL]"))
+                        {
+                            isKSPLentry = true;
+                        }
+                        else
+                        {
+                            isKSPLentry = false;
+                        }
+                    }
+
                     if (index > -1)
                     {
                         string parameter = line.Substring(0, index);
@@ -117,17 +131,29 @@ namespace KSDictionaryEditor
                         switch (parameter)
                         {
                             case "PROVIDER":
-                                providerParameter = line.Substring(index + 1);
+                                if(isKSPLentry) {
+                                    providerParameter = line.Substring(index + 1);
+                                }
+                                
                                 //MessageBox.Show("aaa "+providerParameter);
                                 break;
                             case "DATABASE":
-                                databaseParameter = line.Substring(index + 1);
+                                if (isKSPLentry)
+                                {
+                                    databaseParameter = line.Substring(index + 1);
+                                }
                                 break;
                             case "SERVER":
-                                serverParameter = line.Substring(index + 1);
+                                if (isKSPLentry)
+                                {
+                                    serverParameter = line.Substring(index + 1);
+                                }
                                 break;
                             case "XUSER":
-                                userParameter = line.Substring(index + 1);
+                                if (isKSPLentry)
+                                {
+                                    userParameter = line.Substring(index + 1);
+                                }
                                 break;
                             default:
                                 break;

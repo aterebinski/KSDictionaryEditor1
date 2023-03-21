@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -22,6 +23,7 @@ namespace KSDictionaryEditor
         public PasswordWindow()
         {
             InitializeComponent();
+            Password.Focus();
         }
 
         private void OKButton_Click(object sender, RoutedEventArgs e)
@@ -31,7 +33,6 @@ namespace KSDictionaryEditor
 
         private void AnulujButton_Click(object sender, RoutedEventArgs e)
         {
-            //this.Close();
             //((Window)this.Parent).Close();
             App.Current.Shutdown();
         }

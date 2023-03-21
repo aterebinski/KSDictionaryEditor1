@@ -27,7 +27,7 @@
                 <TextBlock Foreground="Red" FontWeight="Bold">Pozycje słownika:</TextBlock>
             </StackPanel>
             <StackPanel Grid.Column="0" Grid.Row="1">
-                <TabControl x:Name="tabControl" Height="373" Margin="0,0,-0.4,0">
+                <TabControl x:Name="tabControl" Height="644" Margin="0,0,-0.4,0">
                     <TabItem Header="Pracownicy">
                         <DockPanel>
                             <ListView x:Name="Personel_Left" SelectionMode="Extended" 
@@ -63,7 +63,7 @@
                     <TabItem Header="Usługi i wzorce">
                         <StackPanel>
                             <ListView x:Name="Dictonaries_Left"
-                          Height="150" SelectionChanged="Dictonaries_Left_SelectionChanged">
+                          Height="613" SelectionChanged="Dictonaries_Left_SelectionChanged">
                                 <ListView.View>
                                     <GridView>
                                         <GridView.Columns>
@@ -82,7 +82,7 @@
                     </TabItem>
                     <TabItem Header="Pozycje słowników">
                         <StackPanel>
-                            <ListView x:Name="Items_Left" Height="150" Panel.ZIndex="-3">
+                            <ListView x:Name="Items_Left" Height="534" Panel.ZIndex="-3">
                                 <ListView.View>
                                     <GridView>
                                         <GridView.Columns>
