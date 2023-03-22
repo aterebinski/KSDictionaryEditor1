@@ -33,7 +33,7 @@
                 <RowDefinition />
             </Grid.RowDefinitions>
             <StackPanel Grid.Column="0" Grid.Row="0">
-                <TextBlock FontSize="36" FontWeight="Bold" Foreground="#FF973030"><Run Text="Źródło"/><Run Language="pl-pl" Text=":"/></TextBlock>
+                <TextBlock FontSize="36" FontWeight="Bold" Foreground="#FF973030"><Run Text="Set "/><Run Language="pl-pl" Text="1"/><Run Text=":"/></TextBlock>
                 <TextBlock Foreground="Red" FontWeight="Bold">Pracownicy:</TextBlock>
 
             </StackPanel>
@@ -128,7 +128,7 @@
             </Grid>
 
             <StackPanel Grid.Column="3" Grid.Row="0">
-                <TextBlock FontSize="36" FontWeight="Bold" Foreground="#FF973030">Cel:</TextBlock>
+                <TextBlock FontSize="36" FontWeight="Bold" Foreground="#FF973030"><Run Text="S"/><Run Language="pl-pl" Text="et"/><Run Text=" "/><Run Language="pl-pl" Text="2"/><Run Text=":"/></TextBlock>
             </StackPanel>
 
             <StackPanel Grid.Column="3" Grid.Row="1" Margin="0,0,10,0">
