@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
@@ -40,60 +41,51 @@ namespace KSDictionaryEditor
             {
                 App.Current.Shutdown();
             }
-            
 
-            if(connectionString != "")
+
+            if (connectionString != "")
             {
                 connection = new FbConnection(connectionString);
 
                 ShowPersonel(Personel_Left);
-                ShowDictionaries(Dictonaries_Left);
+                ShowDictionaries(Dictionaries_Left);
+                ShowPersonel(Personel_Right);
+                ShowDictionaries(Dictionaries_Right);
             }
             else
             {
                 this.Close();
             }
-            
-            
+
+
         }
 
-        public void ShowPersonel(ListView panel)
+        //Pokaz personel
+        public void ShowPersonel(Selector panel)
         {
             try
             {
-                string query = "select id, imie, nazw from prac where del=0";
+                string query = "select id, imie, nazw, imie||' '||nazw as imienazw from prac where del=0";
                 FbDataAdapter adapter = new FbDataAdapter(query, connection);
                 DataTable table = new DataTable();
                 adapter.Fill(table);
+
+                //if(panel is ListBox)
                 panel.ItemsSource = table.DefaultView;
             }
             catch (Exception ex)
             {
-                MessageBox.Show("ShowPersonel: "+ex.ToString());
+                MessageBox.Show("ShowPersonel: " + ex.ToString());
             }
         }
 
-        public void ShowDictionaries(ListView panel)
+        //Pokaz Slowniki
+        private void ShowDictionaries(ListView panel)
         {
-            ListView lvPersonel;
+            Selector lvPersonel;
             CheckBox checkSharedDictonaries;
-            
 
-            switch (panel.Name)
-            {
-                default:
-                    lvPersonel = Personel_Left;
-                    checkSharedDictonaries = SharedDictionaries_Left;
-                    break;
-                case "DictionariesLeft":
-                    lvPersonel = Personel_Left;
-                    checkSharedDictonaries = SharedDictionaries_Left;
-                    break;
-            }
-
-            try
-            {
-                string query = "select u.kod, u.id as u_id,  u.nazw as usluga," +
+            string query = "select u.kod, u.id as u_id,  u.nazw as usluga," +
                 " w.id as w_id,  w.nazw as wzorzec," +
                 " s.id as s_id, s.nazw as slownik, s.opis," +
                 " p.imie||' '||p.nazw as pracownik" +
@@ -104,31 +96,52 @@ namespace KSDictionaryEditor
                 " where w.del = 0 and s.del = 0 and s.usun = 0" +
                 " and s.idprac in (";
 
-                FbCommand command = new FbCommand(query, connection);
-
-
-
-                if (checkSharedDictonaries.IsChecked == true)
-                {
-                    query = query + "0,";
-                }
-                if (lvPersonel.SelectedItems.Count > 0)
-                {
-                    //command.Parameters.AddWithValue()
-                    foreach (DataRowView item in lvPersonel.SelectedItems)
+            switch (panel.Name)
+            {
+                default:
+                    break;
+                case "Dictionaries_Left":
+                    if (Personel_Left.SelectedItems.Count > 0)
                     {
-                        query = query + item["id"].ToString() + ",";
+                        //command.Parameters.AddWithValue()
+                        foreach (DataRowView item in Personel_Left.SelectedItems)
+                        {
+                            query = query + item["id"].ToString() + ",";
+                        }
+
+
+                    }
+                    if (SharedDictionaries_Left.IsChecked == true)
+                    {
+                        query = query + "0,";
+                    }
+                    break;
+                case "Dictionaries_Right":
+
+                    if (SharedDictionaries_Right.IsChecked == true)
+                    {
+                        query = query + "0,";
+                    }
+                    else
+                    {
+                        query = query + Personel_Right.SelectedIndex + ",";
+                        MessageBox.Show(Personel_Right.SelectedIndex.ToString());
                     }
 
+                    lvPersonel = Personel_Right;
+                    checkSharedDictonaries = SharedDictionaries_Right;
+                    break;
+            }
 
-                }
+            try
+            {
+                FbCommand command = new FbCommand(query, connection);
+
                 query = query + "-99) order by usluga, wzorzec, slownik";
-
                 command.CommandText = query;
 
                 //MessageBox.Show(query);
                 Trace.WriteLine(query);
-
 
                 FbDataAdapter adapter = new FbDataAdapter(command);
                 DataTable table = new DataTable();
@@ -140,15 +153,16 @@ namespace KSDictionaryEditor
                 MessageBox.Show("ShowDictionaries: " + ex.ToString());
             }
 
-            
+
         }
 
+        //pokaz elementy slownika 
         private void ShowElements(ListView panel)
         {
 
             try
             {
-                DataRowView drv = Dictonaries_Left.SelectedItem as DataRowView;
+                DataRowView drv = Dictionaries_Left.SelectedItem as DataRowView;
                 if (drv != null)
                 {
                     string id = drv["S_ID"].ToString();
@@ -184,44 +198,44 @@ namespace KSDictionaryEditor
                         string newItem = item.Replace("˙", AsciiConverter.HEX2ASCII("0D0A"));
                         allItems.Add(newItem);
                     }
-                    
+
                     //panel.ItemsSource = table.DefaultView;
                     panel.ItemsSource = allItems;
                 }
-                
+
             }
             catch (Exception ex)
             {
                 MessageBox.Show("showSlow: " + ex.ToString());
             }
-            
+
 
             //MessageBox.Show("Id = " + id);
         }
 
         private void Personel_Left_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            ShowDictionaries(Dictonaries_Left);
+            ShowDictionaries(Dictionaries_Left);
         }
 
         private void SharedDictionaries_Left_Click(object sender, RoutedEventArgs e)
         {
-            ShowDictionaries(Dictonaries_Left);
+            ShowDictionaries(Dictionaries_Left);
         }
 
         private void ClearPersonel_Left_Click(object sender, RoutedEventArgs e)
         {
             Personel_Left.UnselectAll();
-            ShowDictionaries(Dictonaries_Left);
+            ShowDictionaries(Dictionaries_Left);
         }
 
         private void AllPersonel_Left_Click(object sender, RoutedEventArgs e)
         {
             Personel_Left.SelectAll();
-            ShowDictionaries(Dictonaries_Left);
+            ShowDictionaries(Dictionaries_Left);
         }
 
-        private void Dictonaries_Left_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void Dictionaries_Left_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             ShowElements(Items_Left);
         }
@@ -231,6 +245,20 @@ namespace KSDictionaryEditor
             ItemWindow itemWindow = new ItemWindow();
             itemWindow.ShowDialog();
             MessageBox.Show(itemWindow.DictionaryItem.Text);
+        }
+
+        private void Personel_Right_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            MessageBox.Show("Changed_Personel");
+            ShowDictionaries(Dictionaries_Right);
+        }
+
+
+        private void SharedDictionaries_Right_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBox.Show("Changed_Checkbox");
+            Personel_Right.IsEnabled = !(bool)SharedDictionaries_Right.IsChecked;
+            ShowDictionaries(Dictionaries_Right);
         }
     }
 }
