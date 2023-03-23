@@ -27,6 +27,7 @@ namespace KSDictionaryEditor
         FbConnection connection;
         string connectionString = "";
 
+
         public MainWindow()
         {
             InitializeComponent();
@@ -71,6 +72,8 @@ namespace KSDictionaryEditor
                 adapter.Fill(table);
 
                 //if(panel is ListBox)
+                panel.DisplayMemberPath = "IMIENAZW";
+                panel.SelectedValuePath = "ID";
                 panel.ItemsSource = table.DefaultView;
             }
             catch (Exception ex)
@@ -124,8 +127,8 @@ namespace KSDictionaryEditor
                     }
                     else
                     {
-                        query = query + Personel_Right.SelectedIndex + ",";
-                        MessageBox.Show(Personel_Right.SelectedIndex.ToString());
+                        query = query + Personel_Right.SelectedValue + ",";
+                        MessageBox.Show(Personel_Right.SelectedValue.ToString());
                     }
 
                     lvPersonel = Personel_Right;
@@ -162,6 +165,8 @@ namespace KSDictionaryEditor
 
             try
             {
+                DataTable table = new DataTable();
+
                 DataRowView drv = dictionariesListView.SelectedItem as DataRowView;
                 if (drv != null)
                 {
@@ -173,7 +178,7 @@ namespace KSDictionaryEditor
 
                     FbDataAdapter adapter = new FbDataAdapter(command);
 
-                    DataTable table = new DataTable();
+                    
                     adapter.Fill(table);
                     string info = table.Rows[0].Field<string>("opis").ToString();
 
@@ -202,6 +207,10 @@ namespace KSDictionaryEditor
                     //panel.ItemsSource = table.DefaultView;
                     itemsListView.ItemsSource = allItems;
                 }
+                else //jesli nie ma zaznaczonych słowników to pokaz pusta liste
+                {
+                    itemsListView.ItemsSource = table.DefaultView;
+                }
 
             }
             catch (Exception ex)
@@ -216,23 +225,27 @@ namespace KSDictionaryEditor
         private void Personel_Left_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             ShowDictionaries(Dictionaries_Left);
+            ShowElements(Items_Left, Dictionaries_Left);
         }
 
         private void SharedDictionaries_Left_Click(object sender, RoutedEventArgs e)
         {
             ShowDictionaries(Dictionaries_Left);
+            ShowElements(Items_Left, Dictionaries_Left);
         }
 
         private void ClearPersonel_Left_Click(object sender, RoutedEventArgs e)
         {
             Personel_Left.UnselectAll();
             ShowDictionaries(Dictionaries_Left);
+            ShowElements(Items_Left, Dictionaries_Left);
         }
 
         private void AllPersonel_Left_Click(object sender, RoutedEventArgs e)
         {
             Personel_Left.SelectAll();
             ShowDictionaries(Dictionaries_Left);
+            ShowElements(Items_Left, Dictionaries_Left);
         }
 
         private void Dictionaries_Left_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -251,6 +264,7 @@ namespace KSDictionaryEditor
         {
             MessageBox.Show("Changed_Personel");
             ShowDictionaries(Dictionaries_Right);
+            ShowElements(Items_Right, Dictionaries_Right);
         }
 
 
@@ -259,6 +273,7 @@ namespace KSDictionaryEditor
             MessageBox.Show("Changed_Checkbox");
             Personel_Right.IsEnabled = !(bool)SharedDictionaries_Right.IsChecked;
             ShowDictionaries(Dictionaries_Right);
+            ShowElements(Items_Right, Dictionaries_Right);
         }
 
         private void Dictionaries_Right_SelectionChanged(object sender, SelectionChangedEventArgs e)
