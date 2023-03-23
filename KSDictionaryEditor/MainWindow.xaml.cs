@@ -157,12 +157,12 @@ namespace KSDictionaryEditor
         }
 
         //pokaz elementy slownika 
-        private void ShowElements(ListView panel)
+        private void ShowElements(ListView itemsListView, ListView dictionariesListView)
         {
 
             try
             {
-                DataRowView drv = Dictionaries_Left.SelectedItem as DataRowView;
+                DataRowView drv = dictionariesListView.SelectedItem as DataRowView;
                 if (drv != null)
                 {
                     string id = drv["S_ID"].ToString();
@@ -200,7 +200,7 @@ namespace KSDictionaryEditor
                     }
 
                     //panel.ItemsSource = table.DefaultView;
-                    panel.ItemsSource = allItems;
+                    itemsListView.ItemsSource = allItems;
                 }
 
             }
@@ -237,7 +237,7 @@ namespace KSDictionaryEditor
 
         private void Dictionaries_Left_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            ShowElements(Items_Left);
+            ShowElements(Items_Left,Dictionaries_Left);
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
@@ -259,6 +259,11 @@ namespace KSDictionaryEditor
             MessageBox.Show("Changed_Checkbox");
             Personel_Right.IsEnabled = !(bool)SharedDictionaries_Right.IsChecked;
             ShowDictionaries(Dictionaries_Right);
+        }
+
+        private void Dictionaries_Right_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            ShowElements(Items_Right,Dictionaries_Right);
         }
     }
 }

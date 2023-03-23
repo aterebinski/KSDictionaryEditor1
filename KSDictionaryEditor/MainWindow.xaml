@@ -146,7 +146,7 @@
                     <TextBlock Text="Wspólne słowniki" Margin="5,0,0,0" />
                 </WrapPanel>
                 <TextBlock Margin="0,0,0,5">Słowniki:</TextBlock>
-                <ListView x:Name="Dictionaries_Right" Height="236" >
+                <ListView x:Name="Dictionaries_Right" Height="236" SelectionChanged="Dictionaries_Right_SelectionChanged" >
                     <ListView.View>
                         <GridView>
                             <GridView.Columns>
