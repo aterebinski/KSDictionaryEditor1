@@ -25,17 +25,20 @@
 >
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="43*" />
-                <ColumnDefinition Width="25*"/>
-                <ColumnDefinition Width="7*"/>
-                <ColumnDefinition Width="25*"/>
+                <ColumnDefinition Width="23*"/>
+                <ColumnDefinition Width="5*"/>
+                <ColumnDefinition Width="29*"/>
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
                 <RowDefinition />
                 <RowDefinition />
             </Grid.RowDefinitions>
             <StackPanel Grid.Column="0" Grid.Row="0">
-                <TextBlock FontSize="36" FontWeight="Bold" Foreground="#FF973030"><Run Text="Set "/><Run Language="pl-pl" Text="1"/><Run Text=":"/></TextBlock>
-                <TextBlock Foreground="Red" FontWeight="Bold">Pracownicy:</TextBlock>
+                <TextBlock FontSize="36" FontWeight="Bold" Foreground="#FF973030">Set 1:</TextBlock>
+                <WrapPanel>
+                    <TextBlock Foreground="Red" FontWeight="Bold">Pracownicy:</TextBlock>
+                    <TextBlock Foreground="Red" FontWeight="Bold" x:Name="Personel_Left_TextBlock" Margin="0,0,0,5"></TextBlock>
+                </WrapPanel>
 
             </StackPanel>
             <StackPanel Grid.Column="0" Grid.Row="1">
@@ -94,7 +97,7 @@
 
 
             </StackPanel>
-            <StackPanel Grid.Column="1" Grid.Row="1" Margin="10,0,10,0">
+            <StackPanel Grid.Column="1" Grid.Row="1" Margin="10,0,0,0">
                 <TextBlock Margin="0,0,0,5">Pozycje Słowników:</TextBlock>
                 <ListView x:Name="Items_Left" Height="534" >
                     <ListView.View>
@@ -113,7 +116,7 @@
                 </WrapPanel>
                 <WrapPanel>
                     <Button Content="Dodaj pozycję" 
-                            Margin="10" Click="Button_Click"/>
+                            Margin="10" Click="AddElement_Button_Click"/>
                     <Button Content="Popraw pozycję" 
                             Margin="10"/>
                     <Button Content="Usuń pozycje" 
@@ -132,12 +135,16 @@
                 <TextBlock FontSize="36" FontWeight="Bold" Foreground="#FF973030"><Run Text="S"/><Run Language="pl-pl" Text="et"/><Run Text=" "/><Run Language="pl-pl" Text="2"/><Run Text=":"/></TextBlock>
             </StackPanel>
 
-            <StackPanel Grid.Column="3" Grid.Row="1" Margin="0,0,10,0">
-                <TextBlock Margin="0,0,0,5">Pracownik:</TextBlock>
+            <StackPanel Grid.Column="3" Grid.Row="1" Margin="0,0,0,0">
+                <WrapPanel>
+                    <TextBlock Foreground="Red" FontWeight="Bold" Margin="0,0,10,5">Pracownik:</TextBlock>
+                    <TextBlock Foreground="Red" FontWeight="Bold" x:Name="Personel_Right_TextBlock" Margin="0,0,0,5"></TextBlock>
+                </WrapPanel>
+
                 <ComboBox Margin="0,0,0,5" 
                     x:Name="Personel_Right" 
                   SelectionChanged="Personel_Right_SelectionChanged">
-                    
+
                 </ComboBox>
                 <WrapPanel Margin="0,0,0,5">
                     <CheckBox  x:Name="SharedDictionaries_Right" Click="SharedDictionaries_Right_Click" />
@@ -154,7 +161,7 @@
                                 <GridViewColumn Width="100" Header="Pracownik" DisplayMemberBinding="{Binding Path=PRACOWNIK}" />
                             </GridView.Columns>
                         </GridView>
-                        </ListView.View>
+                    </ListView.View>
                 </ListView>
                 <TextBlock Margin="0,5,0,5">Pozycje Słowników:</TextBlock>
                 <ListView x:Name="Items_Right" Height="224" >
@@ -167,17 +174,17 @@
                     </ListView.View>
                 </ListView>
                 <WrapPanel>
-                    <Button Content="Zaznacz wszystko" 
+                    <Button Tag="Right" Content="Zaznacz wszystko" 
                             Margin="10"/>
-                    <Button Content="Odznacz wszystko" 
+                    <Button Tag="Right" Content="Odznacz wszystko" 
                             Margin="10"/>
                 </WrapPanel>
                 <WrapPanel>
-                    <Button Content="Dodaj pozycję" 
-                            Margin="10" Click="Button_Click"/>
-                    <Button Content="Popraw pozycję" 
+                    <Button Tag="Right" Content="Dodaj pozycję" 
+                            Margin="10" Click="AddElement_Button_Click"/>
+                    <Button Tag="Right" Content="Popraw pozycję" 
                             Margin="10"/>
-                    <Button Content="Usuń pozycje" 
+                    <Button Tag="Right" Content="Usuń pozycje" 
                             Margin="10"/>
                 </WrapPanel>
             </StackPanel>

@@ -27,7 +27,6 @@ namespace KSDictionaryEditor
         FbConnection connection;
         string connectionString = "";
 
-
         public MainWindow()
         {
             InitializeComponent();
@@ -35,14 +34,12 @@ namespace KSDictionaryEditor
             {
                 ConnectionWindow connectionWindow = new ConnectionWindow();
                 connectionWindow.ShowDialog();
-
                 connectionString = connectionWindow.ConnectionString;
             }
             catch (Exception e)
             {
                 App.Current.Shutdown();
             }
-
 
             if (connectionString != "")
             {
@@ -57,8 +54,6 @@ namespace KSDictionaryEditor
             {
                 this.Close();
             }
-
-
         }
 
         //Pokaz personel
@@ -127,8 +122,12 @@ namespace KSDictionaryEditor
                     }
                     else
                     {
-                        query = query + Personel_Right.SelectedValue + ",";
-                        MessageBox.Show(Personel_Right.SelectedValue.ToString());
+                        if (Personel_Right.SelectedValue != null)
+                        {
+                            query = query + Personel_Right.SelectedValue + ",";
+                            //MessageBox.Show(Personel_Right.SelectedValue.ToString());
+                        }
+
                     }
 
                     lvPersonel = Personel_Right;
@@ -178,7 +177,7 @@ namespace KSDictionaryEditor
 
                     FbDataAdapter adapter = new FbDataAdapter(command);
 
-                    
+
                     adapter.Fill(table);
                     string info = table.Rows[0].Field<string>("opis").ToString();
 
@@ -218,20 +217,109 @@ namespace KSDictionaryEditor
                 MessageBox.Show("showSlow: " + ex.ToString());
             }
 
-
             //MessageBox.Show("Id = " + id);
+        }
+
+        private void UpdatePersonel_TextBox_Left()
+        {
+            int printedElements = 0;
+            if (SharedDictionaries_Left.IsChecked == true)
+            {
+                Personel_Left_TextBlock.Text = "<WSPÓŁNE SŁOWNIKI>";
+                printedElements++;
+            }
+            else
+            {
+                Personel_Left_TextBlock.Text = "";
+            }
+
+            if (Personel_Left.SelectedItems.Count > 0)
+            {
+                try
+                {
+                    //Personel_Right_TextBlock.Text = Personel_Right.SelectedValue
+                    string sql = "select imie||' '||nazw as imienazw from prac where id in(-99";
+                    int i = 0;
+
+                    foreach (DataRowView item in Personel_Left.SelectedItems)
+                    {
+                        sql += "," + item[i].ToString();
+                    }
+                    sql += ")";
+
+                    FbCommand command = new FbCommand(sql, connection);
+                    FbDataAdapter dataAdapter = new FbDataAdapter(command);
+                    DataTable PersonelTable = new DataTable();
+                    dataAdapter.Fill(PersonelTable);
+
+                    foreach (DataRow item in PersonelTable.Rows)
+                    {
+                        if (printedElements > 0)
+                        {
+                            Personel_Left_TextBlock.Text += ", ";
+                        }
+
+                        if (printedElements > 3)
+                        {
+                            Personel_Left_TextBlock.Text += "<I INNI ...>";
+                            break;
+                        }
+
+                        printedElements++;
+                        Personel_Left_TextBlock.Text += item["IMIENAZW"].ToString();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.ToString());
+                }
+
+
+            }
+        }
+
+        private void UpdatePersonel_TextBox_Right()
+        {
+            if (SharedDictionaries_Right.IsChecked == true)
+            {
+                Personel_Right_TextBlock.Text = "<WSPÓŁNE SŁOWNIKI>";
+            }
+            else
+            {
+                Personel_Right_TextBlock.Text = "";
+                if (Personel_Right.SelectedValue != null)
+                {
+                    try
+                    {
+                        //Personel_Right_TextBlock.Text = Personel_Right.SelectedValue
+                        string sql = "select imie||' '||nazw as imienazw from prac where id  = @id";
+                        FbCommand command = new FbCommand(sql, connection);
+                        command.Parameters.AddWithValue("@id", Personel_Right.SelectedValue);
+                        FbDataAdapter dataAdapter = new FbDataAdapter(command);
+                        DataTable PersonelTable = new DataTable();
+                        dataAdapter.Fill(PersonelTable);
+                        Personel_Right_TextBlock.Text = PersonelTable.Rows[0]["IMIENAZW"].ToString();
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show(ex.ToString());
+                    }
+                }
+            }
         }
 
         private void Personel_Left_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             ShowDictionaries(Dictionaries_Left);
             ShowElements(Items_Left, Dictionaries_Left);
+            UpdatePersonel_TextBox_Left();
         }
 
         private void SharedDictionaries_Left_Click(object sender, RoutedEventArgs e)
         {
             ShowDictionaries(Dictionaries_Left);
             ShowElements(Items_Left, Dictionaries_Left);
+            UpdatePersonel_TextBox_Left();
         }
 
         private void ClearPersonel_Left_Click(object sender, RoutedEventArgs e)
@@ -250,35 +338,40 @@ namespace KSDictionaryEditor
 
         private void Dictionaries_Left_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            ShowElements(Items_Left,Dictionaries_Left);
+            ShowElements(Items_Left, Dictionaries_Left);
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void AddElement_Button_Click(object sender, RoutedEventArgs e)
         {
             ItemWindow itemWindow = new ItemWindow();
             itemWindow.ShowDialog();
-            MessageBox.Show(itemWindow.DictionaryItem.Text);
+            //MessageBox.Show(itemWindow.DictionaryItem.Text);
         }
 
         private void Personel_Right_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            MessageBox.Show("Changed_Personel");
+            //MessageBox.Show("Changed_Personel");
             ShowDictionaries(Dictionaries_Right);
             ShowElements(Items_Right, Dictionaries_Right);
+            UpdatePersonel_TextBox_Right();
         }
 
 
         private void SharedDictionaries_Right_Click(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show("Changed_Checkbox");
+            //MessageBox.Show("Changed_Checkbox");
             Personel_Right.IsEnabled = !(bool)SharedDictionaries_Right.IsChecked;
             ShowDictionaries(Dictionaries_Right);
             ShowElements(Items_Right, Dictionaries_Right);
+            //clear combobox
+            Personel_Right.SelectedIndex = -1;
+            UpdatePersonel_TextBox_Right();
         }
 
         private void Dictionaries_Right_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            ShowElements(Items_Right,Dictionaries_Right);
+            ShowElements(Items_Right, Dictionaries_Right);
         }
+
     }
 }
