@@ -106,8 +106,6 @@ namespace KSDictionaryEditor
                         {
                             query = query + item["id"].ToString() + ",";
                         }
-
-
                     }
                     if (SharedDictionaries_Left.IsChecked == true)
                     {
@@ -127,7 +125,6 @@ namespace KSDictionaryEditor
                             query = query + Personel_Right.SelectedValue + ",";
                             //MessageBox.Show(Personel_Right.SelectedValue.ToString());
                         }
-
                     }
 
                     lvPersonel = Personel_Right;
@@ -154,8 +151,6 @@ namespace KSDictionaryEditor
             {
                 MessageBox.Show("ShowDictionaries: " + ex.ToString());
             }
-
-
         }
 
         //pokaz elementy slownika 
@@ -176,8 +171,7 @@ namespace KSDictionaryEditor
                     command.Parameters.AddWithValue("@id", id);
 
                     FbDataAdapter adapter = new FbDataAdapter(command);
-
-
+                   
                     adapter.Fill(table);
                     string info = table.Rows[0].Field<string>("opis").ToString();
 
@@ -210,7 +204,6 @@ namespace KSDictionaryEditor
                 {
                     itemsListView.ItemsSource = table.DefaultView;
                 }
-
             }
             catch (Exception ex)
             {
@@ -273,8 +266,6 @@ namespace KSDictionaryEditor
                 {
                     MessageBox.Show(ex.ToString());
                 }
-
-
             }
         }
 

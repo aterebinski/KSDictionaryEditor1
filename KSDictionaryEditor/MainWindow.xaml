@@ -20,7 +20,7 @@
 
 
     </Window.Resources>
-    <StackPanel>
+    <StackPanel Margin="0,0,-0.4,-19.6">
         <Grid x:Name="Main" Margin="30" HorizontalAlignment="Stretch"
 >
             <Grid.ColumnDefinitions>
@@ -31,6 +31,7 @@
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
                 <RowDefinition />
+                <RowDefinition Height="600" />
                 <RowDefinition />
             </Grid.RowDefinitions>
             <StackPanel Grid.Column="0" Grid.Row="0">
@@ -42,11 +43,11 @@
 
             </StackPanel>
             <StackPanel Grid.Column="0" Grid.Row="1">
-                <TabControl x:Name="tabControl" Height="644" Margin="0,0,-0.4,0">
+                <TabControl x:Name="tabControl" Height="586" Margin="0,0,-0.4,0">
                     <TabItem Header="Pracownicy">
                         <DockPanel>
                             <ListView x:Name="Personel_Left" SelectionMode="Extended" 
-                                SelectionChanged="Personel_Left_SelectionChanged" Width="423">
+                                SelectionChanged="Personel_Left_SelectionChanged" Width="423" Margin="0,0,0,9.6">
                                 <ListView.View>
                                     <GridView>
                                         <GridView.ColumnHeaderContainerStyle>
@@ -97,9 +98,14 @@
 
 
             </StackPanel>
+            <StackPanel Grid.Column="0" Grid.Row="2">
+                <WrapPanel>
+                    <Button Content="Kopiuj Słownik >>" />
+                </WrapPanel>
+            </StackPanel>
             <StackPanel Grid.Column="1" Grid.Row="1" Margin="10,0,0,0">
                 <TextBlock Margin="0,0,0,5">Pozycje Słowników:</TextBlock>
-                <ListView x:Name="Items_Left" Height="534" >
+                <ListView x:Name="Items_Left" Height="469" Margin="0,0,-0.2,0" >
                     <ListView.View>
                         <GridView>
                             <GridView.Columns>
@@ -124,11 +130,14 @@
                 </WrapPanel>
             </StackPanel>
 
-            <Grid Grid.Column="2" Grid.Row="1">
-                <Image HorizontalAlignment="Center" VerticalAlignment="Center" Width="60"
-       Height="56"
-       Source="{StaticResource Right_Arrow}" />
+            <StackPanel Grid.Column="1" Grid.Row="2">
+                <WrapPanel>
+                    <Button Margin="5" Content="Kopiuj Pozycje słownika >>" />
+                </WrapPanel>
+            </StackPanel>
 
+            <Grid Grid.Column="2" Grid.Row="1">
+                <Image HorizontalAlignment="Center" VerticalAlignment="Center" Width="60" Height="56" Source="{StaticResource Right_Arrow}" />
             </Grid>
 
             <StackPanel Grid.Column="3" Grid.Row="0">
@@ -151,7 +160,7 @@
                     <TextBlock Text="Wspólne słowniki" Margin="5,0,0,0" />
                 </WrapPanel>
                 <TextBlock Margin="0,0,0,5">Słowniki:</TextBlock>
-                <ListView x:Name="Dictionaries_Right" Height="236" SelectionChanged="Dictionaries_Right_SelectionChanged" >
+                <ListView x:Name="Dictionaries_Right" Height="206" SelectionChanged="Dictionaries_Right_SelectionChanged" >
                     <ListView.View>
                         <GridView>
                             <GridView.Columns>
@@ -164,7 +173,7 @@
                     </ListView.View>
                 </ListView>
                 <TextBlock Margin="0,5,0,5">Pozycje Słowników:</TextBlock>
-                <ListView x:Name="Items_Right" Height="224" >
+                <ListView x:Name="Items_Right" Height="204" >
                     <ListView.View>
                         <GridView>
                             <GridView.Columns>
@@ -186,6 +195,12 @@
                             Margin="10"/>
                     <Button Tag="Right" Content="Usuń pozycje" 
                             Margin="10"/>
+                </WrapPanel>
+            </StackPanel>
+            <StackPanel Grid.Column="3" Grid.Row="2">
+                <WrapPanel>
+                    <Button Margin="5" Content="Kopiuj Słownik" />
+                    <Button Margin="5" Content="Kopiuj Pozycje słownika" />
                 </WrapPanel>
             </StackPanel>
         </Grid>
