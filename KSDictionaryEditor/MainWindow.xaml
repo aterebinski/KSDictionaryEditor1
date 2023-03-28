@@ -115,17 +115,17 @@
                     </ListView.View>
                 </ListView>
                 <WrapPanel>
-                    <Button Content="Zaznacz wszystko" 
-                            Margin="10"/>
-                    <Button Content="Odznacz wszystko" 
-                            Margin="10"/>
+                    <Button x:Name="Set1SelectAllButton" Content="Zaznacz wszystko" 
+                            Margin="10" Click="Set1SelectAllButton_Click"/>
+                    <Button x:Name="Set1UnSelectAllButton" Content="Odznacz wszystko" 
+                            Margin="10" Click="Set1UnSelectAllButton_Click"/>
                 </WrapPanel>
                 <WrapPanel>
-                    <Button Content="Dodaj pozycję" 
-                            Margin="10" Click="AddElement_Button_Click"/>
-                    <Button Content="Popraw pozycję" 
+                    <Button x:Name="Set1AddElementButton" Content="Dodaj pozycję" 
+                            Margin="10" Click="Set1AddElementButton_Click"/>
+                    <Button x:Name="Set1EditElementButton" Content="Popraw pozycję" 
                             Margin="10"/>
-                    <Button Content="Usuń pozycje" 
+                    <Button x:Name="Set1RemoveElementButton" Content="Usuń pozycje" 
                             Margin="10"/>
                 </WrapPanel>
             </StackPanel>
@@ -183,17 +183,17 @@
                     </ListView.View>
                 </ListView>
                 <WrapPanel>
-                    <Button Tag="Right" Content="Zaznacz wszystko" 
-                            Margin="10"/>
-                    <Button Tag="Right" Content="Odznacz wszystko" 
-                            Margin="10"/>
+                    <Button x:Name="Set2SelectAllButton" Content="Zaznacz wszystko" 
+                            Margin="10" Click="Set2SelectAllButton_Click"/>
+                    <Button x:Name="Set2UnSelectAllButton" Content="Odznacz wszystko" 
+                            Margin="10" Click="Set2UnSelectAllButton_Click"/>
                 </WrapPanel>
                 <WrapPanel>
-                    <Button Tag="Right" Content="Dodaj pozycję" 
-                            Margin="10" Click="AddElement_Button_Click"/>
-                    <Button Tag="Right" Content="Popraw pozycję" 
+                    <Button x:Name="Set2AddElementButton" Content="Dodaj pozycję" 
+                            Margin="10" />
+                    <Button x:Name="Set2EditElementButton" Content="Popraw pozycję" 
                             Margin="10"/>
-                    <Button Tag="Right" Content="Usuń pozycje" 
+                    <Button x:Name="Set2RemoveElementButton" Content="Usuń pozycje" 
                             Margin="10"/>
                 </WrapPanel>
             </StackPanel>

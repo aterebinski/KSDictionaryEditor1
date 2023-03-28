@@ -332,7 +332,7 @@ namespace KSDictionaryEditor
             ShowElements(Items_Left, Dictionaries_Left);
         }
 
-        private void AddElement_Button_Click(object sender, RoutedEventArgs e)
+        private void Set1AddElementButton_Click(object sender, RoutedEventArgs e)
         {
             ItemWindow itemWindow = new ItemWindow();
             itemWindow.ShowDialog();
@@ -364,5 +364,24 @@ namespace KSDictionaryEditor
             ShowElements(Items_Right, Dictionaries_Right);
         }
 
+        private void Set1SelectAllButton_Click(object sender, RoutedEventArgs e)
+        {
+            Items_Left.SelectAll();
+        }
+
+        private void Set1UnSelectAllButton_Click(object sender, RoutedEventArgs e)
+        {
+            Items_Left.UnselectAll();
+        }
+
+        private void Set2SelectAllButton_Click(object sender, RoutedEventArgs e)
+        {
+            Items_Right.SelectAll();
+        }
+
+        private void Set2UnSelectAllButton_Click(object sender, RoutedEventArgs e)
+        {
+            Items_Right.UnselectAll();
+        }
     }
 }

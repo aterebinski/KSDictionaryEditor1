@@ -22,6 +22,7 @@ namespace KSDictionaryEditor
         public ItemWindow()
         {
             InitializeComponent();
+            App.
         }
 
 
