@@ -156,11 +156,9 @@ namespace KSDictionaryEditor
         //pokaz elementy slownika 
         private void ShowElements(ListView itemsListView, ListView dictionariesListView)
         {
-
             try
             {
                 DataTable table = new DataTable();
-
                 DataRowView drv = dictionariesListView.SelectedItem as DataRowView;
                 if (drv != null)
                 {
@@ -171,7 +169,7 @@ namespace KSDictionaryEditor
                     command.Parameters.AddWithValue("@id", id);
 
                     FbDataAdapter adapter = new FbDataAdapter(command);
-                   
+
                     adapter.Fill(table);
                     string info = table.Rows[0].Field<string>("opis").ToString();
 
@@ -334,9 +332,54 @@ namespace KSDictionaryEditor
 
         private void Set1AddElementButton_Click(object sender, RoutedEventArgs e)
         {
-            ItemWindow itemWindow = new ItemWindow();
-            itemWindow.ShowDialog();
-            //MessageBox.Show(itemWindow.DictionaryItem.Text);
+            string usluga, pracownik, wzorzec, slownik;
+            string idPracownika;
+            int idSlownika;
+            try
+            {
+                string sIdSlownika = ((DataRowView)Dictionaries_Left.SelectedItems[0]).Row["S_ID"].ToString();
+
+                idSlownika = Convert.ToInt32(sIdSlownika);
+
+                string slownikSql = "select s.idprac as idprac, s.nazw as slownik, w.nazw as wzorzec, u.nazw as usluga from slow s " +
+                    "join wzfo w on s.idwzfo = w.id " +
+                    "join uslg u on u.id = w.iduslg  " +
+                    "where s.id = @id";
+
+                FbCommand slownikCommand = new FbCommand(slownikSql, connection);
+                slownikCommand.Parameters.AddWithValue("@id", sIdSlownika);
+                FbDataAdapter slownikAdapter = new FbDataAdapter(slownikCommand);
+                DataTable slownikTable = new DataTable();
+                slownikAdapter.Fill(slownikTable);
+
+                idPracownika = slownikTable.Rows[0]["IDPRAC"].ToString();
+                usluga = slownikTable.Rows[0]["USLUGA"].ToString();
+                wzorzec = slownikTable.Rows[0]["WZORZEC"].ToString();
+                slownik = slownikTable.Rows[0]["SLOWNIK"].ToString();
+
+                if (idPracownika == "0")
+                {
+                    pracownik = "<<WSPÓLNY SŁOWNIK>>";
+                }
+                else
+                {
+                    string pracownikSql = "select imie||' '||nazw as IMIENAZW from prac where id = @id";
+                    FbCommand pracownikCommand = new FbCommand(pracownikSql, connection);
+                    pracownikCommand.Parameters.AddWithValue("@id", idPracownika);
+                    FbDataAdapter pracownikAdapter = new FbDataAdapter(pracownikCommand);
+                    DataTable pracownikTable = new DataTable();
+                    pracownikAdapter.Fill(pracownikTable);
+                    pracownik = pracownikTable.Rows[0]["IMIENAZW"].ToString();
+                }
+
+                ItemWindow itemWindow = new ItemWindow(connection, usluga, wzorzec, slownik, pracownik, idSlownika);
+                itemWindow.ShowDialog();
+                //MessageBox.Show(itemWindow.DictionaryItem.Text);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.ToString());
+            }
         }
 
         private void Personel_Right_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -346,8 +389,7 @@ namespace KSDictionaryEditor
             ShowElements(Items_Right, Dictionaries_Right);
             UpdatePersonel_TextBox_Right();
         }
-
-
+        
         private void SharedDictionaries_Right_Click(object sender, RoutedEventArgs e)
         {
             //MessageBox.Show("Changed_Checkbox");
