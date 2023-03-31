@@ -100,7 +100,7 @@
             </StackPanel>
             <StackPanel Grid.Column="0" Grid.Row="2">
                 <WrapPanel>
-                    <Button Content="Kopiuj Słownik >>" />
+                    <Button Content="Kopiuj Słownik >>" Background="#FFE0E0E0" BorderBrush="#FFE81A1A" Foreground="#FFD60909" FontSize="24" />
                 </WrapPanel>
             </StackPanel>
             <StackPanel Grid.Column="1" Grid.Row="1" Margin="10,0,0,0">

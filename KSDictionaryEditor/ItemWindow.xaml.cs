@@ -44,18 +44,28 @@ namespace KSDictionaryEditor
 
         private void AcceptButton_Click(object sender, RoutedEventArgs e)
         {
-            string sql = "select opis from slow where id = @id";
-            FbCommand command = new FbCommand(sql, connection);
-            command.Parameters.AddWithValue("@id", idSlownika);
-            FbDataAdapter adapter = new FbDataAdapter(command);
-            DataTable slowDataTable = new DataTable();
-            adapter.Fill(slowDataTable);
-            string opis = slowDataTable.Rows[0]["OPIS"].ToString();
-            opis = opis + DictionaryItem.Text + AsciiConverter.HEX2ASCII("0D0A");
-            string updateSql = "update slow set opis = @opis where id = @id";
-            FbCommand updateCommand = new FbCommand(updateSql, connection);
-            updateCommand.Parameters.AddWithValue("@opis", opis);
-            updateCommand.Parameters.AddWithValue("@id", id);
+            try
+            {
+                string sql = "select opis from slow where id = @id";
+                FbCommand command = new FbCommand(sql, connection);
+                command.Parameters.AddWithValue("@id", idSlownika);
+                FbDataAdapter adapter = new FbDataAdapter(command);
+                DataTable slowDataTable = new DataTable();
+                adapter.Fill(slowDataTable);
+                string opis = slowDataTable.Rows[0]["OPIS"].ToString();
+                opis = opis + DictionaryItem.Text + AsciiConverter.HEX2ASCII("0D0A");
+                string updateSql = "update slow set opis = @opis where id = @id";
+                FbCommand updateCommand = new FbCommand(updateSql, connection);
+                updateCommand.Parameters.AddWithValue("@opis", opis);
+                updateCommand.Parameters.AddWithValue("@id", idSlownika);
+                connection.Open();
+                updateCommand.ExecuteNonQuery();
+                connection.Close();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.ToString());
+            }
 
             //adapter.Fill()
             //string newItem = item.Replace("˙", AsciiConverter.HEX2ASCII("0D0A"));

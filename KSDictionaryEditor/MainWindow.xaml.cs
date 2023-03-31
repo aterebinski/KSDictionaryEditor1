@@ -1,6 +1,7 @@
 ﻿using FirebirdSql.Data.FirebirdClient;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Data;
 using System.Diagnostics;
 using System.Linq;
@@ -26,6 +27,8 @@ namespace KSDictionaryEditor
     {
         FbConnection connection;
         string connectionString = "";
+        ObservableCollection<string> DictionaryItems_Left = new ObservableCollection<string>();
+        ObservableCollection<string> DictionaryItems_Right = new ObservableCollection<string>();
 
         public MainWindow()
         {
@@ -36,7 +39,7 @@ namespace KSDictionaryEditor
                 connectionWindow.ShowDialog();
                 connectionString = connectionWindow.ConnectionString;
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
                 App.Current.Shutdown();
             }
@@ -154,10 +157,12 @@ namespace KSDictionaryEditor
         }
 
         //pokaz elementy slownika 
-        private void ShowElements(ListView itemsListView, ListView dictionariesListView)
+        private void ShowElements(ListView itemsListView, ObservableCollection<string> itemsList, ListView dictionariesListView)
         {
             try
             {
+                itemsList.Clear();
+
                 DataTable table = new DataTable();
                 DataRowView drv = dictionariesListView.SelectedItem as DataRowView;
                 if (drv != null)
@@ -186,22 +191,28 @@ namespace KSDictionaryEditor
                             StringSplitOptions.None
                         );
 
-                    List<string> allItems = new List<string>();
+                    //List<string> allItems = new List<string>();
+                    
 
                     foreach (string item in podzielone)
                     {
                         //MessageBox.Show(AsciiConverter.ASCIITOHex(item));
                         string newItem = item.Replace("˙", AsciiConverter.HEX2ASCII("0D0A"));
-                        allItems.Add(newItem);
+                        //allItems.Add(newItem);
+                        itemsList.Add(newItem);
                     }
 
                     //panel.ItemsSource = table.DefaultView;
-                    itemsListView.ItemsSource = allItems;
+                    //itemsListView.ItemsSource = allItems;
+                    //itemsListView.ItemsSource = DictionaryItemsLeft;
+                    itemsListView.ItemsSource = itemsList;
+                    //itemsListView.Refresh
                 }
                 else //jesli nie ma zaznaczonych słowników to pokaz pusta liste
                 {
-                    itemsListView.ItemsSource = table.DefaultView;
+                    //itemsListView.ItemsSource = table.DefaultView;
                 }
+                //itemsListView.ItemsSource = itemsList;
             }
             catch (Exception ex)
             {
@@ -209,6 +220,19 @@ namespace KSDictionaryEditor
             }
 
             //MessageBox.Show("Id = " + id);
+        }
+
+        private void SaveElements(ListView itemsListView, ObservableCollection<string> itemsList, ListView dictionariesListView)
+        {
+            string opis = "", tempOpis = "";
+
+            foreach (string item in itemsList)
+            {
+                tempOpis = item.Replace(AsciiConverter.HEX2ASCII("0D0A"),"˙");
+                opis += tempOpis+AsciiConverter.HEX2ASCII("0D0A");
+            }
+
+            string sql = "select id from "
         }
 
         private void UpdatePersonel_TextBox_Left()
@@ -300,14 +324,14 @@ namespace KSDictionaryEditor
         private void Personel_Left_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             ShowDictionaries(Dictionaries_Left);
-            ShowElements(Items_Left, Dictionaries_Left);
+            ShowElements(Items_Left, DictionaryItems_Left, Dictionaries_Left);
             UpdatePersonel_TextBox_Left();
         }
 
         private void SharedDictionaries_Left_Click(object sender, RoutedEventArgs e)
         {
             ShowDictionaries(Dictionaries_Left);
-            ShowElements(Items_Left, Dictionaries_Left);
+            ShowElements(Items_Left, DictionaryItems_Left, Dictionaries_Left);
             UpdatePersonel_TextBox_Left();
         }
 
@@ -315,19 +339,19 @@ namespace KSDictionaryEditor
         {
             Personel_Left.UnselectAll();
             ShowDictionaries(Dictionaries_Left);
-            ShowElements(Items_Left, Dictionaries_Left);
+            ShowElements(Items_Left, DictionaryItems_Left, Dictionaries_Left);
         }
 
         private void AllPersonel_Left_Click(object sender, RoutedEventArgs e)
         {
             Personel_Left.SelectAll();
             ShowDictionaries(Dictionaries_Left);
-            ShowElements(Items_Left, Dictionaries_Left);
+            ShowElements(Items_Left, DictionaryItems_Left, Dictionaries_Left);
         }
 
         private void Dictionaries_Left_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            ShowElements(Items_Left, Dictionaries_Left);
+            ShowElements(Items_Left, DictionaryItems_Left, Dictionaries_Left);
         }
 
         private void Set1AddElementButton_Click(object sender, RoutedEventArgs e)
@@ -386,7 +410,7 @@ namespace KSDictionaryEditor
         {
             //MessageBox.Show("Changed_Personel");
             ShowDictionaries(Dictionaries_Right);
-            ShowElements(Items_Right, Dictionaries_Right);
+            ShowElements(Items_Right, DictionaryItems_Right, Dictionaries_Right);
             UpdatePersonel_TextBox_Right();
         }
         
@@ -395,7 +419,7 @@ namespace KSDictionaryEditor
             //MessageBox.Show("Changed_Checkbox");
             Personel_Right.IsEnabled = !(bool)SharedDictionaries_Right.IsChecked;
             ShowDictionaries(Dictionaries_Right);
-            ShowElements(Items_Right, Dictionaries_Right);
+            ShowElements(Items_Right, DictionaryItems_Right, Dictionaries_Right);
             //clear combobox
             Personel_Right.SelectedIndex = -1;
             UpdatePersonel_TextBox_Right();
@@ -403,7 +427,7 @@ namespace KSDictionaryEditor
 
         private void Dictionaries_Right_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            ShowElements(Items_Right, Dictionaries_Right);
+            ShowElements(Items_Right, DictionaryItems_Right, Dictionaries_Right);
         }
 
         private void Set1SelectAllButton_Click(object sender, RoutedEventArgs e)
