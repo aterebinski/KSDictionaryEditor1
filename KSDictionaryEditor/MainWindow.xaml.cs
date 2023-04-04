@@ -39,7 +39,7 @@ namespace KSDictionaryEditor
                 connectionWindow.ShowDialog();
                 connectionString = connectionWindow.ConnectionString;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 App.Current.Shutdown();
             }
@@ -191,9 +191,6 @@ namespace KSDictionaryEditor
                             StringSplitOptions.None
                         );
 
-                    //List<string> allItems = new List<string>();
-                    
-
                     foreach (string item in podzielone)
                     {
                         //MessageBox.Show(AsciiConverter.ASCIITOHex(item));
@@ -201,25 +198,13 @@ namespace KSDictionaryEditor
                         //allItems.Add(newItem);
                         itemsList.Add(newItem);
                     }
-
-                    //panel.ItemsSource = table.DefaultView;
-                    //itemsListView.ItemsSource = allItems;
-                    //itemsListView.ItemsSource = DictionaryItemsLeft;
                     itemsListView.ItemsSource = itemsList;
-                    //itemsListView.Refresh
                 }
-                else //jesli nie ma zaznaczonych słowników to pokaz pusta liste
-                {
-                    //itemsListView.ItemsSource = table.DefaultView;
-                }
-                //itemsListView.ItemsSource = itemsList;
             }
             catch (Exception ex)
             {
                 MessageBox.Show("showSlow: " + ex.ToString());
             }
-
-            //MessageBox.Show("Id = " + id);
         }
 
         private void SaveElements(ListView itemsListView, ObservableCollection<string> itemsList, ListView dictionariesListView)
@@ -232,7 +217,15 @@ namespace KSDictionaryEditor
                 opis += tempOpis+AsciiConverter.HEX2ASCII("0D0A");
             }
 
-            string sql = "select id from "
+            DataRowView drv = dictionariesListView.SelectedItem as DataRowView;
+            string id = drv["s_id"].ToString();
+
+            string sql = "update slow set opis = @opis where id = @id";
+
+            FbCommand command = new FbCommand(sql, connection);
+            connection.Open();
+            command.ExecuteNonQuery();
+            connection.Close();
         }
 
         private void UpdatePersonel_TextBox_Left()
