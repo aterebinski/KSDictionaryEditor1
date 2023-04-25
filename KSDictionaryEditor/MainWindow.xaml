@@ -78,6 +78,19 @@
                     </TabItem>
                     <TabItem Header="Usługi i wzorce">
                         <StackPanel>
+                            <WrapPanel>
+                                <ComboBox x:Name="FiltrDictionarySet1Combobox" Margin="5">
+                                    <ComboBox.Items>
+                                        <ComboBoxItem IsSelected="True" >Wszystko</ComboBoxItem>
+                                        <ComboBoxItem>Słownik</ComboBoxItem>
+                                        <ComboBoxItem>Wzorzec</ComboBoxItem>
+                                        <ComboBoxItem>Usługa</ComboBoxItem>
+                                        
+                                    </ComboBox.Items>
+                                </ComboBox>
+                                <TextBox x:Name="FiltrDictionarySet1TextBox" Margin="5" Width="400" TextChanged="FiltrDictionarySet1TextBox_TextChanged" KeyDown="FilterSet1KeyPressed"></TextBox>
+                                <Button x:Name="FiltrDictionarySet1Button" Margin="5" Click="FiltrDictionarySet1Button_Click">Filtruj</Button>
+                            </WrapPanel>
                             <ListView x:Name="Dictionaries_Left"
                           Height="613" SelectionChanged="Dictionaries_Left_SelectionChanged">
                                 <ListView.View>
@@ -159,8 +172,21 @@
                     <CheckBox  x:Name="SharedDictionaries_Right" Click="SharedDictionaries_Right_Click" />
                     <TextBlock Text="Wspólne słowniki" Margin="5,0,0,0" />
                 </WrapPanel>
-                <TextBlock Margin="0,0,0,5">Słowniki:</TextBlock>
-                <ListView x:Name="Dictionaries_Right" Height="206" SelectionChanged="Dictionaries_Right_SelectionChanged" >
+                <TextBlock Margin="0,15,0,5" Foreground="Red" FontWeight="Bold">Słowniki:</TextBlock>
+                <WrapPanel>
+                    <ComboBox x:Name="FiltrDictionarySet2Combobox" Margin="5">
+                        <ComboBox.Items>
+                            <ComboBoxItem IsSelected="True" >Wszystko</ComboBoxItem>
+                            <ComboBoxItem>Słownik</ComboBoxItem>
+                            <ComboBoxItem>Wzorzec</ComboBoxItem>
+                            <ComboBoxItem>Usługa</ComboBoxItem>
+
+                        </ComboBox.Items>
+                    </ComboBox>
+                    <TextBox x:Name="FiltrDictionarySet2TextBox" Margin="5" Width="250" KeyDown="FilterSet2KeyPressed"></TextBox>
+                    <Button x:Name="FiltrDictionarySet2Button" Margin="5" Click="FiltrDictionarySet2Button_Click">Filtruj</Button>
+                </WrapPanel>
+                <ListView x:Name="Dictionaries_Right" Height="190" SelectionChanged="Dictionaries_Right_SelectionChanged" >
                     <ListView.View>
                         <GridView>
                             <GridView.Columns>
@@ -172,8 +198,8 @@
                         </GridView>
                     </ListView.View>
                 </ListView>
-                <TextBlock Margin="0,5,0,5">Pozycje Słowników:</TextBlock>
-                <ListView x:Name="Items_Right" Height="204" >
+                <TextBlock Margin="0,15,0,5" Foreground="Red" FontWeight="Bold">Pozycje Słowników:</TextBlock>
+                <ListView x:Name="Items_Right" Height="200" >
                     <ListView.View>
                         <GridView>
                             <GridView.Columns>

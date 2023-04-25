@@ -33,20 +33,25 @@ namespace KSDictionaryEditor
         public MainWindow()
         {
             InitializeComponent();
+
+            ConnectionWindow connectionWindow = new ConnectionWindow();
+            connectionWindow.ShowDialog();
+
             try
             {
-                ConnectionWindow connectionWindow = new ConnectionWindow();
-                connectionWindow.ShowDialog();
+                
                 connectionString = connectionWindow.ConnectionString;
+                
             }
             catch (Exception)
             {
                 App.Current.Shutdown();
             }
 
-            if (connectionString != "")
+            if (connectionString != "" && connectionWindow.TestConnection())
             {
                 connection = new FbConnection(connectionString);
+
 
                 ShowPersonel(Personel_Left);
                 ShowDictionaries(Dictionaries_Left);
@@ -86,6 +91,8 @@ namespace KSDictionaryEditor
             Selector lvPersonel;
             CheckBox checkSharedDictonaries;
 
+            string filter = "";
+
             string query = "select u.kod, u.id as u_id,  u.nazw as usluga," +
                 " w.id as w_id,  w.nazw as wzorzec," +
                 " s.id as s_id, s.nazw as slownik, s.opis," +
@@ -114,7 +121,31 @@ namespace KSDictionaryEditor
                     {
                         query = query + "0,";
                     }
+
+                    if (FiltrDictionarySet1TextBox.Text.Length>0)
+                    {
+                        switch (FiltrDictionarySet1Combobox.SelectedIndex)
+                        {
+                            case 0: //wszystko
+                                filter = " and (upper(u.nazw) like '%"+FiltrDictionarySet1TextBox.Text.ToUpper()+"%' ";
+                                filter += " or upper(w.nazw) like '%" + FiltrDictionarySet1TextBox.Text.ToUpper() + "%' ";
+                                filter += " or upper(s.nazw) like '%" + FiltrDictionarySet1TextBox.Text.ToUpper() + "%') ";
+                                break;
+                            case 1: //Słownik
+                                filter = " and upper(s.nazw) like '%" + FiltrDictionarySet1TextBox.Text.ToUpper() + "%' ";
+                                break;
+                            case 2: //Wzorzec
+                                filter = " and upper(w.nazw) like '%" + FiltrDictionarySet1TextBox.Text.ToUpper() + "%' ";
+                                break;
+                            case 3: //Usługa
+                                filter = " and upper(u.nazw) like '%" + FiltrDictionarySet1TextBox.Text.ToUpper() + "%' ";
+                                break;
+                            default:
+                                break;
+                        }
+                    }
                     break;
+                    
                 case "Dictionaries_Right":
 
                     if (SharedDictionaries_Right.IsChecked == true)
@@ -130,6 +161,29 @@ namespace KSDictionaryEditor
                         }
                     }
 
+                    if (FiltrDictionarySet2TextBox.Text.Length > 0)
+                    {
+                        switch (FiltrDictionarySet2Combobox.SelectedIndex)
+                        {
+                            case 0: //wszystko
+                                filter = " and (upper(u.nazw) like '%" + FiltrDictionarySet2TextBox.Text.ToUpper() + "%' ";
+                                filter += " or upper(w.nazw) like '%" + FiltrDictionarySet2TextBox.Text.ToUpper() + "%' ";
+                                filter += " or upper(s.nazw) like '%" + FiltrDictionarySet2TextBox.Text.ToUpper() + "%') ";
+                                break;
+                            case 1: //Słownik
+                                filter = " and upper(s.nazw) like '%" + FiltrDictionarySet2TextBox.Text.ToUpper() + "%' ";
+                                break;
+                            case 2: //Wzorzec
+                                filter = " and upper(w.nazw) like '%" + FiltrDictionarySet2TextBox.Text.ToUpper() + "%' ";
+                                break;
+                            case 3: //Usługa
+                                filter = " and upper(u.nazw) like '%" + FiltrDictionarySet2TextBox.Text.ToUpper() + "%' ";
+                                break;
+                            default:
+                                break;
+                        }
+                    }
+
                     lvPersonel = Personel_Right;
                     checkSharedDictonaries = SharedDictionaries_Right;
                     break;
@@ -139,10 +193,10 @@ namespace KSDictionaryEditor
             {
                 FbCommand command = new FbCommand(query, connection);
 
-                query = query + "-99) order by usluga, wzorzec, slownik";
+                query = query + "-99) "+filter+" order by usluga, wzorzec, slownik";
                 command.CommandText = query;
 
-                //MessageBox.Show(query);
+                MessageBox.Show(query);
                 Trace.WriteLine(query);
 
                 FbDataAdapter adapter = new FbDataAdapter(command);
@@ -441,6 +495,32 @@ namespace KSDictionaryEditor
         private void Set2UnSelectAllButton_Click(object sender, RoutedEventArgs e)
         {
             Items_Right.UnselectAll();
+        }
+
+        private void FiltrDictionarySet1Button_Click(object sender, RoutedEventArgs e)
+        {
+            ShowDictionaries(Dictionaries_Left);
+        }
+
+        private void FiltrDictionarySet2Button_Click(object sender, RoutedEventArgs e)
+        {
+            ShowDictionaries(Dictionaries_Right);
+        }
+
+        private void FilterSet1KeyPressed(object sender, KeyEventArgs e)
+        {
+            if(e.Key == Key.Enter)
+            {
+                ShowDictionaries(Dictionaries_Left);
+            }
+        }
+
+        private void FilterSet2KeyPressed(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+            {
+                ShowDictionaries(Dictionaries_Right);
+            }
         }
     }
 }

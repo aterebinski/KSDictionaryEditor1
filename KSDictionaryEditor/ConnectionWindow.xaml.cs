@@ -1,4 +1,5 @@
-﻿using Microsoft.Win32;
+﻿using FirebirdSql.Data.FirebirdClient;
+using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -189,5 +190,26 @@ namespace KSDictionaryEditor
                 return "";
             }
         }
+
+        public bool TestConnection()
+        {
+            FbConnection connection = new FbConnection(ConnectionString);
+            try
+            {
+                connection.Open();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Błąd połączenia z bazą danych");
+                App.Current.Shutdown();
+                return false;
+            }
+            finally
+            {
+                connection.Close();
+            }
+            return true;
+        }
+
     }
 }
