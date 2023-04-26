@@ -522,5 +522,17 @@ namespace KSDictionaryEditor
                 ShowDictionaries(Dictionaries_SmallPanel);
             }
         }
+
+        private void SwitchSidesButton_Click(object sender, RoutedEventArgs e)
+        {
+            var selectedPersonelTemp = Personel_BigPanel.SelectedItems;
+            var selectedDictonariesTemp = Dictionaries_BigPanel.SelectedItems;
+            var selectedItemsTemp = Items_BigPanel.SelectedItems;
+
+
+             //Personel_BigPanel.SelectedItems = Personel_SmallPanel.SelectedItems;
+            //Dictionaries_BigPanel.SelectedItems = Dictionaries_SmallPanel.SelectedItems;
+            Items_BigPanel.SelectedItems = Items_SmallPanel.SelectedItems;
+        }
     }
 }

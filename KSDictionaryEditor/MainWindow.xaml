@@ -150,7 +150,9 @@
             </StackPanel>
 
             <Grid Grid.Column="2" Grid.Row="1">
-                <Image HorizontalAlignment="Center" VerticalAlignment="Center" Width="60" Height="56" Source="{StaticResource SmallPanel_Arrow}" />
+                <Button x:Name="SwitchSidesButton" Background="White" Width="60" Height="56" HorizontalAlignment="Center" VerticalAlignment="Center" Click="SwitchSidesButton_Click">
+                    <Image HorizontalAlignment="Center" VerticalAlignment="Center" Width="60" Height="56" Source="{StaticResource SmallPanel_Arrow}" />
+                </Button>
             </Grid>
 
             <StackPanel Grid.Column="3" Grid.Row="0">
