@@ -7,7 +7,7 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="800" Width="1800">
     <Window.Resources>
-        <DrawingImage x:Key="Right_Arrow">
+        <DrawingImage x:Key="SmallPanel_Arrow">
             <DrawingImage.Drawing>
                 <DrawingGroup>
                     <GeometryDrawing Brush="Black"
@@ -38,7 +38,7 @@
                 <TextBlock FontSize="36" FontWeight="Bold" Foreground="#FF973030">Set 1:</TextBlock>
                 <WrapPanel>
                     <TextBlock Foreground="Red" FontWeight="Bold">Pracownicy:</TextBlock>
-                    <TextBlock Foreground="Red" FontWeight="Bold" x:Name="Personel_Left_TextBlock" Margin="0,0,0,5"></TextBlock>
+                    <TextBlock Foreground="Red" FontWeight="Bold" x:Name="Personel_BigPanel_TextBlock" Margin="0,0,0,5"></TextBlock>
                 </WrapPanel>
 
             </StackPanel>
@@ -46,8 +46,8 @@
                 <TabControl x:Name="tabControl" Height="586" Margin="0,0,-0.4,0">
                     <TabItem Header="Pracownicy">
                         <DockPanel>
-                            <ListView x:Name="Personel_Left" SelectionMode="Extended" 
-                                SelectionChanged="Personel_Left_SelectionChanged" Width="423" Margin="0,0,0,9.6">
+                            <ListView x:Name="Personel_BigPanel" SelectionMode="Extended" 
+                                SelectionChanged="Personel_BigPanel_SelectionChanged" Width="423" Margin="0,0,0,9.6">
                                 <ListView.View>
                                     <GridView>
                                         <GridView.ColumnHeaderContainerStyle>
@@ -67,11 +67,11 @@
                                 </ListView.View>
                             </ListView>
                             <WrapPanel>
-                                <CheckBox x:Name="SharedDictionaries_Left" Content="Wspólne słowniki całego personelu" Click="SharedDictionaries_Left_Click" 
+                                <CheckBox x:Name="SharedDictionaries_BigPanel" Content="Wspólne słowniki całego personelu" Click="SharedDictionaries_BigPanel_Click" 
                               Margin="10"/>
-                                <Button x:Name="AllPersonel_Left" Content="Zaznacz wszystkich" Click="AllPersonel_Left_Click" 
+                                <Button x:Name="AllPersonel_BigPanel" Content="Zaznacz wszystkich" Click="AllPersonel_BigPanel_Click" 
                             Margin="10"/>
-                                <Button x:Name="ClearPersonel_Left" Content="Odznacz wszystkich" Click="ClearPersonel_Left_Click" 
+                                <Button x:Name="ClearPersonel_BigPanel" Content="Odznacz wszystkich" Click="ClearPersonel_BigPanel_Click" 
                             Margin="10"/>
                             </WrapPanel>
                         </DockPanel>
@@ -91,8 +91,8 @@
                                 <TextBox x:Name="FiltrDictionarySet1TextBox" Margin="5" Width="400" KeyDown="FilterSet1KeyPressed"></TextBox>
                                 <Button x:Name="FiltrDictionarySet1Button" Margin="5" Click="FiltrDictionarySet1Button_Click">Filtruj</Button>
                             </WrapPanel>
-                            <ListView x:Name="Dictionaries_Left"
-                          Height="613" SelectionChanged="Dictionaries_Left_SelectionChanged">
+                            <ListView x:Name="Dictionaries_BigPanel"
+                          Height="613" SelectionChanged="Dictionaries_BigPanel_SelectionChanged">
                                 <ListView.View>
                                     <GridView>
                                         <GridView.Columns>
@@ -118,7 +118,7 @@
             </StackPanel>
             <StackPanel Grid.Column="1" Grid.Row="1" Margin="10,0,0,0">
                 <TextBlock Margin="0,0,0,5">Pozycje Słowników:</TextBlock>
-                <ListView x:Name="Items_Left" Height="469" Margin="0,0,-0.2,0" >
+                <ListView x:Name="Items_BigPanel" Height="469" Margin="0,0,-0.2,0" >
                     <ListView.View>
                         <GridView>
                             <GridView.Columns>
@@ -150,7 +150,7 @@
             </StackPanel>
 
             <Grid Grid.Column="2" Grid.Row="1">
-                <Image HorizontalAlignment="Center" VerticalAlignment="Center" Width="60" Height="56" Source="{StaticResource Right_Arrow}" />
+                <Image HorizontalAlignment="Center" VerticalAlignment="Center" Width="60" Height="56" Source="{StaticResource SmallPanel_Arrow}" />
             </Grid>
 
             <StackPanel Grid.Column="3" Grid.Row="0">
@@ -160,16 +160,16 @@
             <StackPanel Grid.Column="3" Grid.Row="1" Margin="0,0,0,0">
                 <WrapPanel>
                     <TextBlock Foreground="Red" FontWeight="Bold" Margin="0,0,10,5">Pracownik:</TextBlock>
-                    <TextBlock Foreground="Red" FontWeight="Bold" x:Name="Personel_Right_TextBlock" Margin="0,0,0,5"></TextBlock>
+                    <TextBlock Foreground="Red" FontWeight="Bold" x:Name="Personel_SmallPanel_TextBlock" Margin="0,0,0,5"></TextBlock>
                 </WrapPanel>
 
                 <ComboBox Margin="0,0,0,5" 
-                    x:Name="Personel_Right" 
-                  SelectionChanged="Personel_Right_SelectionChanged">
+                    x:Name="Personel_SmallPanel" 
+                  SelectionChanged="Personel_SmallPanel_SelectionChanged">
 
                 </ComboBox>
                 <WrapPanel Margin="0,0,0,5">
-                    <CheckBox  x:Name="SharedDictionaries_Right" Click="SharedDictionaries_Right_Click" />
+                    <CheckBox  x:Name="SharedDictionaries_SmallPanel" Click="SharedDictionaries_SmallPanel_Click" />
                     <TextBlock Text="Wspólne słowniki" Margin="5,0,0,0" />
                 </WrapPanel>
                 <TextBlock Margin="0,15,0,5" Foreground="Red" FontWeight="Bold">Słowniki:</TextBlock>
@@ -186,7 +186,7 @@
                     <TextBox x:Name="FiltrDictionarySet2TextBox" Margin="5" Width="250" KeyDown="FilterSet2KeyPressed"></TextBox>
                     <Button x:Name="FiltrDictionarySet2Button" Margin="5" Click="FiltrDictionarySet2Button_Click">Filtruj</Button>
                 </WrapPanel>
-                <ListView x:Name="Dictionaries_Right" Height="190" SelectionChanged="Dictionaries_Right_SelectionChanged" >
+                <ListView x:Name="Dictionaries_SmallPanel" Height="190" SelectionChanged="Dictionaries_SmallPanel_SelectionChanged" >
                     <ListView.View>
                         <GridView>
                             <GridView.Columns>
@@ -199,7 +199,7 @@
                     </ListView.View>
                 </ListView>
                 <TextBlock Margin="0,15,0,5" Foreground="Red" FontWeight="Bold">Pozycje Słowników:</TextBlock>
-                <ListView x:Name="Items_Right" Height="200" >
+                <ListView x:Name="Items_SmallPanel" Height="200" >
                     <ListView.View>
                         <GridView>
                             <GridView.Columns>

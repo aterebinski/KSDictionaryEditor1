@@ -27,8 +27,8 @@ namespace KSDictionaryEditor
     {
         FbConnection connection;
         string connectionString = "";
-        ObservableCollection<string> DictionaryItems_Left = new ObservableCollection<string>();
-        ObservableCollection<string> DictionaryItems_Right = new ObservableCollection<string>();
+        ObservableCollection<string> DictionaryItems_BigPanel = new ObservableCollection<string>();
+        ObservableCollection<string> DictionaryItems_SmallPanel = new ObservableCollection<string>();
 
         public MainWindow()
         {
@@ -53,10 +53,10 @@ namespace KSDictionaryEditor
                 connection = new FbConnection(connectionString);
 
 
-                ShowPersonel(Personel_Left);
-                ShowDictionaries(Dictionaries_Left);
-                ShowPersonel(Personel_Right);
-                ShowDictionaries(Dictionaries_Right);
+                ShowPersonel(Personel_BigPanel);
+                ShowDictionaries(Dictionaries_BigPanel);
+                ShowPersonel(Personel_SmallPanel);
+                ShowDictionaries(Dictionaries_SmallPanel);
             }
             else
             {
@@ -108,16 +108,16 @@ namespace KSDictionaryEditor
             {
                 default:
                     break;
-                case "Dictionaries_Left":
-                    if (Personel_Left.SelectedItems.Count > 0)
+                case "Dictionaries_BigPanel":
+                    if (Personel_BigPanel.SelectedItems.Count > 0)
                     {
                         //command.Parameters.AddWithValue()
-                        foreach (DataRowView item in Personel_Left.SelectedItems)
+                        foreach (DataRowView item in Personel_BigPanel.SelectedItems)
                         {
                             query = query + item["id"].ToString() + ",";
                         }
                     }
-                    if (SharedDictionaries_Left.IsChecked == true)
+                    if (SharedDictionaries_BigPanel.IsChecked == true)
                     {
                         query = query + "0,";
                     }
@@ -146,18 +146,18 @@ namespace KSDictionaryEditor
                     }
                     break;
                     
-                case "Dictionaries_Right":
+                case "Dictionaries_SmallPanel":
 
-                    if (SharedDictionaries_Right.IsChecked == true)
+                    if (SharedDictionaries_SmallPanel.IsChecked == true)
                     {
                         query = query + "0,";
                     }
                     else
                     {
-                        if (Personel_Right.SelectedValue != null)
+                        if (Personel_SmallPanel.SelectedValue != null)
                         {
-                            query = query + Personel_Right.SelectedValue + ",";
-                            //MessageBox.Show(Personel_Right.SelectedValue.ToString());
+                            query = query + Personel_SmallPanel.SelectedValue + ",";
+                            //MessageBox.Show(Personel_SmallPanel.SelectedValue.ToString());
                         }
                     }
 
@@ -184,8 +184,8 @@ namespace KSDictionaryEditor
                         }
                     }
 
-                    lvPersonel = Personel_Right;
-                    checkSharedDictonaries = SharedDictionaries_Right;
+                    lvPersonel = Personel_SmallPanel;
+                    checkSharedDictonaries = SharedDictionaries_SmallPanel;
                     break;
             }
 
@@ -282,28 +282,28 @@ namespace KSDictionaryEditor
             connection.Close();
         }
 
-        private void UpdatePersonel_TextBox_Left()
+        private void UpdatePersonel_TextBox_BigPanel()
         {
             int printedElements = 0;
-            if (SharedDictionaries_Left.IsChecked == true)
+            if (SharedDictionaries_BigPanel.IsChecked == true)
             {
-                Personel_Left_TextBlock.Text = "<WSPÓŁNE SŁOWNIKI>";
+                Personel_BigPanel_TextBlock.Text = "<WSPÓŁNE SŁOWNIKI>";
                 printedElements++;
             }
             else
             {
-                Personel_Left_TextBlock.Text = "";
+                Personel_BigPanel_TextBlock.Text = "";
             }
 
-            if (Personel_Left.SelectedItems.Count > 0)
+            if (Personel_BigPanel.SelectedItems.Count > 0)
             {
                 try
                 {
-                    //Personel_Right_TextBlock.Text = Personel_Right.SelectedValue
+                    //Personel_SmallPanel_TextBlock.Text = Personel_SmallPanel.SelectedValue
                     string sql = "select imie||' '||nazw as imienazw from prac where id in(-99";
                     int i = 0;
 
-                    foreach (DataRowView item in Personel_Left.SelectedItems)
+                    foreach (DataRowView item in Personel_BigPanel.SelectedItems)
                     {
                         sql += "," + item[i].ToString();
                     }
@@ -318,17 +318,17 @@ namespace KSDictionaryEditor
                     {
                         if (printedElements > 0)
                         {
-                            Personel_Left_TextBlock.Text += ", ";
+                            Personel_BigPanel_TextBlock.Text += ", ";
                         }
 
                         if (printedElements > 3)
                         {
-                            Personel_Left_TextBlock.Text += "<I INNI ...>";
+                            Personel_BigPanel_TextBlock.Text += "<I INNI ...>";
                             break;
                         }
 
                         printedElements++;
-                        Personel_Left_TextBlock.Text += item["IMIENAZW"].ToString();
+                        Personel_BigPanel_TextBlock.Text += item["IMIENAZW"].ToString();
                     }
                 }
                 catch (Exception ex)
@@ -338,27 +338,27 @@ namespace KSDictionaryEditor
             }
         }
 
-        private void UpdatePersonel_TextBox_Right()
+        private void UpdatePersonel_TextBox_SmallPanel()
         {
-            if (SharedDictionaries_Right.IsChecked == true)
+            if (SharedDictionaries_SmallPanel.IsChecked == true)
             {
-                Personel_Right_TextBlock.Text = "<WSPÓŁNE SŁOWNIKI>";
+                Personel_SmallPanel_TextBlock.Text = "<WSPÓŁNE SŁOWNIKI>";
             }
             else
             {
-                Personel_Right_TextBlock.Text = "";
-                if (Personel_Right.SelectedValue != null)
+                Personel_SmallPanel_TextBlock.Text = "";
+                if (Personel_SmallPanel.SelectedValue != null)
                 {
                     try
                     {
-                        //Personel_Right_TextBlock.Text = Personel_Right.SelectedValue
+                        //Personel_SmallPanel_TextBlock.Text = Personel_SmallPanel.SelectedValue
                         string sql = "select imie||' '||nazw as imienazw from prac where id  = @id";
                         FbCommand command = new FbCommand(sql, connection);
-                        command.Parameters.AddWithValue("@id", Personel_Right.SelectedValue);
+                        command.Parameters.AddWithValue("@id", Personel_SmallPanel.SelectedValue);
                         FbDataAdapter dataAdapter = new FbDataAdapter(command);
                         DataTable PersonelTable = new DataTable();
                         dataAdapter.Fill(PersonelTable);
-                        Personel_Right_TextBlock.Text = PersonelTable.Rows[0]["IMIENAZW"].ToString();
+                        Personel_SmallPanel_TextBlock.Text = PersonelTable.Rows[0]["IMIENAZW"].ToString();
                     }
                     catch (Exception ex)
                     {
@@ -368,37 +368,37 @@ namespace KSDictionaryEditor
             }
         }
 
-        private void Personel_Left_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void Personel_BigPanel_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            ShowDictionaries(Dictionaries_Left);
-            ShowElements(Items_Left, DictionaryItems_Left, Dictionaries_Left);
-            UpdatePersonel_TextBox_Left();
+            ShowDictionaries(Dictionaries_BigPanel);
+            ShowElements(Items_BigPanel, DictionaryItems_BigPanel, Dictionaries_BigPanel);
+            UpdatePersonel_TextBox_BigPanel();
         }
 
-        private void SharedDictionaries_Left_Click(object sender, RoutedEventArgs e)
+        private void SharedDictionaries_BigPanel_Click(object sender, RoutedEventArgs e)
         {
-            ShowDictionaries(Dictionaries_Left);
-            ShowElements(Items_Left, DictionaryItems_Left, Dictionaries_Left);
-            UpdatePersonel_TextBox_Left();
+            ShowDictionaries(Dictionaries_BigPanel);
+            ShowElements(Items_BigPanel, DictionaryItems_BigPanel, Dictionaries_BigPanel);
+            UpdatePersonel_TextBox_BigPanel();
         }
 
-        private void ClearPersonel_Left_Click(object sender, RoutedEventArgs e)
+        private void ClearPersonel_BigPanel_Click(object sender, RoutedEventArgs e)
         {
-            Personel_Left.UnselectAll();
-            ShowDictionaries(Dictionaries_Left);
-            ShowElements(Items_Left, DictionaryItems_Left, Dictionaries_Left);
+            Personel_BigPanel.UnselectAll();
+            ShowDictionaries(Dictionaries_BigPanel);
+            ShowElements(Items_BigPanel, DictionaryItems_BigPanel, Dictionaries_BigPanel);
         }
 
-        private void AllPersonel_Left_Click(object sender, RoutedEventArgs e)
+        private void AllPersonel_BigPanel_Click(object sender, RoutedEventArgs e)
         {
-            Personel_Left.SelectAll();
-            ShowDictionaries(Dictionaries_Left);
-            ShowElements(Items_Left, DictionaryItems_Left, Dictionaries_Left);
+            Personel_BigPanel.SelectAll();
+            ShowDictionaries(Dictionaries_BigPanel);
+            ShowElements(Items_BigPanel, DictionaryItems_BigPanel, Dictionaries_BigPanel);
         }
 
-        private void Dictionaries_Left_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void Dictionaries_BigPanel_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            ShowElements(Items_Left, DictionaryItems_Left, Dictionaries_Left);
+            ShowElements(Items_BigPanel, DictionaryItems_BigPanel, Dictionaries_BigPanel);
         }
 
         private void Set1AddElementButton_Click(object sender, RoutedEventArgs e)
@@ -408,7 +408,7 @@ namespace KSDictionaryEditor
             int idSlownika;
             try
             {
-                string sIdSlownika = ((DataRowView)Dictionaries_Left.SelectedItems[0]).Row["S_ID"].ToString();
+                string sIdSlownika = ((DataRowView)Dictionaries_BigPanel.SelectedItems[0]).Row["S_ID"].ToString();
 
                 idSlownika = Convert.ToInt32(sIdSlownika);
 
@@ -453,65 +453,65 @@ namespace KSDictionaryEditor
             }
         }
 
-        private void Personel_Right_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void Personel_SmallPanel_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             //MessageBox.Show("Changed_Personel");
-            ShowDictionaries(Dictionaries_Right);
-            ShowElements(Items_Right, DictionaryItems_Right, Dictionaries_Right);
-            UpdatePersonel_TextBox_Right();
+            ShowDictionaries(Dictionaries_SmallPanel);
+            ShowElements(Items_SmallPanel, DictionaryItems_SmallPanel, Dictionaries_SmallPanel);
+            UpdatePersonel_TextBox_SmallPanel();
         }
         
-        private void SharedDictionaries_Right_Click(object sender, RoutedEventArgs e)
+        private void SharedDictionaries_SmallPanel_Click(object sender, RoutedEventArgs e)
         {
             //MessageBox.Show("Changed_Checkbox");
-            Personel_Right.IsEnabled = !(bool)SharedDictionaries_Right.IsChecked;
-            ShowDictionaries(Dictionaries_Right);
-            ShowElements(Items_Right, DictionaryItems_Right, Dictionaries_Right);
+            Personel_SmallPanel.IsEnabled = !(bool)SharedDictionaries_SmallPanel.IsChecked;
+            ShowDictionaries(Dictionaries_SmallPanel);
+            ShowElements(Items_SmallPanel, DictionaryItems_SmallPanel, Dictionaries_SmallPanel);
             //clear combobox
-            Personel_Right.SelectedIndex = -1;
-            UpdatePersonel_TextBox_Right();
+            Personel_SmallPanel.SelectedIndex = -1;
+            UpdatePersonel_TextBox_SmallPanel();
         }
 
-        private void Dictionaries_Right_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void Dictionaries_SmallPanel_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            ShowElements(Items_Right, DictionaryItems_Right, Dictionaries_Right);
+            ShowElements(Items_SmallPanel, DictionaryItems_SmallPanel, Dictionaries_SmallPanel);
         }
 
         private void Set1SelectAllButton_Click(object sender, RoutedEventArgs e)
         {
-            Items_Left.SelectAll();
+            Items_BigPanel.SelectAll();
         }
 
         private void Set1UnSelectAllButton_Click(object sender, RoutedEventArgs e)
         {
-            Items_Left.UnselectAll();
+            Items_BigPanel.UnselectAll();
         }
 
         private void Set2SelectAllButton_Click(object sender, RoutedEventArgs e)
         {
-            Items_Right.SelectAll();
+            Items_SmallPanel.SelectAll();
         }
 
         private void Set2UnSelectAllButton_Click(object sender, RoutedEventArgs e)
         {
-            Items_Right.UnselectAll();
+            Items_SmallPanel.UnselectAll();
         }
 
         private void FiltrDictionarySet1Button_Click(object sender, RoutedEventArgs e)
         {
-            ShowDictionaries(Dictionaries_Left);
+            ShowDictionaries(Dictionaries_BigPanel);
         }
 
         private void FiltrDictionarySet2Button_Click(object sender, RoutedEventArgs e)
         {
-            ShowDictionaries(Dictionaries_Right);
+            ShowDictionaries(Dictionaries_SmallPanel);
         }
 
         private void FilterSet1KeyPressed(object sender, KeyEventArgs e)
         {
             if(e.Key == Key.Enter)
             {
-                ShowDictionaries(Dictionaries_Left);
+                ShowDictionaries(Dictionaries_BigPanel);
             }
         }
 
@@ -519,7 +519,7 @@ namespace KSDictionaryEditor
         {
             if (e.Key == Key.Enter)
             {
-                ShowDictionaries(Dictionaries_Right);
+                ShowDictionaries(Dictionaries_SmallPanel);
             }
         }
     }
