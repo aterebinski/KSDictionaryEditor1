@@ -88,7 +88,7 @@
                                         
                                     </ComboBox.Items>
                                 </ComboBox>
-                                <TextBox x:Name="FiltrDictionarySet1TextBox" Margin="5" Width="400" TextChanged="FiltrDictionarySet1TextBox_TextChanged" KeyDown="FilterSet1KeyPressed"></TextBox>
+                                <TextBox x:Name="FiltrDictionarySet1TextBox" Margin="5" Width="400" KeyDown="FilterSet1KeyPressed"></TextBox>
                                 <Button x:Name="FiltrDictionarySet1Button" Margin="5" Click="FiltrDictionarySet1Button_Click">Filtruj</Button>
                             </WrapPanel>
                             <ListView x:Name="Dictionaries_Left"

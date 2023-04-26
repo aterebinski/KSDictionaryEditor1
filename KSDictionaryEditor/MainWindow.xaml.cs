@@ -196,7 +196,7 @@ namespace KSDictionaryEditor
                 query = query + "-99) "+filter+" order by usluga, wzorzec, slownik";
                 command.CommandText = query;
 
-                MessageBox.Show(query);
+                //MessageBox.Show(query);
                 Trace.WriteLine(query);
 
                 FbDataAdapter adapter = new FbDataAdapter(command);
