@@ -39,9 +39,7 @@ namespace KSDictionaryEditor
 
             try
             {
-                
                 connectionString = connectionWindow.ConnectionString;
-                
             }
             catch (Exception)
             {
@@ -51,8 +49,6 @@ namespace KSDictionaryEditor
             if (connectionString != "" && connectionWindow.TestConnection())
             {
                 connection = new FbConnection(connectionString);
-
-
                 ShowPersonel(Personel_BigPanel);
                 ShowDictionaries(Dictionaries_BigPanel);
                 ShowPersonel(Personel_SmallPanel);
@@ -111,7 +107,6 @@ namespace KSDictionaryEditor
                 case "Dictionaries_BigPanel":
                     if (Personel_BigPanel.SelectedItems.Count > 0)
                     {
-                        //command.Parameters.AddWithValue()
                         foreach (DataRowView item in Personel_BigPanel.SelectedItems)
                         {
                             query = query + item["id"].ToString() + ",";
@@ -525,14 +520,18 @@ namespace KSDictionaryEditor
 
         private void SwitchSidesButton_Click(object sender, RoutedEventArgs e)
         {
-            var selectedPersonelTemp = Personel_BigPanel.SelectedItems;
-            var selectedDictonariesTemp = Dictionaries_BigPanel.SelectedItems;
-            var selectedItemsTemp = Items_BigPanel.SelectedItems;
+            var Personel_BigPanel_SelectedItems = Personel_BigPanel.SelectedItems;
+            var Dictionaries_BigPanel_SelectedItems = Dictionaries_BigPanel.SelectedItems;
+            var Items_BigPanel_SelectedItems = Items_BigPanel.SelectedItems;
+
+            var Personel_SmallPanel_SelectedItem = Personel_SmallPanel.SelectedItem;
+            var Dictionaries_SmallPanel_SelectedItems = Dictionaries_SmallPanel.SelectedItems;
+            var Items_SmallPanel_SelectedItems = Items_SmallPanel.SelectedItems;
 
 
-             //Personel_BigPanel.SelectedItems = Personel_SmallPanel.SelectedItems;
+            //Personel_BigPanel.SelectedItems = Personel_SmallPanel.SelectedItems;
             //Dictionaries_BigPanel.SelectedItems = Dictionaries_SmallPanel.SelectedItems;
-            Items_BigPanel.SelectedItems = Items_SmallPanel.SelectedItems;
+            //Items_BigPanel.SelectedItems = Items_SmallPanel.SelectedItems;
         }
     }
 }
