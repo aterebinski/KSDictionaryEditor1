@@ -79,7 +79,7 @@
                     <TabItem Header="Usługi i wzorce">
                         <StackPanel>
                             <WrapPanel>
-                                <ComboBox x:Name="FiltrDictionarySet1Combobox" Margin="5">
+                                <ComboBox x:Name="FiltrDictionaryBigPanelCombobox" Margin="5">
                                     <ComboBox.Items>
                                         <ComboBoxItem IsSelected="True" >Wszystko</ComboBoxItem>
                                         <ComboBoxItem>Słownik</ComboBoxItem>
@@ -88,8 +88,8 @@
                                         
                                     </ComboBox.Items>
                                 </ComboBox>
-                                <TextBox x:Name="FiltrDictionarySet1TextBox" Margin="5" Width="400" KeyDown="FilterSet1KeyPressed"></TextBox>
-                                <Button x:Name="FiltrDictionarySet1Button" Margin="5" Click="FiltrDictionarySet1Button_Click">Filtruj</Button>
+                                <TextBox x:Name="FiltrDictionaryBigPanelTextBox" Margin="5" Width="400" KeyDown="FilterBigPanelKeyPressed"></TextBox>
+                                <Button x:Name="FiltrDictionaryBigPanelButton" Margin="5" Click="FiltrDictionaryBigPanelButton_Click">Filtruj</Button>
                             </WrapPanel>
                             <ListView x:Name="Dictionaries_BigPanel"
                           Height="613" SelectionChanged="Dictionaries_BigPanel_SelectionChanged">
@@ -128,17 +128,17 @@
                     </ListView.View>
                 </ListView>
                 <WrapPanel>
-                    <Button x:Name="Set1SelectAllButton" Content="Zaznacz wszystko" 
-                            Margin="10" Click="Set1SelectAllButton_Click"/>
-                    <Button x:Name="Set1UnSelectAllButton" Content="Odznacz wszystko" 
-                            Margin="10" Click="Set1UnSelectAllButton_Click"/>
+                    <Button x:Name="BigPanelSelectAllButton" Content="Zaznacz wszystko" 
+                            Margin="10" Click="BigPanelSelectAllButton_Click"/>
+                    <Button x:Name="BigPanelUnSelectAllButton" Content="Odznacz wszystko" 
+                            Margin="10" Click="BigPanelUnSelectAllButton_Click"/>
                 </WrapPanel>
                 <WrapPanel>
-                    <Button x:Name="Set1AddElementButton" Content="Dodaj pozycję" 
-                            Margin="10" Click="Set1AddElementButton_Click"/>
-                    <Button x:Name="Set1EditElementButton" Content="Popraw pozycję" 
+                    <Button x:Name="BigPanelAddElementButton" Content="Dodaj pozycję" 
+                            Margin="10" Click="BigPanelAddElementButton_Click"/>
+                    <Button x:Name="BigPanelEditElementButton" Content="Popraw pozycję" 
                             Margin="10"/>
-                    <Button x:Name="Set1RemoveElementButton" Content="Usuń pozycje" 
+                    <Button x:Name="BigPanelRemoveElementButton" Content="Usuń pozycje" 
                             Margin="10"/>
                 </WrapPanel>
             </StackPanel>
@@ -176,7 +176,7 @@
                 </WrapPanel>
                 <TextBlock Margin="0,15,0,5" Foreground="Red" FontWeight="Bold">Słowniki:</TextBlock>
                 <WrapPanel>
-                    <ComboBox x:Name="FiltrDictionarySet2Combobox" Margin="5">
+                    <ComboBox x:Name="FiltrDictionarySmallPanelCombobox" Margin="5">
                         <ComboBox.Items>
                             <ComboBoxItem IsSelected="True" >Wszystko</ComboBoxItem>
                             <ComboBoxItem>Słownik</ComboBoxItem>
@@ -185,8 +185,8 @@
 
                         </ComboBox.Items>
                     </ComboBox>
-                    <TextBox x:Name="FiltrDictionarySet2TextBox" Margin="5" Width="250" KeyDown="FilterSet2KeyPressed"></TextBox>
-                    <Button x:Name="FiltrDictionarySet2Button" Margin="5" Click="FiltrDictionarySet2Button_Click">Filtruj</Button>
+                    <TextBox x:Name="FiltrDictionarySmallPanelTextBox" Margin="5" Width="250" KeyDown="FilterSmallPanelKeyPressed"></TextBox>
+                    <Button x:Name="FiltrDictionarySmallPanelButton" Margin="5" Click="FiltrDictionarySmallPanelButton_Click">Filtruj</Button>
                 </WrapPanel>
                 <ListView x:Name="Dictionaries_SmallPanel" Height="190" SelectionChanged="Dictionaries_SmallPanel_SelectionChanged" >
                     <ListView.View>
@@ -211,17 +211,17 @@
                     </ListView.View>
                 </ListView>
                 <WrapPanel>
-                    <Button x:Name="Set2SelectAllButton" Content="Zaznacz wszystko" 
-                            Margin="10" Click="Set2SelectAllButton_Click"/>
-                    <Button x:Name="Set2UnSelectAllButton" Content="Odznacz wszystko" 
-                            Margin="10" Click="Set2UnSelectAllButton_Click"/>
+                    <Button x:Name="SmallPanelSelectAllButton" Content="Zaznacz wszystko" 
+                            Margin="10" Click="SmallPanelSelectAllButton_Click"/>
+                    <Button x:Name="SmallPanelUnSelectAllButton" Content="Odznacz wszystko" 
+                            Margin="10" Click="SmallPanelUnSelectAllButton_Click"/>
                 </WrapPanel>
                 <WrapPanel>
-                    <Button x:Name="Set2AddElementButton" Content="Dodaj pozycję" 
+                    <Button x:Name="SmallPanelAddElementButton" Content="Dodaj pozycję" 
                             Margin="10" />
-                    <Button x:Name="Set2EditElementButton" Content="Popraw pozycję" 
+                    <Button x:Name="SmallPanelEditElementButton" Content="Popraw pozycję" 
                             Margin="10"/>
-                    <Button x:Name="Set2RemoveElementButton" Content="Usuń pozycje" 
+                    <Button x:Name="SmallPanelRemoveElementButton" Content="Usuń pozycje" 
                             Margin="10"/>
                 </WrapPanel>
             </StackPanel>

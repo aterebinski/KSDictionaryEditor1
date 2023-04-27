@@ -117,23 +117,23 @@ namespace KSDictionaryEditor
                         query = query + "0,";
                     }
 
-                    if (FiltrDictionarySet1TextBox.Text.Length>0)
+                    if (FiltrDictionaryBigPanelTextBox.Text.Length>0)
                     {
-                        switch (FiltrDictionarySet1Combobox.SelectedIndex)
+                        switch (FiltrDictionaryBigPanelCombobox.SelectedIndex)
                         {
                             case 0: //wszystko
-                                filter = " and (upper(u.nazw) like '%"+FiltrDictionarySet1TextBox.Text.ToUpper()+"%' ";
-                                filter += " or upper(w.nazw) like '%" + FiltrDictionarySet1TextBox.Text.ToUpper() + "%' ";
-                                filter += " or upper(s.nazw) like '%" + FiltrDictionarySet1TextBox.Text.ToUpper() + "%') ";
+                                filter = " and (upper(u.nazw) like '%"+FiltrDictionaryBigPanelTextBox.Text.ToUpper()+"%' ";
+                                filter += " or upper(w.nazw) like '%" + FiltrDictionaryBigPanelTextBox.Text.ToUpper() + "%' ";
+                                filter += " or upper(s.nazw) like '%" + FiltrDictionaryBigPanelTextBox.Text.ToUpper() + "%') ";
                                 break;
                             case 1: //Słownik
-                                filter = " and upper(s.nazw) like '%" + FiltrDictionarySet1TextBox.Text.ToUpper() + "%' ";
+                                filter = " and upper(s.nazw) like '%" + FiltrDictionaryBigPanelTextBox.Text.ToUpper() + "%' ";
                                 break;
                             case 2: //Wzorzec
-                                filter = " and upper(w.nazw) like '%" + FiltrDictionarySet1TextBox.Text.ToUpper() + "%' ";
+                                filter = " and upper(w.nazw) like '%" + FiltrDictionaryBigPanelTextBox.Text.ToUpper() + "%' ";
                                 break;
                             case 3: //Usługa
-                                filter = " and upper(u.nazw) like '%" + FiltrDictionarySet1TextBox.Text.ToUpper() + "%' ";
+                                filter = " and upper(u.nazw) like '%" + FiltrDictionaryBigPanelTextBox.Text.ToUpper() + "%' ";
                                 break;
                             default:
                                 break;
@@ -156,23 +156,23 @@ namespace KSDictionaryEditor
                         }
                     }
 
-                    if (FiltrDictionarySet2TextBox.Text.Length > 0)
+                    if (FiltrDictionarySmallPanelTextBox.Text.Length > 0)
                     {
-                        switch (FiltrDictionarySet2Combobox.SelectedIndex)
+                        switch (FiltrDictionarySmallPanelCombobox.SelectedIndex)
                         {
                             case 0: //wszystko
-                                filter = " and (upper(u.nazw) like '%" + FiltrDictionarySet2TextBox.Text.ToUpper() + "%' ";
-                                filter += " or upper(w.nazw) like '%" + FiltrDictionarySet2TextBox.Text.ToUpper() + "%' ";
-                                filter += " or upper(s.nazw) like '%" + FiltrDictionarySet2TextBox.Text.ToUpper() + "%') ";
+                                filter = " and (upper(u.nazw) like '%" + FiltrDictionarySmallPanelTextBox.Text.ToUpper() + "%' ";
+                                filter += " or upper(w.nazw) like '%" + FiltrDictionarySmallPanelTextBox.Text.ToUpper() + "%' ";
+                                filter += " or upper(s.nazw) like '%" + FiltrDictionarySmallPanelTextBox.Text.ToUpper() + "%') ";
                                 break;
                             case 1: //Słownik
-                                filter = " and upper(s.nazw) like '%" + FiltrDictionarySet2TextBox.Text.ToUpper() + "%' ";
+                                filter = " and upper(s.nazw) like '%" + FiltrDictionarySmallPanelTextBox.Text.ToUpper() + "%' ";
                                 break;
                             case 2: //Wzorzec
-                                filter = " and upper(w.nazw) like '%" + FiltrDictionarySet2TextBox.Text.ToUpper() + "%' ";
+                                filter = " and upper(w.nazw) like '%" + FiltrDictionarySmallPanelTextBox.Text.ToUpper() + "%' ";
                                 break;
                             case 3: //Usługa
-                                filter = " and upper(u.nazw) like '%" + FiltrDictionarySet2TextBox.Text.ToUpper() + "%' ";
+                                filter = " and upper(u.nazw) like '%" + FiltrDictionarySmallPanelTextBox.Text.ToUpper() + "%' ";
                                 break;
                             default:
                                 break;
@@ -396,7 +396,7 @@ namespace KSDictionaryEditor
             ShowElements(Items_BigPanel, DictionaryItems_BigPanel, Dictionaries_BigPanel);
         }
 
-        private void Set1AddElementButton_Click(object sender, RoutedEventArgs e)
+        private void BigPanelAddElementButton_Click(object sender, RoutedEventArgs e)
         {
             string usluga, pracownik, wzorzec, slownik;
             string idPracownika;
@@ -472,37 +472,37 @@ namespace KSDictionaryEditor
             ShowElements(Items_SmallPanel, DictionaryItems_SmallPanel, Dictionaries_SmallPanel);
         }
 
-        private void Set1SelectAllButton_Click(object sender, RoutedEventArgs e)
+        private void BigPanelSelectAllButton_Click(object sender, RoutedEventArgs e)
         {
             Items_BigPanel.SelectAll();
         }
 
-        private void Set1UnSelectAllButton_Click(object sender, RoutedEventArgs e)
+        private void BigPanelUnSelectAllButton_Click(object sender, RoutedEventArgs e)
         {
             Items_BigPanel.UnselectAll();
         }
 
-        private void Set2SelectAllButton_Click(object sender, RoutedEventArgs e)
+        private void SmallPanelSelectAllButton_Click(object sender, RoutedEventArgs e)
         {
             Items_SmallPanel.SelectAll();
         }
 
-        private void Set2UnSelectAllButton_Click(object sender, RoutedEventArgs e)
+        private void SmallPanelUnSelectAllButton_Click(object sender, RoutedEventArgs e)
         {
             Items_SmallPanel.UnselectAll();
         }
 
-        private void FiltrDictionarySet1Button_Click(object sender, RoutedEventArgs e)
+        private void FiltrDictionaryBigPanelButton_Click(object sender, RoutedEventArgs e)
         {
             ShowDictionaries(Dictionaries_BigPanel);
         }
 
-        private void FiltrDictionarySet2Button_Click(object sender, RoutedEventArgs e)
+        private void FiltrDictionarySmallPanelButton_Click(object sender, RoutedEventArgs e)
         {
             ShowDictionaries(Dictionaries_SmallPanel);
         }
 
-        private void FilterSet1KeyPressed(object sender, KeyEventArgs e)
+        private void FilterBigPanelKeyPressed(object sender, KeyEventArgs e)
         {
             if(e.Key == Key.Enter)
             {
@@ -510,7 +510,7 @@ namespace KSDictionaryEditor
             }
         }
 
-        private void FilterSet2KeyPressed(object sender, KeyEventArgs e)
+        private void FilterSmallPanelKeyPressed(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Enter)
             {
