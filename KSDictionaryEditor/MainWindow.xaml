@@ -48,6 +48,7 @@
                         <DockPanel>
                             <ListView x:Name="Personel_BigPanel" SelectionMode="Extended" 
                                 SelectionChanged="Personel_BigPanel_SelectionChanged" Width="423" Margin="0,0,0,9.6">
+                                
                                 <ListView.View>
                                     <GridView>
                                         <GridView.ColumnHeaderContainerStyle>
@@ -56,15 +57,24 @@
                                             </Style>
                                         </GridView.ColumnHeaderContainerStyle>
                                         <GridView.Columns>
-                                            <GridViewColumn Header="Id" DisplayMemberBinding="{Binding Path=ID}"
+                                            <GridViewColumn Header="Select" Width="50">
+                                                <GridViewColumn.CellTemplate>
+                                                    <DataTemplate>
+                                                        <CheckBox IsChecked="{Binding IsSelected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                                    </DataTemplate>
+                                                </GridViewColumn.CellTemplate>
+                                            </GridViewColumn>
+                                            <GridViewColumn Header="Id" DisplayMemberBinding="{Binding Path=Pracownik.Id}"
                                                 Width="30" />
-                                            <GridViewColumn Header="Imie"  DisplayMemberBinding="{Binding Path=IMIE}" 
+                                            <GridViewColumn Header="Imie"  DisplayMemberBinding="{Binding Path=Imie}" 
                                                 Width="120" />
-                                            <GridViewColumn Header="Nazwisko"  DisplayMemberBinding="{Binding Path=NAZW}" 
+                                            <GridViewColumn Header="Nazwisko"  DisplayMemberBinding="{Binding Path=Nazw}" 
                                                 Width="220"/>
                                         </GridView.Columns>
                                     </GridView>
                                 </ListView.View>
+                                
+                                
                             </ListView>
                             <WrapPanel>
                                 <CheckBox x:Name="SharedDictionaries_BigPanel" Content="Wspólne słowniki całego personelu" Click="SharedDictionaries_BigPanel_Click" 

@@ -29,6 +29,8 @@ namespace KSDictionaryEditor
         string connectionString = "";
         ObservableCollection<string> DictionaryItems_BigPanel = new ObservableCollection<string>();
         ObservableCollection<string> DictionaryItems_SmallPanel = new ObservableCollection<string>();
+        ObservableCollection<Pracownik> PersonelItems_BigPanel = new ObservableCollection<Pracownik>();
+        ObservableCollection<Pracownik> PersonelItems_SmallPanel = new ObservableCollection<Pracownik>();
 
         public MainWindow()
         {
@@ -49,10 +51,12 @@ namespace KSDictionaryEditor
             if (connectionString != "" && connectionWindow.TestConnection())
             {
                 connection = new FbConnection(connectionString);
+                
                 ShowPersonel(Personel_BigPanel);
                 ShowDictionaries(Dictionaries_BigPanel);
                 ShowPersonel(Personel_SmallPanel);
                 ShowDictionaries(Dictionaries_SmallPanel);
+                connection.Close();
             }
             else
             {
@@ -65,19 +69,47 @@ namespace KSDictionaryEditor
         {
             try
             {
+                connection.Open();
+
                 string query = "select id, imie, nazw, imie||' '||nazw as imienazw from prac where del=0";
-                FbDataAdapter adapter = new FbDataAdapter(query, connection);
-                DataTable table = new DataTable();
-                adapter.Fill(table);
+                //FbDataAdapter adapter = new FbDataAdapter(query, connection);
+                //DataTable table = new DataTable();
+                //adapter.Fill(table);
 
                 //if(panel is ListBox)
-                panel.DisplayMemberPath = "IMIENAZW";
-                panel.SelectedValuePath = "ID";
-                panel.ItemsSource = table.DefaultView;
+                //panel.DisplayMemberPath = "IMIENAZW";
+                //panel.SelectedValuePath = "ID";
+                //panel.ItemsSource = table.DefaultView;
+
+                
+                FbCommand command = new FbCommand(query, connection);
+                FbDataReader reader = command.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    int Id = reader.GetInt32(reader.GetOrdinal("Id"));
+                    string Imie = reader.GetString(reader.GetOrdinal("Imie"));
+                    string Nazw = reader.GetString(reader.GetOrdinal("Nazw"));
+
+                    PersonelItems_BigPanel.Add(new Pracownik()
+                    {
+                        IsSelected = false,
+                        Id = Id,
+                        Imie = Imie,
+                        Nazw = Nazw,
+                        ImieNazw = Imie + " " + Nazw
+                    });
+                };
+
+                panel.ItemsSource = PersonelItems_BigPanel;
             }
             catch (Exception ex)
             {
                 MessageBox.Show("ShowPersonel: " + ex.ToString());
+            }
+            finally
+            {
+                connection.Close();
             }
         }
 
