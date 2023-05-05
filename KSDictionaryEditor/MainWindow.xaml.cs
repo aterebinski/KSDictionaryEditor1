@@ -52,9 +52,9 @@ namespace KSDictionaryEditor
             {
                 connection = new FbConnection(connectionString);
                 
-                ShowPersonel(Personel_BigPanel);
+                ShowPersonel(Personel_BigPanel, PersonelItems_BigPanel);
                 ShowDictionaries(Dictionaries_BigPanel);
-                ShowPersonel(Personel_SmallPanel);
+                ShowPersonel(Personel_SmallPanel, PersonelItems_SmallPanel);
                 ShowDictionaries(Dictionaries_SmallPanel);
                 connection.Close();
             }
@@ -65,7 +65,7 @@ namespace KSDictionaryEditor
         }
 
         //Pokaz personel
-        public void ShowPersonel(Selector panel)
+        private void ShowPersonel(Selector panel, ObservableCollection<Pracownik> PersonelItemsList)
         {
             try
             {
@@ -77,7 +77,7 @@ namespace KSDictionaryEditor
                 //adapter.Fill(table);
 
                 //if(panel is ListBox)
-                //panel.DisplayMemberPath = "IMIENAZW";
+                //panel.DisplayMemberPath = "ImieNazw";
                 //panel.SelectedValuePath = "ID";
                 //panel.ItemsSource = table.DefaultView;
 
@@ -91,7 +91,7 @@ namespace KSDictionaryEditor
                     string Imie = reader.GetString(reader.GetOrdinal("Imie"));
                     string Nazw = reader.GetString(reader.GetOrdinal("Nazw"));
 
-                    PersonelItems_BigPanel.Add(new Pracownik()
+                    PersonelItemsList.Add(new Pracownik()
                     {
                         IsSelected = false,
                         Id = Id,
@@ -101,7 +101,23 @@ namespace KSDictionaryEditor
                     });
                 };
 
-                panel.ItemsSource = PersonelItems_BigPanel;
+                panel.ItemsSource = PersonelItemsList;
+
+                //panel.DisplayMemberPath = "ImieNazw";
+                //panel.SelectedValuePath = "Id";
+
+                /*
+                GridView gridView = new GridView();
+                if (panel is ListView)
+                {
+                    ((ListView)panel).View = gridView;
+                    gridView.Columns.Add(new GridViewColumn() { Header = "Select", DisplayMemberBinding = new Binding("IsSelected"), Width = 50, });
+                    gridView.Columns.Add(new GridViewColumn() { Header = "Id", DisplayMemberBinding = new Binding("Id"), Width = 30 });
+                    gridView.Columns.Add(new GridViewColumn() { Header = "Imie", DisplayMemberBinding = new Binding("Imie"), Width = 120 });
+                    gridView.Columns.Add(new GridViewColumn() { Header = "Nazwisko", DisplayMemberBinding = new Binding("Nazw"), Width = 220 });
+                }
+                
+                */
             }
             catch (Exception ex)
             {
@@ -564,6 +580,11 @@ namespace KSDictionaryEditor
             //Personel_BigPanel.SelectedItems = Personel_SmallPanel.SelectedItems;
             //Dictionaries_BigPanel.SelectedItems = Dictionaries_SmallPanel.SelectedItems;
             //Items_BigPanel.SelectedItems = Items_SmallPanel.SelectedItems;
+        }
+
+        private void CheckBox_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }

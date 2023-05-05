@@ -46,7 +46,7 @@
                 <TabControl x:Name="tabControl" Height="586" Margin="0,0,-0.4,0">
                     <TabItem Header="Pracownicy">
                         <DockPanel>
-                            <ListView x:Name="Personel_BigPanel" SelectionMode="Extended" 
+                            <ListView x:Name="Personel_BigPanel" 
                                 SelectionChanged="Personel_BigPanel_SelectionChanged" Width="423" Margin="0,0,0,9.6">
                                 
                                 <ListView.View>
@@ -60,15 +60,15 @@
                                             <GridViewColumn Header="Select" Width="50">
                                                 <GridViewColumn.CellTemplate>
                                                     <DataTemplate>
-                                                        <CheckBox IsChecked="{Binding IsSelected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                                        <CheckBox Click="CheckBox_Click" IsChecked="{Binding IsSelected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                                                     </DataTemplate>
                                                 </GridViewColumn.CellTemplate>
                                             </GridViewColumn>
-                                            <GridViewColumn Header="Id" DisplayMemberBinding="{Binding Path=Pracownik.Id}"
+                                            <GridViewColumn Header="Id" DisplayMemberBinding="{Binding Path=Id}"
                                                 Width="30" />
-                                            <GridViewColumn Header="Imie"  DisplayMemberBinding="{Binding Path=Imie}" 
+                                            <GridViewColumn Header="Imie"  DisplayMemberBinding="{Binding Imie}" 
                                                 Width="120" />
-                                            <GridViewColumn Header="Nazwisko"  DisplayMemberBinding="{Binding Path=Nazw}" 
+                                            <GridViewColumn Header="Nazwisko"  DisplayMemberBinding="{Binding Nazw}" 
                                                 Width="220"/>
                                         </GridView.Columns>
                                     </GridView>
