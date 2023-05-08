@@ -72,16 +72,33 @@ namespace KSDictionaryEditor
                 connection.Open();
 
                 string query = "select id, imie, nazw, imie||' '||nazw as imienazw from prac where del=0";
-                //FbDataAdapter adapter = new FbDataAdapter(query, connection);
-                //DataTable table = new DataTable();
-                //adapter.Fill(table);
+                FbDataAdapter adapter = new FbDataAdapter(query, connection);
+                DataTable table = new DataTable();
+                adapter.Fill(table);
 
                 //if(panel is ListBox)
-                //panel.DisplayMemberPath = "ImieNazw";
-                //panel.SelectedValuePath = "ID";
-                //panel.ItemsSource = table.DefaultView;
+                panel.DisplayMemberPath = "IMIENAZW";
+                panel.SelectedValuePath = "ID";
+                panel.ItemsSource = table.DefaultView;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("ShowPersonel: " + ex.ToString());
+            }
+            finally
+            {
+                connection.Close();
+            }
+        }
 
-                
+        private void ShowPersonelAlternate(Selector panel, ObservableCollection<Pracownik> PersonelItemsList)
+        {
+            try
+            {
+                connection.Open();
+
+                string query = "select id, imie, nazw, imie||' '||nazw as imienazw from prac where del=0";
+
                 FbCommand command = new FbCommand(query, connection);
                 FbDataReader reader = command.ExecuteReader();
 
@@ -103,8 +120,8 @@ namespace KSDictionaryEditor
 
                 panel.ItemsSource = PersonelItemsList;
 
-                //panel.DisplayMemberPath = "ImieNazw";
-                //panel.SelectedValuePath = "Id";
+                panel.DisplayMemberPath = "ImieNazw";
+                panel.SelectedValuePath = "Id";
 
                 /*
                 GridView gridView = new GridView();
@@ -585,6 +602,11 @@ namespace KSDictionaryEditor
         private void CheckBox_Click(object sender, RoutedEventArgs e)
         {
 
+        }
+
+        private void SmallPanel_CopyDictionary_Click(object sender, RoutedEventArgs e)
+        {
+            
         }
     }
 }

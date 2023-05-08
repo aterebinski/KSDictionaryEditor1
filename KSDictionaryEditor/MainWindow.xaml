@@ -57,18 +57,18 @@
                                             </Style>
                                         </GridView.ColumnHeaderContainerStyle>
                                         <GridView.Columns>
-                                            <GridViewColumn Header="Select" Width="50">
+                                            <!-- <GridViewColumn Header="Select" Width="50">
                                                 <GridViewColumn.CellTemplate>
                                                     <DataTemplate>
                                                         <CheckBox Click="CheckBox_Click" IsChecked="{Binding IsSelected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                                                     </DataTemplate>
                                                 </GridViewColumn.CellTemplate>
-                                            </GridViewColumn>
-                                            <GridViewColumn Header="Id" DisplayMemberBinding="{Binding Path=Id}"
-                                                Width="30" />
-                                            <GridViewColumn Header="Imie"  DisplayMemberBinding="{Binding Imie}" 
+                                            </GridViewColumn> -->
+                                            <GridViewColumn Header="Id" DisplayMemberBinding="{Binding Path=ID}"
+                                                Width="30" /> 
+                                            <GridViewColumn Header="Imie"  DisplayMemberBinding="{Binding IMIE}" 
                                                 Width="120" />
-                                            <GridViewColumn Header="Nazwisko"  DisplayMemberBinding="{Binding Nazw}" 
+                                            <GridViewColumn Header="Nazwisko"  DisplayMemberBinding="{Binding NAZW}" 
                                                 Width="220"/>
                                         </GridView.Columns>
                                     </GridView>
@@ -123,7 +123,7 @@
             </StackPanel>
             <StackPanel Grid.Column="0" Grid.Row="2">
                 <WrapPanel>
-                    <Button Content="Kopiuj Słownik >>" Background="#FFE0E0E0" BorderBrush="#FFE81A1A" Foreground="#FFD60909" FontSize="24" />
+                    <Button x:Name="BigPanel_CopyDictionary" Content="Kopiuj Słownik >>" Background="#FFE0E0E0" BorderBrush="#FFE81A1A" Foreground="#FFD60909" FontSize="20" Padding="5"/>
                 </WrapPanel>
             </StackPanel>
             <StackPanel Grid.Column="1" Grid.Row="1" Margin="10,0,0,0">
@@ -155,7 +155,7 @@
 
             <StackPanel Grid.Column="1" Grid.Row="2">
                 <WrapPanel>
-                    <Button Margin="5" Content="Kopiuj Pozycje słownika >>" />
+                    <Button x:Name="BigPanel_CopyElement" Content="Kopiuj Pozycje Słownika >>" Background="#FFE0E0E0" BorderBrush="#FFE81A1A" Foreground="#FFD60909" FontSize="20" Margin="5" Padding="5"/>
                 </WrapPanel>
             </StackPanel>
 
@@ -237,8 +237,8 @@
             </StackPanel>
             <StackPanel Grid.Column="3" Grid.Row="2">
                 <WrapPanel>
-                    <Button Margin="5" Content="Kopiuj Słownik" />
-                    <Button Margin="5" Content="Kopiuj Pozycje słownika" />
+                    <Button x:Name="SmallPanel_CopyDictionary" Content=" &lt;&lt; Kopiuj Słownik" Background="#FFE0E0E0" BorderBrush="#FFE81A1A" Foreground="#FFD60909" FontSize="20" Margin="5" Padding="5" Click="SmallPanel_CopyDictionary_Click" />
+                    <Button x:Name="SmallPanel_CopyElement" Content=" &lt;&lt; Kopiuj Pozycje Słownika" Background="#FFE0E0E0" BorderBrush="#FFE81A1A" Foreground="#FFD60909" FontSize="20" Margin="5" Padding="5" />
                 </WrapPanel>
             </StackPanel>
         </Grid>
