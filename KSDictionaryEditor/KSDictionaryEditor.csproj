@@ -63,6 +63,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="CopyDictionaryWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="ItemWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -78,6 +82,9 @@
     <Compile Include="AsciiConverter.cs" />
     <Compile Include="ConnectionWindow.xaml.cs">
       <DependentUpon>ConnectionWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="CopyDictionaryWindow.xaml.cs">
+      <DependentUpon>CopyDictionaryWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="ItemWindow.xaml.cs">
       <DependentUpon>ItemWindow.xaml</DependentUpon>

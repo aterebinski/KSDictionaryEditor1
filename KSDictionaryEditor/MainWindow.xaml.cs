@@ -608,5 +608,18 @@ namespace KSDictionaryEditor
         {
             
         }
+
+        private void BigPanel_CopyDictionary_Click(object sender, RoutedEventArgs e)
+        {
+            if (Dictionaries_BigPanel.SelectedItems.Count > 0)
+            {
+                CopyDictionaryWindow CopyDictionaryWindow = new CopyDictionaryWindow(Dictionaries_BigPanel, Dictionaries_SmallPanel);
+                CopyDictionaryWindow.ShowDialog();
+
+            }
+
+
+            
+        }
     }
 }

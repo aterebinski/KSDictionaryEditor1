@@ -1,0 +1,26 @@
+﻿<Window x:Class="KSDictionaryEditor.CopyDictionaryWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:KSDictionaryEditor"
+        mc:Ignorable="d"
+        Title="CopyDictionaryWindow" Height="300" Width="600">
+    <StackPanel Margin="0,20,0,20">
+        <TextBlock Margin="0,20,0,20" HorizontalAlignment="Center">Skopiować zaznaczone słowniki?</TextBlock>
+        <WrapPanel HorizontalAlignment="Center">
+            <Button x:Name="SkopiujDomyslnie_Button" 
+                    Content="Skopiuj do wzorca ze żródła" 
+                    ToolTip="Skopiuj do tego samego wzorca w którym znajduje się kopiowany słownik. Pomocny przy kopiowaniu słowników dla różnych osób personelu."
+                    Margin="5,5,5,5"
+                    Padding="10,2,10,2" Click="SkopiujDomyslnie_Button_Click"
+                    />
+            <Button x:Name="SkopiujDoWybranego_Button"
+                    Content="Skopiuj do wybranego wzorca"
+                    ToolTip="Skopiuj do wzorca który został wybrany w drugi secie. Przydatne przy kopiowaniu słowników do różnych wzorców."
+                    Margin="5,5,5,5"
+                    Padding="10,2,10,2"
+                    />
+        </WrapPanel>
+    </StackPanel>
+</Window>
