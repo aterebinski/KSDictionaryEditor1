@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -29,11 +30,24 @@ namespace KSDictionaryEditor
             InitializeComponent();
             SourcePanel = sourcePanel;
             DestinationPanel = destinationPanel;
+            SkopiujDomyslnie_Button.ToolTip += "\nSkopiuj wszystkie zaznaczone słowniki do każdego z wzorców formularzy: ";
+
+            if (SourcePanel is ListView)
+            {
+                string prefix = "";
+                foreach (DataRowView dataRow in ((ListView)SourcePanel).SelectedItems)
+                {
+                    SkopiujDomyslnie_Button.ToolTip += prefix+dataRow["SLOWNIK"].ToString();
+                    prefix = ", ";
+                    //SkopiujDomyslnie_Button.ToolTip += item.ToString();
+                }
+            }
+            
         }
 
         private void SkopiujDomyslnie_Button_Click(object sender, RoutedEventArgs e)
         {
-            SkopiujDomyslnie_Button.ToolTip = 
+            //SkopiujDomyslnie_Button.ToolTip = 
         }
     }
 }
