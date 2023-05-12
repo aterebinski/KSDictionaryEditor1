@@ -7,20 +7,24 @@
         mc:Ignorable="d"
         Title="CopyDictionaryWindow" Height="300" Width="600">
     <StackPanel Margin="0,20,0,20">
-        <TextBlock Margin="0,20,0,20" HorizontalAlignment="Center">Skopiować zaznaczone słowniki?</TextBlock>
-        <WrapPanel HorizontalAlignment="Center">
+        <TextBlock Margin="0,20,0,20" HorizontalAlignment="Center" FontSize="22">Skopiować zaznaczone słowniki?</TextBlock>
+        <Separator />
+        <TextBlock HorizontalAlignment="Center">Skopiuj do tego samego wzorca w którym znajduje się kopiowany słownik.<LineBreak/> Pomocny przy kopiowaniu słowników dla różnych osób personelu.</TextBlock>
+
             <Button x:Name="SkopiujDomyslnie_Button" 
                     Content="Skopiuj do wzorca ze żródła" 
-                    ToolTip="Skopiuj do tego samego wzorca w którym znajduje się kopiowany słownik. Pomocny przy kopiowaniu słowników dla różnych osób personelu."
+                    ToolTip=""
                     Margin="5,5,5,5"
                     Padding="10,2,10,2" Click="SkopiujDomyslnie_Button_Click"
                     />
+            <Separator />
+        <TextBlock HorizontalAlignment="Center">Skopiuj do wzorca który został wybrany w drugi secie.<LineBreak/>Przydatne przy kopiowaniu słowników do różnych wzorców.</TextBlock>
             <Button x:Name="SkopiujDoWybranego_Button"
                     Content="Skopiuj do wybranego wzorca"
                     ToolTip="Skopiuj do wzorca który został wybrany w drugi secie. Przydatne przy kopiowaniu słowników do różnych wzorców."
                     Margin="5,5,5,5"
                     Padding="10,2,10,2"
                     />
-        </WrapPanel>
+
     </StackPanel>
 </Window>
