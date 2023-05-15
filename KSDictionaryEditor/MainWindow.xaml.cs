@@ -51,7 +51,7 @@ namespace KSDictionaryEditor
             if (connectionString != "" && connectionWindow.TestConnection())
             {
                 connection = new FbConnection(connectionString);
-                
+
                 ShowPersonel(Personel_BigPanel, PersonelItems_BigPanel);
                 ShowDictionaries(Dictionaries_BigPanel);
                 ShowPersonel(Personel_SmallPanel, PersonelItems_SmallPanel);
@@ -182,12 +182,12 @@ namespace KSDictionaryEditor
                         query = query + "0,";
                     }
 
-                    if (FiltrDictionaryBigPanelTextBox.Text.Length>0)
+                    if (FiltrDictionaryBigPanelTextBox.Text.Length > 0)
                     {
                         switch (FiltrDictionaryBigPanelCombobox.SelectedIndex)
                         {
                             case 0: //wszystko
-                                filter = " and (upper(u.nazw) like '%"+FiltrDictionaryBigPanelTextBox.Text.ToUpper()+"%' ";
+                                filter = " and (upper(u.nazw) like '%" + FiltrDictionaryBigPanelTextBox.Text.ToUpper() + "%' ";
                                 filter += " or upper(w.nazw) like '%" + FiltrDictionaryBigPanelTextBox.Text.ToUpper() + "%' ";
                                 filter += " or upper(s.nazw) like '%" + FiltrDictionaryBigPanelTextBox.Text.ToUpper() + "%') ";
                                 break;
@@ -205,7 +205,7 @@ namespace KSDictionaryEditor
                         }
                     }
                     break;
-                    
+
                 case "Dictionaries_SmallPanel":
 
                     if (SharedDictionaries_SmallPanel.IsChecked == true)
@@ -253,7 +253,7 @@ namespace KSDictionaryEditor
             {
                 FbCommand command = new FbCommand(query, connection);
 
-                query = query + "-99) "+filter+" order by usluga, wzorzec, slownik";
+                query = query + "-99) " + filter + " order by usluga, wzorzec, slownik";
                 command.CommandText = query;
 
                 //MessageBox.Show(query);
@@ -327,8 +327,8 @@ namespace KSDictionaryEditor
 
             foreach (string item in itemsList)
             {
-                tempOpis = item.Replace(AsciiConverter.HEX2ASCII("0D0A"),"˙");
-                opis += tempOpis+AsciiConverter.HEX2ASCII("0D0A");
+                tempOpis = item.Replace(AsciiConverter.HEX2ASCII("0D0A"), "˙");
+                opis += tempOpis + AsciiConverter.HEX2ASCII("0D0A");
             }
 
             DataRowView drv = dictionariesListView.SelectedItem as DataRowView;
@@ -520,7 +520,7 @@ namespace KSDictionaryEditor
             ShowElements(Items_SmallPanel, DictionaryItems_SmallPanel, Dictionaries_SmallPanel);
             UpdatePersonel_TextBox_SmallPanel();
         }
-        
+
         private void SharedDictionaries_SmallPanel_Click(object sender, RoutedEventArgs e)
         {
             //MessageBox.Show("Changed_Checkbox");
@@ -569,7 +569,7 @@ namespace KSDictionaryEditor
 
         private void FilterBigPanelKeyPressed(object sender, KeyEventArgs e)
         {
-            if(e.Key == Key.Enter)
+            if (e.Key == Key.Enter)
             {
                 ShowDictionaries(Dictionaries_BigPanel);
             }
@@ -606,20 +606,22 @@ namespace KSDictionaryEditor
 
         private void SmallPanel_CopyDictionary_Click(object sender, RoutedEventArgs e)
         {
-            
+
         }
 
         private void BigPanel_CopyDictionary_Click(object sender, RoutedEventArgs e)
         {
+            Button clickedButton = sender as Button;
+
             if (Dictionaries_BigPanel.SelectedItems.Count > 0)
             {
-                CopyDictionaryWindow CopyDictionaryWindow = new CopyDictionaryWindow(Dictionaries_BigPanel, Dictionaries_SmallPanel);
+                CopyDictionaryWindow CopyDictionaryWindow = new CopyDictionaryWindow(Dictionaries_BigPanel, Dictionaries_SmallPanel, Personel_SmallPanel, clickedButton.Name);
                 CopyDictionaryWindow.ShowDialog();
 
             }
 
 
-            
+
         }
     }
 }

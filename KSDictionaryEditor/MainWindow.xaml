@@ -123,11 +123,19 @@
             </StackPanel>
             <StackPanel Grid.Column="0" Grid.Row="2">
                 <WrapPanel>
-                    <Button x:Name="BigPanel_CopyDictionary" 
-                            Content="Kopiuj Słownik >>" 
+                    <Button x:Name="BigPanel_CopyDictionary_ToLayout" 
+                            Content="Kopiuj słowniki do innego wzorca>>" 
                             Background="#FFE0E0E0" 
                             BorderBrush="#FFE81A1A" 
                             Foreground="#FFD60909" 
+                            FontSize="20" 
+                            Padding="5" 
+                            Margin="0,0,20,0"
+                            Click="BigPanel_CopyDictionary_Click"/>
+                    <Button x:Name="BigPanel_CopyDictionary_ToPersonel" 
+                            Content="Kopiuj słowniki do innego personelu >>" 
+                            BorderBrush="#FF331AE8" 
+                            Foreground="#FF3109D6" 
                             FontSize="20" 
                             Padding="5" Click="BigPanel_CopyDictionary_Click"/>
                 </WrapPanel>

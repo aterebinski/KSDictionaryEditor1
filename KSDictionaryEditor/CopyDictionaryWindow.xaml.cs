@@ -1,4 +1,4 @@
-﻿using System;
+﻿ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
@@ -22,22 +22,23 @@ namespace KSDictionaryEditor
     public partial class CopyDictionaryWindow : Window
     {
         public int copyMode = 0; //0-kopiowanie domyślne, 1-kopiowanie do innego wzorca
-        Selector SourcePanel { get; set; }
-        Selector DestinationPanel { get; set; }
+        Selector SourceDictionaryPanel { get; set; }
+        Selector DestinationDictionaryPanel { get; set; }
 
-        public CopyDictionaryWindow(Selector sourcePanel, Selector destinationPanel)
+        public CopyDictionaryWindow(Selector sourceDictionaryPanel, Selector destinationDictionaryPanel, Selector destinationPersonelPanel, string buttonName)
         {
             InitializeComponent();
-            SourcePanel = sourcePanel;
-            DestinationPanel = destinationPanel;
-            SkopiujDomyslnie_Button.ToolTip += "\nSkopiuj wszystkie zaznaczone słowniki do każdego z wzorców formularzy: ";
+            SourceDictionaryPanel = sourceDictionaryPanel;
+            DestinationDictionaryPanel = destinationDictionaryPanel;
+           
+            SkopiujDomyslnie_Text1.Text = "Skopiuj wybrane słowniki: ";
 
-            if (SourcePanel is ListView)
+            if (SourceDictionaryPanel is ListView)
             {
                 string prefix = "";
-                foreach (DataRowView dataRow in ((ListView)SourcePanel).SelectedItems)
+                foreach (DataRowView dataRow in ((ListView)SourceDictionaryPanel).SelectedItems)
                 {
-                    SkopiujDomyslnie_Button.ToolTip += prefix+dataRow["SLOWNIK"].ToString();
+                    SkopiujDomyslnie_Text1.Text += prefix + dataRow["SLOWNIK"].ToString();
                     prefix = ", ";
                     //SkopiujDomyslnie_Button.ToolTip += item.ToString();
                 }
