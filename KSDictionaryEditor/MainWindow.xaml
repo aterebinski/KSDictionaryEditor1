@@ -7,7 +7,7 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="800" Width="1800">
     <Window.Resources>
-        <DrawingImage x:Key="SmallPanel_Arrow">
+        <DrawingImage x:Key="P1_Arrow">
             <DrawingImage.Drawing>
                 <DrawingGroup>
                     <GeometryDrawing Brush="Black"
@@ -40,21 +40,21 @@
             <StackPanel Grid.Column="0" Grid.Row="1" Margin="0,0,0,0">
                 <WrapPanel>
                     <TextBlock Foreground="Red" FontWeight="Bold" Margin="0,0,10,5">Pracownik:</TextBlock>
-                    <TextBlock Foreground="Red" FontWeight="Bold" x:Name="Personel_SmallPanel_TextBlock" Margin="0,0,0,5"></TextBlock>
+                    <TextBlock Foreground="Red" FontWeight="Bold" x:Name="P1_TextBlock_Personel" Margin="0,0,0,5"></TextBlock>
                 </WrapPanel>
 
                 <ComboBox Margin="0,0,0,5" 
-                    x:Name="Personel_SmallPanel" 
-                  SelectionChanged="Personel_SmallPanel_SelectionChanged">
+                    x:Name="P1_ComboBox_Personel" 
+                  SelectionChanged="P1_Personel_SelectionChanged">
 
                 </ComboBox>
                 <WrapPanel Margin="0,0,0,5">
-                    <CheckBox  x:Name="SharedDictionaries_SmallPanel" Click="SharedDictionaries_SmallPanel_Click" />
+                    <CheckBox  x:Name="P1_CheckBox_SharedDictionaries" Click="P1_CheckBox_SharedDictionaries_Click" />
                     <TextBlock Text="Wspólne słowniki" Margin="5,0,0,0" />
                 </WrapPanel>
                 <TextBlock Margin="0,15,0,5" Foreground="Red" FontWeight="Bold">Słowniki:</TextBlock>
                 <WrapPanel>
-                    <ComboBox x:Name="FiltrDictionarySmallPanelCombobox" Margin="5">
+                    <ComboBox x:Name="P1_ComboBox_FiltrDictionary" Margin="5">
                         <ComboBox.Items>
                             <ComboBoxItem IsSelected="True" >Wszystko</ComboBoxItem>
                             <ComboBoxItem>Słownik</ComboBoxItem>
@@ -63,10 +63,10 @@
 
                         </ComboBox.Items>
                     </ComboBox>
-                    <TextBox x:Name="FiltrDictionarySmallPanelTextBox" Margin="5" Width="250" KeyDown="FilterSmallPanelKeyPressed"></TextBox>
-                    <Button x:Name="FiltrDictionarySmallPanelButton" Margin="5" Click="FiltrDictionarySmallPanelButton_Click">Filtruj</Button>
+                    <TextBox x:Name="P1_TextBox_FiltrDictionary" Margin="5" Width="250" KeyDown="P1_TextBox_FiltrDictionary_KeyPressed"></TextBox>
+                    <Button x:Name="P1_Button_FiltrDictionary" Margin="5" Click="P1_Button_FiltrDictionary_Click">Filtruj</Button>
                 </WrapPanel>
-                <ListView x:Name="Dictionaries_SmallPanel" Height="350" SelectionChanged="Dictionaries_SmallPanel_SelectionChanged" >
+                <ListView x:Name="P1_ListView_Dictionaries" Height="350" SelectionChanged="P1_ListView_Dictionaries_SelectionChanged" >
                     <ListView.View>
                         <GridView>
                             <GridView.Columns>
@@ -79,7 +79,7 @@
                     </ListView.View>
                 </ListView>
                 <WrapPanel>
-                    <Button x:Name="BigPanel_CopyDictionary_ToLayout" 
+                    <Button x:Name="P2_Button_CopyDictionary_ToLayout" 
                             Content="Kopiuj słowniki do innego wzorca>>" 
                             Background="#FFE0E0E0" 
                             BorderBrush="#FFE81A1A" 
@@ -87,13 +87,13 @@
                             FontSize="20" 
                             Padding="5" 
                             Margin="0,0,20,0"
-                            Click="BigPanel_CopyDictionary_Click"/>
-                    <Button x:Name="BigPanel_CopyDictionary_ToPersonel" 
+                            Click="P2_CopyDictionary_Click"/>
+                    <Button x:Name="P2_Button_CopyDictionary_ToPersonel" 
                             Content="Kopiuj słowniki do innego personelu >>" 
                             BorderBrush="#FF331AE8" 
                             Foreground="#FF3109D6" 
                             FontSize="20" 
-                            Padding="5" Click="BigPanel_CopyDictionary_Click"/>
+                            Padding="5" Click="P2_CopyDictionary_Click"/>
                 </WrapPanel>
             </StackPanel>
             
@@ -102,7 +102,7 @@
             </StackPanel>
             <StackPanel Grid.Column="1" Grid.Row="1" Margin="10,0,0,0">
                 <TextBlock Margin="0,0,0,5" Foreground="Red" FontWeight="Bold">Pozycje Słowników:</TextBlock>
-                <ListView x:Name="Items_SmallPanel" Height="469" Margin="0,0,-0.2,0" >
+                <ListView x:Name="P1_ListView_Items" Height="469" Margin="0,0,-0.2,0" >
                     <ListView.View>
                         <GridView>
                             <GridView.Columns>
@@ -112,21 +112,21 @@
                     </ListView.View>
                 </ListView>
                 <WrapPanel>
-                    <Button x:Name="SmallPanelSelectAllButton" Content="Zaznacz wszystko" 
-                            Margin="10" Click="SmallPanelSelectAllButton_Click"/>
-                    <Button x:Name="SmallPanelUnSelectAllButton" Content="Odznacz wszystko" 
-                            Margin="10" Click="SmallPanelUnSelectAllButton_Click"/>
+                    <Button x:Name="P1_Button_SelectAll" Content="Zaznacz wszystko" 
+                            Margin="10" Click="P1_Button_SelectAll_Click"/>
+                    <Button x:Name="P1_Button_UnselectAll" Content="Odznacz wszystko" 
+                            Margin="10" Click="P1_Button_UnselectAll_Click"/>
                 </WrapPanel>
                 <WrapPanel>
-                    <Button x:Name="SmallPanelAddElementButton" Content="Dodaj pozycję" 
-                            Margin="10" Click="BigPanelAddElementButton_Click"/>
-                    <Button x:Name="SmallPanelEditElementButton" Content="Popraw pozycję" 
+                    <Button x:Name="P1_Button_AddElement" Content="Dodaj pozycję" 
+                            Margin="10" Click="P1_Button_AddElement_Click"/>
+                    <Button x:Name="P1_Button_EditElement" Content="Popraw pozycję" 
                             Margin="10"/>
-                    <Button x:Name="SmallPanelRemoveElementButton" Content="Usuń pozycje" 
+                    <Button x:Name="P1_Button_RemoveElement" Content="Usuń pozycje" 
                             Margin="10"/>
                 </WrapPanel>
                 <WrapPanel>
-                    <Button x:Name="BigPanel_CopyElement" Content="Kopiuj Pozycje Słownika >>" Background="#FFE0E0E0" BorderBrush="#FFE81A1A" Foreground="#FFD60909" FontSize="20" Margin="5" Padding="5"/>
+                    <Button x:Name="P1_Button_CopyElement" Content="Kopiuj Pozycje Słownika >>" Background="#FFE0E0E0" BorderBrush="#FFE81A1A" Foreground="#FFD60909" FontSize="20" Margin="5" Padding="5"/>
                 </WrapPanel>
             </StackPanel>
             <StackPanel Grid.Column="1" Grid.Row="2">
@@ -134,22 +134,22 @@
             </StackPanel>
             <Grid Grid.Column="2" Grid.Row="1">
                 <Button x:Name="SwitchSidesButton" Background="White" Width="60" Height="56" HorizontalAlignment="Center" VerticalAlignment="Center" Click="SwitchSidesButton_Click">
-                    <Image HorizontalAlignment="Center" VerticalAlignment="Center" Width="60" Height="56" Source="{StaticResource SmallPanel_Arrow}" />
+                    <Image HorizontalAlignment="Center" VerticalAlignment="Center" Width="60" Height="56" Source="{StaticResource P1_Arrow}" />
                 </Button>
             </Grid>
             <StackPanel Grid.Column="3" Grid.Row="0">
                 <TextBlock FontSize="36" FontWeight="Bold" Foreground="#FF973030">Set 2:</TextBlock>
                 <WrapPanel>
                     <TextBlock Foreground="Red" FontWeight="Bold">Pracownicy:</TextBlock>
-                    <TextBlock Foreground="Red" FontWeight="Bold" x:Name="Personel_BigPanel_TextBlock" Margin="0,0,0,5"></TextBlock>
+                    <TextBlock Foreground="Red" FontWeight="Bold" x:Name="P2_TextBlock_Personel" Margin="0,0,0,5"></TextBlock>
                 </WrapPanel>
             </StackPanel>
             <StackPanel Grid.Column="3" Grid.Row="1">
                 <TabControl x:Name="tabControl" Height="586" Margin="0,0,-0.4,0">
                     <TabItem Header="Pracownicy">
                         <DockPanel>
-                            <ListView x:Name="Personel_BigPanel" 
-                                SelectionChanged="Personel_BigPanel_SelectionChanged" Width="423" Margin="0,0,0,9.6">
+                            <ListView x:Name="P2_ListView_Personel" 
+                                SelectionChanged="P2_ListView_Personel_SelectionChanged" Width="423" Margin="0,0,0,9.6">
                                 <ListView.View>
                                     <GridView>
                                         <GridView.ColumnHeaderContainerStyle>
@@ -169,19 +169,45 @@
                                 </ListView.View>
                             </ListView>
                             <WrapPanel>
-                                <CheckBox x:Name="SharedDictionaries_BigPanel" Content="Wspólne słowniki całego personelu" Click="SharedDictionaries_BigPanel_Click" 
+                                <CheckBox x:Name="P2_CheckBox_SharedDictionaries" Content="Wspólne słowniki całego personelu" Click="P2_CheckBox_SharedDictionaries_Click" 
                               Margin="10"/>
-                                <Button x:Name="AllPersonel_BigPanel" Content="Zaznacz wszystkich" Click="AllPersonel_BigPanel_Click" 
+                                <Button x:Name="P2_Button_AllPersonel" Content="Zaznacz wszystkich" Click="P2_Button_AllPersonel_Click" 
                             Margin="10"/>
-                                <Button x:Name="ClearPersonel_BigPanel" Content="Odznacz wszystkich" Click="ClearPersonel_BigPanel_Click" 
+                                <Button x:Name="P2_CheckBox_ClearPersonel" Content="Odznacz wszystkich" Click="P2_CheckBox_ClearPersonel_Click" 
                             Margin="10"/>
                             </WrapPanel>
                         </DockPanel>
                     </TabItem>
+                    <TabItem Header="Wzorce i Usługi">
+                        <StackPanel>
+                            <WrapPanel>
+                                <ComboBox x:Name="P2_ComboBox_FiltrServices" Margin="5">
+                                    <ComboBox.Items>
+                                        <ComboBoxItem IsSelected="True" >Wszystko</ComboBoxItem>
+                                        <ComboBoxItem>Wzorzec</ComboBoxItem>
+                                        <ComboBoxItem>Usługa</ComboBoxItem>
+                                    </ComboBox.Items>
+                                </ComboBox>
+                                <TextBox x:Name="P2_TextBox_FiltrServices" Margin="5" Width="400"></TextBox>
+                                <Button x:Name="P2_Button_FiltrServices" Margin="5" >Filtruj</Button>
+                            </WrapPanel>
+                            <ListView x:Name="P2_ListView_Services"
+                          Height="600">
+                                <ListView.View>
+                                    <GridView>
+                                        <GridView.Columns>
+                                            <GridViewColumn Width="320" Header="Wzorzec" DisplayMemberBinding="{Binding Path=WZORZEC}"/>
+                                            <GridViewColumn Width="320" Header="Usługa" DisplayMemberBinding="{Binding Path=USLUGA}" />
+                                        </GridView.Columns>
+                                    </GridView>
+                                </ListView.View>
+                            </ListView>
+                        </StackPanel>
+                    </TabItem>
                     <TabItem Header="Słowniki">
                         <StackPanel>
                             <WrapPanel>
-                                <ComboBox x:Name="FiltrDictionaryBigPanelCombobox" Margin="5">
+                                <ComboBox x:Name="P2_ComboBox_FiltrDictionary" Margin="5">
                                     <ComboBox.Items>
                                         <ComboBoxItem IsSelected="True" >Wszystko</ComboBoxItem>
                                         <ComboBoxItem>Słownik</ComboBoxItem>
@@ -189,11 +215,11 @@
                                         <ComboBoxItem>Usługa</ComboBoxItem>
                                     </ComboBox.Items>
                                 </ComboBox>
-                                <TextBox x:Name="FiltrDictionaryBigPanelTextBox" Margin="5" Width="400" KeyDown="FilterBigPanelKeyPressed"></TextBox>
-                                <Button x:Name="FiltrDictionaryBigPanelButton" Margin="5" Click="FiltrDictionaryBigPanelButton_Click">Filtruj</Button>
+                                <TextBox x:Name="P2_TextBox_FiltrDictionary" Margin="5" Width="400" KeyDown="P2_TextBox_FiltrDictionary_KeyPressed"></TextBox>
+                                <Button x:Name="P2_Button_FiltrDictionary" Margin="5" Click="P2_Button_FiltrDictionary_Click">Filtruj</Button>
                             </WrapPanel>
-                            <ListView x:Name="Dictionaries_BigPanel"
-                          Height="600" SelectionChanged="Dictionaries_BigPanel_SelectionChanged">
+                            <ListView x:Name="P2_ListView_Dictionaries"
+                          Height="600" SelectionChanged="P2_ListView_Dictionaries_SelectionChanged">
                                 <ListView.View>
                                     <GridView>
                                         <GridView.Columns>
@@ -207,10 +233,11 @@
                             </ListView>
                         </StackPanel>
                     </TabItem>
+                    
                     <TabItem Header="Pozycje słowników">
                         <StackPanel Grid.Column="1" Grid.Row="1" Margin="10,0,0,0">
                             <TextBlock Margin="0,0,0,5">Pozycje Słowników:</TextBlock>
-                            <ListView x:Name="Items_BigPanel" Height="469" Margin="0,0,-0.2,0" >
+                            <ListView x:Name="P2_ListView_Items" Height="469" Margin="0,0,-0.2,0" >
                                 <ListView.View>
                                     <GridView>
                                         <GridView.Columns>
@@ -219,20 +246,6 @@
                                     </GridView>
                                 </ListView.View>
                             </ListView>
-                            <WrapPanel>
-                                <Button x:Name="BigPanelSelectAllButton" Content="Zaznacz wszystko" 
-                            Margin="10" Click="BigPanelSelectAllButton_Click"/>
-                                <Button x:Name="BigPanelUnSelectAllButton" Content="Odznacz wszystko" 
-                            Margin="10" Click="BigPanelUnSelectAllButton_Click"/>
-                            </WrapPanel>
-                            <WrapPanel>
-                                <Button x:Name="BigPanelAddElementButton" Content="Dodaj pozycję" 
-                            Margin="10" Click="BigPanelAddElementButton_Click"/>
-                                <Button x:Name="BigPanelEditElementButton" Content="Popraw pozycję" 
-                            Margin="10"/>
-                                <Button x:Name="BigPanelRemoveElementButton" Content="Usuń pozycje" 
-                            Margin="10"/>
-                            </WrapPanel>
                         </StackPanel>
                     </TabItem>
                 </TabControl>
