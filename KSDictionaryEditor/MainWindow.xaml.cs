@@ -27,10 +27,10 @@ namespace KSDictionaryEditor
     {
         FbConnection connection;
         string connectionString = "";
-        ObservableCollection<string> DictionaryP2_ListView_Items = new ObservableCollection<string>();
-        ObservableCollection<string> DictionaryP1_ListView_Items = new ObservableCollection<string>();
-        ObservableCollection<Pracownik> PersonelP2_ListView_Items = new ObservableCollection<Pracownik>();
-        ObservableCollection<Pracownik> PersonelP1_ListView_Items = new ObservableCollection<Pracownik>();
+        ObservableCollection<string> DictionaryP2_ListView_Itemz = new ObservableCollection<string>();
+        ObservableCollection<string> DictionaryP1_ListView_Itemz = new ObservableCollection<string>();
+        ObservableCollection<Pracownik> PersonelP2_ListView_Itemz = new ObservableCollection<Pracownik>();
+        ObservableCollection<Pracownik> PersonelP1_ListView_Itemz = new ObservableCollection<Pracownik>();
 
         public MainWindow()
         {
@@ -52,9 +52,9 @@ namespace KSDictionaryEditor
             {
                 connection = new FbConnection(connectionString);
 
-                ShowPersonel(P2_ListView_Personel, PersonelP2_ListView_Items);
+                ShowPersonel(P2_ListView_Personel, PersonelP2_ListView_Itemz);
                 ShowDictionaries(P2_ListView_Dictionaries);
-                ShowPersonel(P1_ComboBox_Personel, PersonelP1_ListView_Items);
+                ShowPersonel(P1_ComboBox_Personel, PersonelP1_ListView_Itemz);
                 ShowDictionaries(P1_ListView_Dictionaries);
                 connection.Close();
             }
@@ -417,14 +417,14 @@ namespace KSDictionaryEditor
         private void P2_ListView_Personel_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             ShowDictionaries(P2_ListView_Dictionaries);
-            ShowElements(P2_ListView_Items, DictionaryP2_ListView_Items, P2_ListView_Dictionaries);
+            ShowElements(P2_ListView_Items, DictionaryP2_ListView_Itemz, P2_ListView_Dictionaries);
             UpdatePersonel_TextBox_P2();
         }
 
         private void P2_CheckBox_SharedDictionaries_Click(object sender, RoutedEventArgs e)
         {
             ShowDictionaries(P2_ListView_Dictionaries);
-            ShowElements(P2_ListView_Items, DictionaryP2_ListView_Items, P2_ListView_Dictionaries);
+            ShowElements(P2_ListView_Items, DictionaryP2_ListView_Itemz, P2_ListView_Dictionaries);
             UpdatePersonel_TextBox_P2();
         }
 
@@ -432,19 +432,19 @@ namespace KSDictionaryEditor
         {
             P2_ListView_Personel.UnselectAll();
             ShowDictionaries(P2_ListView_Dictionaries);
-            ShowElements(P2_ListView_Items, DictionaryP2_ListView_Items, P2_ListView_Dictionaries);
+            ShowElements(P2_ListView_Items, DictionaryP2_ListView_Itemz, P2_ListView_Dictionaries);
         }
 
         private void P2_Button_AllPersonel_Click(object sender, RoutedEventArgs e)
         {
             P2_ListView_Personel.SelectAll();
             ShowDictionaries(P2_ListView_Dictionaries);
-            ShowElements(P2_ListView_Items, DictionaryP2_ListView_Items, P2_ListView_Dictionaries);
+            ShowElements(P2_ListView_Items, DictionaryP2_ListView_Itemz, P2_ListView_Dictionaries);
         }
 
         private void P2_ListView_Dictionaries_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            ShowElements(P2_ListView_Items, DictionaryP2_ListView_Items, P2_ListView_Dictionaries);
+            ShowElements(P2_ListView_Items, DictionaryP2_ListView_Itemz, P2_ListView_Dictionaries);
         }
 
         private void P1_Button_AddElement_Click(object sender, RoutedEventArgs e)
@@ -503,7 +503,7 @@ namespace KSDictionaryEditor
         {
             //MessageBox.Show("Changed_Personel");
             ShowDictionaries(P1_ListView_Dictionaries);
-            ShowElements(P1_ListView_Items, DictionaryP1_ListView_Items, P1_ListView_Dictionaries);
+            ShowElements(P1_ListView_Items, DictionaryP1_ListView_Itemz, P1_ListView_Dictionaries);
             UpdatePersonel_TextBox_P1();
         }
 
@@ -512,7 +512,7 @@ namespace KSDictionaryEditor
             //MessageBox.Show("Changed_Checkbox");
             P1_ComboBox_Personel.IsEnabled = !(bool)P1_CheckBox_SharedDictionaries.IsChecked;
             ShowDictionaries(P1_ListView_Dictionaries);
-            ShowElements(P1_ListView_Items, DictionaryP1_ListView_Items, P1_ListView_Dictionaries);
+            ShowElements(P1_ListView_Items, DictionaryP1_ListView_Itemz, P1_ListView_Dictionaries);
             //clear combobox
             P1_ComboBox_Personel.SelectedIndex = -1;
             UpdatePersonel_TextBox_P1();
@@ -520,7 +520,7 @@ namespace KSDictionaryEditor
 
         private void P1_ListView_Dictionaries_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            ShowElements(P1_ListView_Items, DictionaryP1_ListView_Items, P1_ListView_Dictionaries);
+            ShowElements(P1_ListView_Items, DictionaryP1_ListView_Itemz, P1_ListView_Dictionaries);
         }
 
         private void P2_Button_SelectAllItems_Click(object sender, RoutedEventArgs e)
