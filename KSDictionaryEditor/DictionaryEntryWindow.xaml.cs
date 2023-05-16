@@ -17,14 +17,14 @@ using System.Windows.Shapes;
 namespace KSDictionaryEditor
 {
     /// <summary>
-    /// Interaction logic for DictionaryItemWindow.xaml
+    /// Interaction logic for DictionaryDictionaryEntryWindow.xaml
     /// </summary>
-    public partial class ItemWindow : Window
+    public partial class DictionaryEntryWindow : Window
     {
         FbConnection connection;
         private int idSlownika;
 
-        public ItemWindow(FbConnection connection, string Usluga, string Wzorzec, string Slownik, string Pracownik, int idSlownika)
+        public DictionaryEntryWindow(FbConnection connection, string Usluga, string Wzorzec, string Slownik, string Pracownik, int idSlownika)
         {
             InitializeComponent();
             this.textBlockPracownik.Text = Pracownik;

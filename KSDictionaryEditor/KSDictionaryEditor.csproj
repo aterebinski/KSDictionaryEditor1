@@ -67,7 +67,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="ItemWindow.xaml">
+    <Page Include="DictionaryEntryWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -86,8 +86,8 @@
     <Compile Include="CopyDictionaryWindow.xaml.cs">
       <DependentUpon>CopyDictionaryWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ItemWindow.xaml.cs">
-      <DependentUpon>ItemWindow.xaml</DependentUpon>
+    <Compile Include="DictionaryEntryWindow.xaml.cs">
+      <DependentUpon>DictionaryEntryWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="KsConnector.cs" />
     <Compile Include="MainWindow.xaml.cs">
