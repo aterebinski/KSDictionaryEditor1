@@ -56,6 +56,7 @@ namespace KSDictionaryEditor
                 ShowDictionaries(P2_ListView_Dictionaries);
                 ShowPersonel(P1_ComboBox_Personel, P1_PersonelItems);
                 ShowDictionaries(P1_ListView_Dictionaries);
+                ShowServices(P2_ListView_Services);
                 connection.Close();
             }
             else
@@ -129,6 +130,69 @@ namespace KSDictionaryEditor
             finally
             {
                 connection.Close();
+            }
+        }
+
+
+        //Pokaz Wzorce i Usługi
+        private void ShowServices(ListView panel)
+        {
+            //Selector lvPersonel;
+            //CheckBox checkSharedDictonaries;
+
+            string filter = "";
+
+            string query = "select u.kod, u.id as u_id,  u.nazw as usluga," +
+                " w.id as w_id,  w.nazw as wzorzec " +
+                " from uslg u" +
+                " join wzfo w on w.iduslg = u.id" +
+                " where w.del = 0 and u.del = 0 ";
+
+
+
+
+            if (P2_TextBox_FiltrServices.Text.Length > 0) //jesli cokolwiek jest wpisane w filtrze
+            {
+                switch (P2_ComboBox_FiltrServices.SelectedIndex)
+                {
+                    case 0: //wszystko
+                        filter = " and (upper(u.nazw) like '%" + P2_TextBox_FiltrServices.Text.ToUpper() + "%' ";
+                        filter += " or upper(w.nazw) like '%" + P2_TextBox_FiltrServices.Text.ToUpper() + "%' )";
+                        break;
+                    case 1: //Wzorzec
+                        filter = " and upper(w.nazw) like '%" + P2_TextBox_FiltrServices.Text.ToUpper() + "%' ";
+                        break;
+                    case 2: //Usługa
+                        filter = " and upper(u.nazw) like '%" + P2_TextBox_FiltrServices.Text.ToUpper() + "%' ";
+                        break;
+                    default:
+                        break;
+                }
+            }
+
+            //lvPersonel = P1_ComboBox_Personel;
+            //checkSharedDictonaries = P1_CheckBox_SharedDictionaries;
+
+
+
+            try
+            {
+                FbCommand command = new FbCommand(query, connection);
+
+                query = query + filter + " order by usluga, wzorzec";
+                command.CommandText = query;
+
+                //MessageBox.Show(query);
+                Trace.WriteLine(query);
+
+                FbDataAdapter adapter = new FbDataAdapter(command);
+                DataTable table = new DataTable();
+                adapter.Fill(table);
+                panel.ItemsSource = table.DefaultView;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("ShowDictionaries: " + ex.ToString());
             }
         }
 
@@ -239,7 +303,7 @@ namespace KSDictionaryEditor
             {
                 FbCommand command = new FbCommand(query, connection);
 
-                query = query + "-99) " + filter + " order by usluga, wzorzec, slownik";
+                query = query + "-99) " + filter + " order by pracownik, usluga, wzorzec, slownik";
                 command.CommandText = query;
 
                 //MessageBox.Show(query);
@@ -454,7 +518,7 @@ namespace KSDictionaryEditor
             int idSlownika;
             try
             {
-                string sIdSlownika = ((DataRowView)P2_ListView_Dictionaries.SelectedItems[0]).Row["S_ID"].ToString();
+                string sIdSlownika = ((DataRowView)P1_ListView_Dictionaries.SelectedItems[0]).Row["S_ID"].ToString();
 
                 idSlownika = Convert.ToInt32(sIdSlownika);
 
@@ -553,7 +617,7 @@ namespace KSDictionaryEditor
             ShowDictionaries(P1_ListView_Dictionaries);
         }
 
-        private void P2_TextBox_FiltrDictionary_KeyPressed(object sender, KeyEventArgs e)
+        private void P2_TextBox_FiltrDictionary_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Enter)
             {
@@ -561,7 +625,7 @@ namespace KSDictionaryEditor
             }
         }
 
-        private void P1_TextBox_FiltrDictionary_KeyPressed(object sender, KeyEventArgs e)
+        private void P1_TextBox_FiltrDictionary_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Enter)
             {
@@ -603,11 +667,20 @@ namespace KSDictionaryEditor
             {
                 CopyDictionaryWindow CopyDictionaryWindow = new CopyDictionaryWindow(P2_ListView_Dictionaries, P1_ListView_Dictionaries, P1_ComboBox_Personel, clickedButton.Name);
                 CopyDictionaryWindow.ShowDialog();
-
             }
+        }
 
+        private void P2_Button_FiltrServices_Click(object sender, RoutedEventArgs e)
+        {
+            ShowServices(P2_ListView_Services);
+        }
 
-
+        private void P2_TextBox_FiltrServices_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+            {
+                ShowServices(P2_ListView_Services);
+            }
         }
     }
 }

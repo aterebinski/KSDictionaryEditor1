@@ -11,7 +11,18 @@
 
         <TextBlock x:Name="SkopiujDomyslnie_Text1" HorizontalAlignment="Center">Skopiuj do tego samego wzorca w którym znajduje się kopiowany słownik.<LineBreak/> Pomocny przy kopiowaniu słowników dla różnych osób personelu.</TextBlock>
         <TextBlock x:Name="SkopiujDomyslnie_Text2" HorizontalAlignment="Center">Skopiuj słownik: <LineBreak/> Pomocny przy kopiowaniu słowników dla różnych osób personelu.</TextBlock>
-
+        <ListView x:Name="CopyDictionary_ListView">
+            <ListView.View>
+                <GridView>
+                    <GridView.Columns>
+                        <GridViewColumn Header="Słownik" Width="150" DisplayMemberBinding="{Binding Path=SLOWNIK}" />
+                        <GridViewColumn Header="Wzorzec" Width="150" DisplayMemberBinding="{Binding Path=WZORZEC}" />
+                        <GridViewColumn Header="Usługa" Width="150" DisplayMemberBinding="{Binding Path=USLUGA}" />
+                        <GridViewColumn Header="Pracownik" Width="150" DisplayMemberBinding="{Binding Path=PRACOWNIK}" />
+                    </GridView.Columns>
+                </GridView>
+            </ListView.View>
+        </ListView>
         <Button x:Name="SkopiujDomyslnie_Button" 
                     Content="Skopiuj do wzorca ze żródła" 
                     ToolTip=""
