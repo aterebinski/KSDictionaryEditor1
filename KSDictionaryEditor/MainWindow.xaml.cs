@@ -654,18 +654,14 @@ namespace KSDictionaryEditor
 
         }
 
+
         private void P1_CopyDictionary_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void P2_CopyDictionary_Click(object sender, RoutedEventArgs e)
         {
             Button clickedButton = sender as Button;
 
-            if (P2_ListView_Dictionaries.SelectedItems.Count > 0)
+            if (P1_ListView_Dictionaries.SelectedItems.Count > 0)
             {
-                CopyDictionaryWindow CopyDictionaryWindow = new CopyDictionaryWindow(P2_ListView_Dictionaries, P1_ListView_Dictionaries, P1_ComboBox_Personel, clickedButton.Name);
+                CopyDictionaryWindow CopyDictionaryWindow = new CopyDictionaryWindow(P1_ListView_Dictionaries, P2_ListView_Dictionaries, P1_ComboBox_Personel, clickedButton.Name);
                 CopyDictionaryWindow.ShowDialog();
             }
         }

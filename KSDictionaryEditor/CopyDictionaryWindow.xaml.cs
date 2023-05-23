@@ -41,6 +41,7 @@ namespace KSDictionaryEditor
                     SkopiujDomyslnie_Text1.Text += prefix + dataRow["SLOWNIK"].ToString();
                     prefix = ", ";
                     //SkopiujDomyslnie_Button.ToolTip += item.ToString();
+                    ListView_CopyDictionary.Items.Add(dataRow);
                 }
             }
             
