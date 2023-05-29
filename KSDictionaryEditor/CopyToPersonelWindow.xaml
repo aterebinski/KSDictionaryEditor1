@@ -1,0 +1,51 @@
+﻿<Window x:Class="KSDictionaryEditor.CopyToPersonelWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:KSDictionaryEditor"
+        mc:Ignorable="d"
+        Title="CopyToPersonelWindow" MinHeight="376" Width="700">
+    <StackPanel Margin="0,20,0,20">
+        <TextBlock Margin="0,20,0,20" HorizontalAlignment="Center" FontSize="22">Skopiować zaznaczone słowniki?</TextBlock>
+
+        <TextBlock x:Name="SkopiujDomyslnie_Text1" HorizontalAlignment="Center" Margin="0,0,0,20" FontSize="14">Skopiuj słowniki:</TextBlock>
+        <ListView x:Name="Copy_ListView_CopyDictionary" HorizontalAlignment="Center">
+            <ListView.View>
+                <GridView>
+                    <GridView.Columns>
+                        <GridViewColumn Header="Słownik" Width="150" DisplayMemberBinding="{Binding Path=SLOWNIK}" />
+                        <GridViewColumn Header="Wzorzec" Width="150" DisplayMemberBinding="{Binding Path=WZORZEC}" />
+                        <GridViewColumn Header="Usługa" Width="150" DisplayMemberBinding="{Binding Path=USLUGA}" />
+                        <GridViewColumn Header="Pracownik" Width="150" DisplayMemberBinding="{Binding Path=PRACOWNIK}" />
+                    </GridView.Columns>
+                </GridView>
+            </ListView.View>
+        </ListView>
+        <TextBlock x:Name="SkopiujDomyslnie_Text2" HorizontalAlignment="Center" Visibility="Hidden" >do <TextBlock Foreground="Red" >wspólnych słowników</TextBlock></TextBlock>
+        <TextBlock x:Name="SkopiujDomyslnie_Text3" HorizontalAlignment="Center" >do wybranego personelu:</TextBlock>
+        <ListView x:Name="Copy_ListView_Personel" HorizontalAlignment="Center" >
+            <ListView.View>
+                <GridView>
+                    <GridView.Columns>
+                        <GridViewColumn Header="Imie" Width="150" DisplayMemberBinding="{Binding Path=IMIE}" />
+                        <GridViewColumn Header="Nazwisko" Width="150" DisplayMemberBinding="{Binding Path=NAZW}" />
+                    </GridView.Columns>
+                </GridView>
+            </ListView.View>
+        </ListView>
+        <WrapPanel HorizontalAlignment="Center">
+            <Button x:Name="Copy_Button_Skopiuj" 
+                    Content="Skopiuj" 
+                    ToolTip=""
+                    Margin="5,5,5,5"
+                    Padding="10,2,10,2" Click="SkopiujDomyslnie_Button_Click" Background="#FFFA1515" Foreground="White"
+                    />
+            <Button x:Name="Copy_Button_Anuluj" Content="Anuluj" 
+                    Margin="5,5,5,5"
+                    Padding="10,2,10,2"/>
+        </WrapPanel>
+        
+
+    </StackPanel>
+</Window>

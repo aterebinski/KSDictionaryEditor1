@@ -659,10 +659,18 @@ namespace KSDictionaryEditor
         {
             Button clickedButton = sender as Button;
 
-            if (P1_ListView_Dictionaries.SelectedItems.Count > 0)
+            if(P1_ListView_Dictionaries.SelectedItems.Count == 0)
             {
-                CopyDictionaryWindow CopyDictionaryWindow = new CopyDictionaryWindow(P1_ListView_Dictionaries, P2_ListView_Dictionaries, P1_ComboBox_Personel, clickedButton.Name);
-                CopyDictionaryWindow.ShowDialog();
+                MessageBox.Show("Musisz zaznaczyć słowniki do skopiowania. \nZaznacz je w lewym panelu słowników. \nUżyj klawisza Ctrl aby zaznaczyc kilka słowników.");
+            }
+            else if(P2_ListView_Personel.SelectedItems.Count == 0 && !P2_CheckBox_SharedDictionaries.IsChecked.Value)
+            {
+                MessageBox.Show("Musisz wybra personel któremu chcessz skopiować słowniki. \nZaznacz personel w prawym panelu Pracownicy. \nUżyj klawisza Ctrl aby zaznaczyc kilka rekordów.");
+            }else
+            {
+                bool isChecked = P2_CheckBox_SharedDictionaries.IsChecked.HasValue ? P2_CheckBox_SharedDictionaries.IsChecked.Value : false;
+                CopyToPersonelWindow CopyToPersonelWindow = new CopyToPersonelWindow(P1_ListView_Dictionaries, P2_ListView_Personel, isChecked);
+                CopyToPersonelWindow.ShowDialog();
             }
         }
 

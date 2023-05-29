@@ -63,7 +63,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="CopyDictionaryWindow.xaml">
+    <Page Include="CopyToPersonelWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -83,8 +83,8 @@
     <Compile Include="ConnectionWindow.xaml.cs">
       <DependentUpon>ConnectionWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="CopyDictionaryWindow.xaml.cs">
-      <DependentUpon>CopyDictionaryWindow.xaml</DependentUpon>
+    <Compile Include="CopyToPersonelWindow.xaml.cs">
+      <DependentUpon>CopyToPersonelWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="DictionaryEntryWindow.xaml.cs">
       <DependentUpon>DictionaryEntryWindow.xaml</DependentUpon>
