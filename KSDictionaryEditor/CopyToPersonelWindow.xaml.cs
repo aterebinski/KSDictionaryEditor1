@@ -54,9 +54,10 @@ namespace KSDictionaryEditor
             {
                 SkopiujDomyslnie_Text2.Visibility = Visibility.Visible;
 
-                if (destinationPersonelPanel.Items.Count > 0) //i lista
+                if (destinationPersonelPanel.SelectedItems.Count > 0) //i lista
                 {
                     SkopiujDomyslnie_Text3.Text = "oraz do pracowników:";
+                    MessageBox.Show(destinationPersonelPanel.Items.Count.ToString());
                 }
                 else
                 {
@@ -68,14 +69,14 @@ namespace KSDictionaryEditor
             else //bez wspólnych słowników
             {
 
-                if (destinationPersonelPanel.Items.Count > 0) //jesli zaznaczony jest rekord na liscie
+                if (destinationPersonelPanel.SelectedItems.Count > 0) //jesli zaznaczony jest rekord na liscie
                 {
-                    SkopiujDomyslnie_Text3.Text = "Do personelu:";
+                    SkopiujDomyslnie_Text3.Text = "do pracowników:";
                 }
                 
             }
 
-
+            /*
             if (destinationPersonelPanel.Items.Count > 0) //jesli zaznaczony jest rekord na liscie
             {
                 SkopiujDomyslnie_Text2.Visibility = Visibility.Visible;
@@ -95,7 +96,7 @@ namespace KSDictionaryEditor
                     SkopiujDomyslnie_Text3.Text = "Do personelu:";
                 }
             }
-            
+            */
 
             foreach (DataRowView personelDataRow in DestinationPersonelPanel.SelectedItems)
             {
@@ -106,7 +107,14 @@ namespace KSDictionaryEditor
 
         private void SkopiujDomyslnie_Button_Click(object sender, RoutedEventArgs e)
         {
-            //SkopiujDomyslnie_Button.ToolTip = 
+            string sql;
+            foreach (DataRowView item in Copy_ListView_CopyDictionary.Items)
+            {
+                sql = "insert into SLOW (IDUSLG,NAZW, DEL,USUN, IDWZFO, GODAT, GOGDZ, GIDOPER, MODAT, MOGDZ, MIDOPER, IDPOD, IDINS, IDZRO, OPIS, IDPRAC)" +
+                    " values ({IDUSLG},NAZW, DEL,USUN, IDWZFO, GODAT, GOGDZ, GIDOPER, MODAT, MOGDZ, MIDOPER, IDPOD, IDINS, IDZRO, OPIS, IDPRAC);";
+
+                MessageBox.Show(item["u_id"].ToString());
+            }
         }
     }
 }
