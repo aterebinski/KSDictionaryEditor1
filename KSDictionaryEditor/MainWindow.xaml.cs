@@ -669,7 +669,7 @@ namespace KSDictionaryEditor
             }else
             {
                 bool isChecked = P2_CheckBox_SharedDictionaries.IsChecked.HasValue ? P2_CheckBox_SharedDictionaries.IsChecked.Value : false;
-                CopyToPersonelWindow CopyToPersonelWindow = new CopyToPersonelWindow(P1_ListView_Dictionaries, P2_ListView_Personel, isChecked);
+                CopyToPersonelWindow CopyToPersonelWindow = new CopyToPersonelWindow(connectionString, P1_ListView_Dictionaries, P2_ListView_Personel, isChecked);
                 CopyToPersonelWindow.ShowDialog();
             }
         }

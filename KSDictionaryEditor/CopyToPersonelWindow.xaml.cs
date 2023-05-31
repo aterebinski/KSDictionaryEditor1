@@ -1,4 +1,5 @@
-﻿ using System;
+﻿using FirebirdSql.Data.FirebirdClient;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
@@ -14,6 +15,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
+
 namespace KSDictionaryEditor
 {
     /// <summary>
@@ -24,11 +26,14 @@ namespace KSDictionaryEditor
         public int copyMode = 0; //0-kopiowanie domyślne, 1-kopiowanie do innego wzorca
         Selector SourceDictionaryPanel { get; set; }
         ListView DestinationPersonelPanel { get; set; }
+        string ConnectionString;
 
 
-        public CopyToPersonelWindow(Selector sourceDictionaryPanel, ListView destinationPersonelPanel, bool isCheckedSharedDictionaries)
+        public CopyToPersonelWindow(string connectionString, Selector sourceDictionaryPanel, ListView destinationPersonelPanel, bool isCheckedSharedDictionaries)
         {
             InitializeComponent();
+
+            ConnectionString = connectionString;
             SourceDictionaryPanel = sourceDictionaryPanel;
             DestinationPersonelPanel = destinationPersonelPanel;
 
@@ -107,11 +112,33 @@ namespace KSDictionaryEditor
 
         private void SkopiujDomyslnie_Button_Click(object sender, RoutedEventArgs e)
         {
+            FbConnection FbConnection = new FbConnection(ConnectionString);
+            FbCommand FbCommand = new FbCommand();
+            FbCommand.Connection = FbConnection;
+
             string sql;
+            DateTime now = DateTime.Now;
             foreach (DataRowView item in Copy_ListView_CopyDictionary.Items)
             {
                 sql = "insert into SLOW (IDUSLG,NAZW, DEL,USUN, IDWZFO, GODAT, GOGDZ, GIDOPER, MODAT, MOGDZ, MIDOPER, IDPOD, IDINS, IDZRO, OPIS, IDPRAC)" +
-                    " values ({IDUSLG},NAZW, DEL,USUN, IDWZFO, GODAT, GOGDZ, GIDOPER, MODAT, MOGDZ, MIDOPER, IDPOD, IDINS, IDZRO, OPIS, IDPRAC);";
+                    " values (@IDUSLG, @NAZW, 0, 0, @IDWZFO, @GODAT, @GOGDZ, @GIDOPER, @MODAT, @MOGDZ, @MIDOPER, @IDPOD, @IDINS, @IDZRO, @OPIS, @IDPRAC);";
+
+                FbCommand.CommandText = sql;
+
+                FbCommand.Parameters.AddWithValue(@IDUSLG,
+                FbCommand.Parameters.AddWithValue(@NAZW,
+                FbCommand.Parameters.AddWithValue(@IDWZFO,
+                FbCommand.Parameters.AddWithValue(@GODAT,
+                FbCommand.Parameters.AddWithValue(@GOGDZ,
+                FbCommand.Parameters.AddWithValue(@GIDOPER,
+                FbCommand.Parameters.AddWithValue(@MODAT,
+                FbCommand.Parameters.AddWithValue(@MOGDZ,
+                FbCommand.Parameters.AddWithValue(@MIDOPER,
+                FbCommand.Parameters.AddWithValue(@IDPOD,
+                FbCommand.Parameters.AddWithValue(@IDINS,
+                FbCommand.Parameters.AddWithValue(@IDZRO,
+                FbCommand.Parameters.AddWithValue(@OPIS,
+                FbCommand.Parameters.AddWithValue(@IDPRAC),
 
                 MessageBox.Show(item["u_id"].ToString());
             }
