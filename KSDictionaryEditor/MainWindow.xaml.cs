@@ -207,7 +207,8 @@ namespace KSDictionaryEditor
             string query = "select u.kod, u.id as u_id,  u.nazw as usluga," +
                 " w.id as w_id,  w.nazw as wzorzec," +
                 " s.id as s_id, s.nazw as slownik, s.opis," +
-                " p.imie||' '||p.nazw as pracownik" +
+                " p.imie||' '||p.nazw as pracownik," +
+                " p.id as p_id, s.idpod, s.idins, s.idzro  " +
                 " from uslg u" +
                 " join wzfo w on w.iduslg = u.id" +
                 " join slow s on s.idwzfo = w.id" +
@@ -299,12 +300,15 @@ namespace KSDictionaryEditor
                     break;
             }
 
+            
+
             try
             {
                 FbCommand command = new FbCommand(query, connection);
 
                 query = query + "-99) " + filter + " order by pracownik, usluga, wzorzec, slownik";
                 command.CommandText = query;
+
 
                 //MessageBox.Show(query);
                 //Trace.WriteLine(query);

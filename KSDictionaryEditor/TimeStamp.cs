@@ -16,7 +16,7 @@ namespace KSDictionaryEditor
 
         public static string date(DateTime dateTime)
         {
-            return dateTime.ToString("yyyy-mm-dd 00:00");            
+            return dateTime.ToString("yyyy-mm-dd 00:00:00");            
         }
     }
 }

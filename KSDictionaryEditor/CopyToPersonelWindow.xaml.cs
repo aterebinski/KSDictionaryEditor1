@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -113,6 +114,7 @@ namespace KSDictionaryEditor
         private void SkopiujDomyslnie_Button_Click(object sender, RoutedEventArgs e)
         {
             FbConnection FbConnection = new FbConnection(ConnectionString);
+            FbConnection.Open();
             FbCommand FbCommand = new FbCommand();
             FbCommand.Connection = FbConnection;
 
@@ -125,23 +127,50 @@ namespace KSDictionaryEditor
 
                 FbCommand.CommandText = sql;
 
-                FbCommand.Parameters.AddWithValue(@IDUSLG,
-                FbCommand.Parameters.AddWithValue(@NAZW,
-                FbCommand.Parameters.AddWithValue(@IDWZFO,
-                FbCommand.Parameters.AddWithValue(@GODAT,
-                FbCommand.Parameters.AddWithValue(@GOGDZ,
-                FbCommand.Parameters.AddWithValue(@GIDOPER,
-                FbCommand.Parameters.AddWithValue(@MODAT,
-                FbCommand.Parameters.AddWithValue(@MOGDZ,
-                FbCommand.Parameters.AddWithValue(@MIDOPER,
-                FbCommand.Parameters.AddWithValue(@IDPOD,
-                FbCommand.Parameters.AddWithValue(@IDINS,
-                FbCommand.Parameters.AddWithValue(@IDZRO,
-                FbCommand.Parameters.AddWithValue(@OPIS,
-                FbCommand.Parameters.AddWithValue(@IDPRAC),
+                FbCommand.Parameters.Add("@IDUSLG", item["u_id"].ToString());
+                FbCommand.Parameters.AddWithValue("@NAZW", item["slownik"].ToString());
+                FbCommand.Parameters.AddWithValue("@IDWZFO", item["u_id"].ToString());
+                FbCommand.Parameters.AddWithValue("@GODAT", TimeStamp.date(now));
+                FbCommand.Parameters.AddWithValue("@GOGDZ", TimeStamp.godz(now));
+
+                FbCommand.Parameters.AddWithValue("@MODAT", TimeStamp.date(now));
+                FbCommand.Parameters.AddWithValue("@MOGDZ", TimeStamp.godz(now));
+
+                FbCommand.Parameters.AddWithValue("@IDPOD", item["idpod"].ToString());
+                FbCommand.Parameters.AddWithValue("@IDINS", item["idins"].ToString());
+                FbCommand.Parameters.AddWithValue("@IDZRO", item["idzro"].ToString());
+                FbCommand.Parameters.AddWithValue("@OPIS", item["opis"].ToString());
+
 
                 MessageBox.Show(item["u_id"].ToString());
+
+                foreach (DataRowView prac in Copy_ListView_Personel.Items)
+                {
+                    FbCommand.Parameters.AddWithValue("@GIDOPER", prac["id"].ToString());
+                    FbCommand.Parameters.AddWithValue("@MIDOPER", prac["id"].ToString());
+                    FbCommand.Parameters.AddWithValue("@IDPRAC", prac["id"].ToString());
+
+                    Trace.WriteLine(sql);
+
+                    try
+                    {
+                        FbCommand.ExecuteNonQuery();
+                    }
+                    catch (Exception ex)
+                    {
+
+                        MessageBox.Show(ex.ToString());
+                        FbConnection.Close();
+                    }
+                    
+                }
+
+
+                
             }
+
+
+            FbConnection.Close();
         }
     }
 }
