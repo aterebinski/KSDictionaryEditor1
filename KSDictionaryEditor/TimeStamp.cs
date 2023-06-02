@@ -14,9 +14,18 @@ namespace KSDictionaryEditor
             return dateTime.Hour * 3600 + dateTime.Minute * 60 + dateTime.Second; 
         }
 
-        public static string date(DateTime dateTime)
+        //public static string date(DateTime dateTime)
+        public static DateTime date(DateTime dateTime)
         {
-            return dateTime.ToString("yyyy-mm-dd 00:00:00");            
+            string sDateTime = dateTime.ToString("yyyy-mm-dd 00:00:00");
+            DateTime newDate = new DateTime();
+
+            newDate.AddYears(dateTime.Year);
+            newDate.AddMonths(dateTime.Month);
+            newDate.AddDays(dateTime.Day);
+
+            return newDate;
+
         }
     }
 }
