@@ -115,13 +115,15 @@ namespace KSDictionaryEditor
         {
             FbConnection FbConnection = new FbConnection(ConnectionString);
             FbConnection.Open();
-            FbCommand FbCommand = new FbCommand();
-            FbCommand.Connection = FbConnection;
+            
 
             string sql;
             DateTime now = DateTime.Now;
             foreach (DataRowView item in Copy_ListView_CopyDictionary.Items)
             {
+                FbCommand FbCommand = new FbCommand();
+                FbCommand.Connection = FbConnection;
+
                 sql = "insert into SLOW (IDUSLG,NAZW, DEL,USUN, IDWZFO, GODAT, GOGDZ, GIDOPER, MODAT, MOGDZ, MIDOPER, IDPOD, IDINS, IDZRO, OPIS, IDPRAC)" +
                     " values (@IDUSLG, @NAZW, 0, 0, @IDWZFO, @GODAT, @GOGDZ, @GIDOPER, @MODAT, @MOGDZ, @MIDOPER, @IDPOD, @IDINS, @IDZRO, @OPIS, @IDPRAC);";
 
@@ -142,7 +144,8 @@ namespace KSDictionaryEditor
                 FbCommand.Parameters.AddWithValue("@OPIS", item["opis"].ToString());
 
 
-                MessageBox.Show(item["u_id"].ToString());
+                //MessageBox.Show(item["u_id"].ToString());
+                Trace.WriteLine(sql);
 
                 foreach (DataRowView prac in Copy_ListView_Personel.Items)
                 {
@@ -154,7 +157,8 @@ namespace KSDictionaryEditor
 
                     try
                     {
-                        FbCommand.ExecuteNonQuery();
+                        int iloscReokrdow = FbCommand.ExecuteNonQuery();
+                        Trace.WriteLine("Ilosc rekordow : "+iloscReokrdow.ToString());
                     }
                     catch (Exception ex)
                     {
