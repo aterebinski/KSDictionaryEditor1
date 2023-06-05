@@ -27,5 +27,16 @@ namespace KSDictionaryEditor
             return newDate;
 
         }
+
+        public static DateTime nullDate()
+        {
+            DateTime newDate = new DateTime();
+            newDate.AddYears(1800);
+            newDate.AddMonths(01);
+            newDate.AddDays(01);
+
+            return newDate;
+
+        }
     }
 }

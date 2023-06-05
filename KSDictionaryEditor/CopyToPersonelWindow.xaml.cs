@@ -124,19 +124,22 @@ namespace KSDictionaryEditor
                 FbCommand FbCommand = new FbCommand();
                 FbCommand.Connection = FbConnection;
 
-                sql = "insert into SLOW (IDUSLG,NAZW, DEL,USUN, IDWZFO, GODAT, GOGDZ, GIDOPER, MODAT, MOGDZ, MIDOPER, IDPOD, IDINS, IDZRO, OPIS, IDPRAC)" +
-                    " values (@IDUSLG, @NAZW, 0, 0, @IDWZFO, @GODAT, @GOGDZ, @GIDOPER, @MODAT, @MOGDZ, @MIDOPER, @IDPOD, @IDINS, @IDZRO, @OPIS, @IDPRAC);";
+                sql = "insert into SLOW (IDUSLG,NAZW, DEL,USUN, IDWZFO, GODAT, GOGDZ, GIDOPER, RPDAT, RPMDAT, MODAT, MOGDZ, MIDOPER, IDPOD, IDINS, IDZRO, OPIS, IDPRAC)" +
+                    " values (@IDUSLG, @NAZW, 0, 0, @IDWZFO, @GODAT, @GOGDZ, @GIDOPER, @RPDAT, @RPMDAT, @MODAT, @MOGDZ, @MIDOPER, @IDPOD, @IDINS, @IDZRO, @OPIS, @IDPRAC);";
 
                 FbCommand.CommandText = sql;
 
                 FbCommand.Parameters.Add("@IDUSLG", item["u_id"].ToString());
                 FbCommand.Parameters.AddWithValue("@NAZW", item["slownik"].ToString());
-                FbCommand.Parameters.AddWithValue("@IDWZFO", item["u_id"].ToString());
+                FbCommand.Parameters.AddWithValue("@IDWZFO", item["w_id"].ToString());
                 FbCommand.Parameters.AddWithValue("@GODAT", TimeStamp.date(now));
                 FbCommand.Parameters.AddWithValue("@GOGDZ", TimeStamp.godz(now));
 
                 FbCommand.Parameters.AddWithValue("@MODAT", TimeStamp.date(now));
                 FbCommand.Parameters.AddWithValue("@MOGDZ", TimeStamp.godz(now));
+
+                FbCommand.Parameters.AddWithValue("@RPDAT", TimeStamp.nullDate());
+                FbCommand.Parameters.AddWithValue("@RPMDAT", TimeStamp.nullDate());
 
                 FbCommand.Parameters.AddWithValue("@IDPOD", item["idpod"].ToString());
                 FbCommand.Parameters.AddWithValue("@IDINS", item["idins"].ToString());
@@ -175,6 +178,7 @@ namespace KSDictionaryEditor
 
 
             FbConnection.Close();
+            this.Close();
         }
     }
 }
