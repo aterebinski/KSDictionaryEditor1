@@ -87,13 +87,13 @@
                             FontSize="20" 
                             Padding="5" 
                             Margin="0,0,20,0"
-                            Click="P1_CopyDictionary_Click"/>
+                            Click="P1_CopyDictionary_ToLayout_Click"/>
                     <Button x:Name="P1_Button_CopyDictionary_ToPersonel" 
                             Content="Kopiuj słowniki do innego personelu >>" 
                             BorderBrush="#FF331AE8" 
                             Foreground="#FF3109D6" 
                             FontSize="20" 
-                            Padding="5" Click="P1_CopyDictionary_Click"/>
+                            Padding="5" Click="P1_CopyDictionary_ToPersonel_Click"/>
                 </WrapPanel>
             </StackPanel>
             

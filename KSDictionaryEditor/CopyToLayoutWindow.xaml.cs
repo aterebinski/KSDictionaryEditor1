@@ -22,7 +22,7 @@ namespace KSDictionaryEditor
     /// <summary>
     /// Interaction logic for CopyToPersonelWindow.xaml
     /// </summary>
-    public partial class CopyToPersonelWindow : Window
+    public partial class CopyToLayoutWindow : Window
     {
         public int copyMode = 0; //0-kopiowanie domyślne, 1-kopiowanie do innego wzorca
         Selector SourceDictionaryPanel { get; set; }
@@ -30,7 +30,7 @@ namespace KSDictionaryEditor
         string ConnectionString;
 
 
-        public CopyToPersonelWindow(string connectionString, Selector sourceDictionaryPanel, ListView destinationPersonelPanel, bool isCheckedSharedDictionaries)
+        public CopyToLayoutWindow(string connectionString, Selector sourceDictionaryPanel, ListView destinationPersonelPanel, bool isCheckedSharedDictionaries)
         {
             InitializeComponent();
 

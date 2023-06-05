@@ -31,7 +31,7 @@ namespace KSDictionaryEditor
         public static DateTime nullDate()
         {
             DateTime newDate = new DateTime();
-            newDate.AddYears(1800);
+            newDate.AddYears(2);
             newDate.AddMonths(01);
             newDate.AddDays(01);
 
