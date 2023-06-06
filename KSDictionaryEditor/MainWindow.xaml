@@ -84,7 +84,7 @@
                             Background="#FFE0E0E0" 
                             BorderBrush="#FFE81A1A" 
                             Foreground="#FFD60909" 
-                            FontSize="20" 
+                            FontSize="15" 
                             Padding="5" 
                             Margin="0,20,20,0"
                             Click="P1_CopyDictionary_ToLayout_Click"/>
@@ -93,8 +93,15 @@
                             Margin="0,20,20,0"
                             BorderBrush="#FF331AE8" 
                             Foreground="#FF3109D6" 
-                            FontSize="20" 
+                            FontSize="15" 
                             Padding="5" Click="P1_CopyDictionary_ToPersonel_Click"/>
+                    <Button x:Name="P1_Button_Delete_Dictionary" 
+                            Content="Usuń słownik" 
+                            Margin="0,20,20,0"
+                            BorderBrush="#FF331AE8" 
+                            Foreground="#FF3109D6" 
+                            FontSize="15" 
+                            Padding="5" Click="P1_Delete_Dictionary_Click"/>
                 </WrapPanel>
             </StackPanel>
             
