@@ -130,9 +130,11 @@ namespace KSDictionaryEditor
             finally
             {
                 connection.Close();
+
             }
         }
 
+      
 
         //Pokaz Wzorce i Usługi
         private void ShowServices(ListView panel)
@@ -637,22 +639,6 @@ namespace KSDictionaryEditor
             }
         }
 
-        private void SwitchSidesButton_Click(object sender, RoutedEventArgs e)
-        {
-            var P2_ListView_Personel_SelectedItems = P2_ListView_Personel.SelectedItems;
-            var P2_ListView_Dictionaries_SelectedItems = P2_ListView_Dictionaries.SelectedItems;
-            var P2_ListView_DictionaryElements_SelectedItems = P2_ListView_DictionaryElements.SelectedItems;
-
-            var P1_ComboBox_Personel_SelectedItem = P1_ComboBox_Personel.SelectedItem;
-            var P1_ListView_Dictionaries_SelectedItems = P1_ListView_Dictionaries.SelectedItems;
-            var P1_ListView_DictionaryElements_SelectedItems = P1_ListView_DictionaryElements.SelectedItems;
-
-
-            //P2_ListView_Personel.SelectedItems = P1_ComboBox_Personel.SelectedItems;
-            //P2_ListView_Dictionaries.SelectedItems = P1_ListView_Dictionaries.SelectedItems;
-            //P2_ListView_DictionaryElements.SelectedItems = P1_ListView_DictionaryElements.SelectedItems;
-        }
-
         private void CheckBox_Click(object sender, RoutedEventArgs e)
         {
 
@@ -686,15 +672,14 @@ namespace KSDictionaryEditor
             {
                 MessageBox.Show("Musisz zaznaczyć słowniki do skopiowania. \nZaznacz je w lewym panelu słowników. \nUżyj klawisza Ctrl aby zaznaczyc kilka słowników.");
             }
-            else if (P2_ListView_Personel.SelectedItems.Count == 0 && !P2_CheckBox_SharedDictionaries.IsChecked.Value)
+            else if (P2_ListView_Services.SelectedItems.Count == 0)
             {
-                MessageBox.Show("Musisz wybra personel któremu chcessz skopiować słowniki. \nZaznacz personel w prawym panelu Pracownicy. \nUżyj klawisza Ctrl aby zaznaczyc kilka rekordów.");
+                MessageBox.Show("Musisz wybrać wzorce, do których chcessz skopiować słowniki. \nZaznacz wzorce w prawym panelu Wzorce i Usługi. \nUżyj klawisza Ctrl aby zaznaczyc kilka rekordów.");
             }
             else
             {
-                bool isChecked = P2_CheckBox_SharedDictionaries.IsChecked.HasValue ? P2_CheckBox_SharedDictionaries.IsChecked.Value : false;
-                CopyToPersonelWindow CopyToPersonelWindow = new CopyToPersonelWindow(connectionString, P1_ListView_Dictionaries, P2_ListView_Personel, isChecked);
-                CopyToPersonelWindow.ShowDialog();
+                CopyToLayoutWindow CopyToLayoutWindow = new CopyToLayoutWindow(connectionString, P1_ListView_Dictionaries, P2_ListView_Services);
+                CopyToLayoutWindow.ShowDialog();
             }
         }
 

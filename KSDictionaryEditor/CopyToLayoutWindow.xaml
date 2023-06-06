@@ -22,18 +22,18 @@
                 </GridView>
             </ListView.View>
         </ListView>
-        <TextBlock x:Name="SkopiujDomyslnie_Text2" HorizontalAlignment="Center" Visibility="Hidden" >do <TextBlock Foreground="Red" >wspólnych słowników</TextBlock></TextBlock>
-        <TextBlock x:Name="SkopiujDomyslnie_Text3" HorizontalAlignment="Center" Margin="0,0,0,20" >do wybranego personelu:</TextBlock>
-        <ListView x:Name="Copy_ListView_Personel" HorizontalAlignment="Center" >
+        <TextBlock x:Name="SkopiujDomyslnie_Text2" HorizontalAlignment="Center" Margin="0,20,0,20" >do wybranych wzorców:</TextBlock>
+        <ListView x:Name="Copy_ListView_Layout" HorizontalAlignment="Center" >
             <ListView.View>
                 <GridView>
                     <GridView.Columns>
-                        <GridViewColumn Header="Imie" Width="150" DisplayMemberBinding="{Binding Path=IMIE}" />
-                        <GridViewColumn Header="Nazwisko" Width="150" DisplayMemberBinding="{Binding Path=NAZW}" />
+                        <GridViewColumn Header="Wzorzec" Width="300" DisplayMemberBinding="{Binding Path=WZORZEC}" />
+                        <GridViewColumn Header="Usługa" Width="300" DisplayMemberBinding="{Binding Path=USLUGA}" />
                     </GridView.Columns>
                 </GridView>
             </ListView.View>
         </ListView>
+        <TextBlock x:Name="SkopiujDomyslnie_Text4" HorizontalAlignment="Center" Margin="0,20,0,20" >Włąścicielem skopiowanego słownika będzie pracownik posiadający źródłowy słownik.</TextBlock>
         <WrapPanel HorizontalAlignment="Center" Margin="0,40,0,0">
             <Button x:Name="Copy_Button_Skopiuj" 
                     Content="Skopiuj" 

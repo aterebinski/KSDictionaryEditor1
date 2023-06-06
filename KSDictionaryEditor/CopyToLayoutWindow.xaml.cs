@@ -24,91 +24,31 @@ namespace KSDictionaryEditor
     /// </summary>
     public partial class CopyToLayoutWindow : Window
     {
-        public int copyMode = 0; //0-kopiowanie domyślne, 1-kopiowanie do innego wzorca
         Selector SourceDictionaryPanel { get; set; }
-        ListView DestinationPersonelPanel { get; set; }
+        ListView DestinationLayoutPanel { get; set; }
         string ConnectionString;
 
 
-        public CopyToLayoutWindow(string connectionString, Selector sourceDictionaryPanel, ListView destinationPersonelPanel, bool isCheckedSharedDictionaries)
+        public CopyToLayoutWindow(string connectionString, Selector sourceDictionaryPanel, ListView destinationLayoutPanel)
         {
             InitializeComponent();
 
             ConnectionString = connectionString;
             SourceDictionaryPanel = sourceDictionaryPanel;
-            DestinationPersonelPanel = destinationPersonelPanel;
-
-            //SkopiujDomyslnie_Text1.Text = "Skopiuj wybrane słowniki: ";
-
-            string prefix = "";
+            DestinationLayoutPanel = destinationLayoutPanel;
 
             if (SourceDictionaryPanel is ListView)
             {
                 foreach (DataRowView dictionaryDataRow in ((ListView)SourceDictionaryPanel).SelectedItems)
                 {
-                    //SkopiujDomyslnie_Text1.Text += prefix + dataRow["SLOWNIK"].ToString();
-                    //prefix = ", ";
-                    //SkopiujDomyslnie_Button.ToolTip += item.ToString();
                     Copy_ListView_CopyDictionary.Items.Add(dictionaryDataRow);
                 }
             }
 
-            //prefix = "";
-
-
-            if (isCheckedSharedDictionaries) //wspolne slowniki
+            foreach (DataRowView layoutDataRow in DestinationLayoutPanel.SelectedItems)
             {
-                SkopiujDomyslnie_Text2.Visibility = Visibility.Visible;
-
-                if (destinationPersonelPanel.SelectedItems.Count > 0) //i lista
-                {
-                    SkopiujDomyslnie_Text3.Text = "oraz do pracowników:";
-                    MessageBox.Show(destinationPersonelPanel.Items.Count.ToString());
-                }
-                else
-                {
-                    SkopiujDomyslnie_Text3.Visibility = Visibility.Collapsed;
-                    Copy_ListView_Personel.Visibility = Visibility.Collapsed;
-                }
-
+                Copy_ListView_Layout.Items.Add(layoutDataRow);
             }
-            else //bez wspólnych słowników
-            {
-
-                if (destinationPersonelPanel.SelectedItems.Count > 0) //jesli zaznaczony jest rekord na liscie
-                {
-                    SkopiujDomyslnie_Text3.Text = "do pracowników:";
-                }
-
-            }
-
-            /*
-            if (destinationPersonelPanel.Items.Count > 0) //jesli zaznaczony jest rekord na liscie
-            {
-                SkopiujDomyslnie_Text2.Visibility = Visibility.Visible;
-                if (isCheckedSharedDictionaries)
-                {
-                    SkopiujDomyslnie_Text3.Text = "oraz do pracowników:";
-                }else
-                {
-                    SkopiujDomyslnie_Text3.Visibility = Visibility.Collapsed;
-                    Copy_ListView_Personel.Visibility = Visibility.Collapsed;
-                }
-            }
-            else
-            {
-                if (isCheckedSharedDictionaries)
-                {
-                    SkopiujDomyslnie_Text3.Text = "Do personelu:";
-                }
-            }
-            */
-
-            foreach (DataRowView personelDataRow in DestinationPersonelPanel.SelectedItems)
-            {
-                Copy_ListView_Personel.Items.Add(personelDataRow);
-            }
-
         }
 
         private void Copy_Button_Click(object sender, RoutedEventArgs e)
@@ -119,14 +59,13 @@ namespace KSDictionaryEditor
             FbConnection.Open();
 
 
-
             string sql = "insert into SLOW (IDUSLG,NAZW, DEL,USUN, IDWZFO, GODAT, GOGDZ, GIDOPER, RPDAT, RPMDAT, MODAT, MOGDZ, MIDOPER, IDPOD, IDINS, IDZRO, OPIS, IDPRAC)" +
                     " values (@IDUSLG, @NAZW, 0, 0, @IDWZFO, @GODAT, @GOGDZ, @GIDOPER, @RPDAT, @RPMDAT, @MODAT, @MOGDZ, @MIDOPER, @IDPOD, @IDINS, @IDZRO, @OPIS, @IDPRAC);";
             DateTime now = DateTime.Now;
             foreach (DataRowView item in Copy_ListView_CopyDictionary.Items)
             {
 
-                foreach (DataRowView prac in Copy_ListView_Personel.Items)
+                foreach (DataRowView wzfo in Copy_ListView_Layout.Items)
                 {
                     FbCommand FbCommand = new FbCommand();
                     FbCommand.Connection = FbConnection;
@@ -134,7 +73,7 @@ namespace KSDictionaryEditor
 
                     FbCommand.Parameters.Add("@IDUSLG", item["u_id"].ToString());
                     FbCommand.Parameters.AddWithValue("@NAZW", item["slownik"].ToString());
-                    FbCommand.Parameters.AddWithValue("@IDWZFO", item["w_id"].ToString());
+                    
                     FbCommand.Parameters.AddWithValue("@GODAT", TimeStamp.date(now));
                     FbCommand.Parameters.AddWithValue("@GOGDZ", TimeStamp.godz(now));
 
@@ -149,14 +88,13 @@ namespace KSDictionaryEditor
                     FbCommand.Parameters.AddWithValue("@IDZRO", item["idzro"].ToString());
                     FbCommand.Parameters.AddWithValue("@OPIS", item["opis"].ToString());
 
+                    FbCommand.Parameters.AddWithValue("@GIDOPER", item["p_id"].ToString());
+                    FbCommand.Parameters.AddWithValue("@MIDOPER", item["p_id"].ToString());
+                    FbCommand.Parameters.AddWithValue("@IDPRAC", item["p_id"].ToString());
 
-                    //MessageBox.Show(item["u_id"].ToString());
-                    Trace.WriteLine(sql);
 
+                    FbCommand.Parameters.AddWithValue("@IDWZFO", wzfo["w_id"].ToString());
 
-                    FbCommand.Parameters.AddWithValue("@GIDOPER", prac["id"].ToString());
-                    FbCommand.Parameters.AddWithValue("@MIDOPER", prac["id"].ToString());
-                    FbCommand.Parameters.AddWithValue("@IDPRAC", prac["id"].ToString());
 
                     Trace.WriteLine(sql);
 
