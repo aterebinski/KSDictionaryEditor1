@@ -134,8 +134,6 @@ namespace KSDictionaryEditor
             }
         }
 
-      
-
         //Pokaz Wzorce i Usługi
         private void ShowServices(ListView panel)
         {
@@ -391,11 +389,22 @@ namespace KSDictionaryEditor
             string id = drv["s_id"].ToString();
 
             string sql = "update slow set opis = @opis where id = @id";
-
-            FbCommand command = new FbCommand(sql, connection);
-            connection.Open();
-            command.ExecuteNonQuery();
-            connection.Close();
+            try
+            {
+                FbCommand command = new FbCommand(sql, connection);
+                connection.Open();
+                command.ExecuteNonQuery();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.ToString());
+            }
+            finally
+            {
+                connection.Close();
+            }
+            
+            
         }
 
         private void UpdatePersonel_TextBox_P2()
@@ -694,6 +703,43 @@ namespace KSDictionaryEditor
             {
                 ShowServices(P2_ListView_Services);
             }
+        }
+
+        private void P1_Delete_Dictionary_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                connection.Open();
+
+                string SelectedId;
+                string sql = "update slow set del = 1 where id = @s_id";
+                int counter = 0;
+
+                MessageBoxResult result = MessageBox.Show("Czy na pewno usunąć zaznaczone słowniki?", "Usunięcie słowników", MessageBoxButton.YesNo);
+                if (result == MessageBoxResult.Yes)
+                {
+                    foreach (DataRowView item in P1_ListView_Dictionaries.SelectedItems)
+                    {
+                        SelectedId = item["s_id"].ToString();
+
+                        FbCommand fbCommand = new FbCommand(sql, connection);
+                        fbCommand.Parameters.Add("@s_id", SelectedId);
+
+                        counter += fbCommand.ExecuteNonQuery();
+                    }
+                    MessageBox.Show($"Usunięto {counter} słowniki/słowników z bazy danych.");
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.ToString());
+            }
+            finally
+            {
+                connection.Close();
+            }
+
+            ShowDictionaries(P1_ListView_Dictionaries);
         }
     }
 }
