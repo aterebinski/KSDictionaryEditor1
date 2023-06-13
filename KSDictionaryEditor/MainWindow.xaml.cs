@@ -32,6 +32,9 @@ namespace KSDictionaryEditor
         ObservableCollection<Pracownik> P2_PersonelItems = new ObservableCollection<Pracownik>();
         ObservableCollection<Pracownik> P1_PersonelItems = new ObservableCollection<Pracownik>();
 
+        string P1_SelectedDictionaryId = "0";
+        string P2_SelectedDictionaryId = "0";
+
         public MainWindow()
         {
             InitializeComponent();
@@ -94,11 +97,11 @@ namespace KSDictionaryEditor
 
         private void ShowPersonelAlternate(Selector panel, ObservableCollection<Pracownik> PersonelItemsList)
         {
+            string query = "select id, imie, nazw, imie||' '||nazw as imienazw from prac where del=0";
+
             try
             {
                 connection.Open();
-
-                string query = "select id, imie, nazw, imie||' '||nazw as imienazw from prac where del=0";
 
                 FbCommand command = new FbCommand(query, connection);
                 FbDataReader reader = command.ExecuteReader();
@@ -130,7 +133,6 @@ namespace KSDictionaryEditor
             finally
             {
                 connection.Close();
-
             }
         }
 
@@ -147,9 +149,6 @@ namespace KSDictionaryEditor
                 " from uslg u" +
                 " join wzfo w on w.iduslg = u.id" +
                 " where w.del = 0 and u.del = 0 ";
-
-
-
 
             if (P2_TextBox_FiltrServices.Text.Length > 0) //jesli cokolwiek jest wpisane w filtrze
             {
@@ -172,8 +171,6 @@ namespace KSDictionaryEditor
 
             //lvPersonel = P1_ComboBox_Personel;
             //checkSharedDictonaries = P1_CheckBox_SharedDictionaries;
-
-
 
             try
             {
@@ -300,15 +297,12 @@ namespace KSDictionaryEditor
                     break;
             }
 
-            
-
             try
             {
                 FbCommand command = new FbCommand(query, connection);
 
                 query = query + "-99) " + filter + " order by pracownik, usluga, wzorzec, slownik";
                 command.CommandText = query;
-
 
                 //MessageBox.Show(query);
                 //Trace.WriteLine(query);
@@ -327,6 +321,8 @@ namespace KSDictionaryEditor
         //pokaz elementy slownika 
         private void ShowElements(ListView itemsListView, ObservableCollection<string> itemsList, ListView dictionariesListView)
         {
+            string SelectedDictionaryId = "0";
+
             try
             {
                 itemsList.Clear();
@@ -336,6 +332,8 @@ namespace KSDictionaryEditor
                 if (drv != null)
                 {
                     string id = drv["S_ID"].ToString();
+
+                    SelectedDictionaryId = id;
 
                     string query = "select * from slow where id = @id";
                     FbCommand command = new FbCommand(query, connection);
@@ -373,6 +371,17 @@ namespace KSDictionaryEditor
             {
                 MessageBox.Show("showSlow: " + ex.ToString());
             }
+            finally
+            {
+                if (itemsListView == P1_ListView_DictionaryElements)
+                {
+                    P1_SelectedDictionaryId = SelectedDictionaryId;
+                }
+                else
+                {
+                    P2_SelectedDictionaryId = SelectedDictionaryId;
+                }
+            }
         }
 
         private void SaveElements(ListView itemsListView, ObservableCollection<string> itemsList, ListView dictionariesListView)
@@ -403,8 +412,8 @@ namespace KSDictionaryEditor
             {
                 connection.Close();
             }
-            
-            
+
+
         }
 
         private void UpdatePersonel_TextBox_P2()
@@ -531,16 +540,16 @@ namespace KSDictionaryEditor
             string usluga, pracownik, wzorzec, slownik;
             string idPracownika;
             int idSlownika;
+            string slownikSql = "select s.idprac as idprac, s.nazw as slownik, w.nazw as wzorzec, u.nazw as usluga from slow s " +
+                    "join wzfo w on s.idwzfo = w.id " +
+                    "join uslg u on u.id = w.iduslg  " +
+                    "where s.id = @id";
+
             try
             {
                 string sIdSlownika = ((DataRowView)P1_ListView_Dictionaries.SelectedItems[0]).Row["S_ID"].ToString();
 
                 idSlownika = Convert.ToInt32(sIdSlownika);
-
-                string slownikSql = "select s.idprac as idprac, s.nazw as slownik, w.nazw as wzorzec, u.nazw as usluga from slow s " +
-                    "join wzfo w on s.idwzfo = w.id " +
-                    "join uslg u on u.id = w.iduslg  " +
-                    "where s.id = @id";
 
                 FbCommand slownikCommand = new FbCommand(slownikSql, connection);
                 slownikCommand.Parameters.AddWithValue("@id", sIdSlownika);
@@ -568,6 +577,7 @@ namespace KSDictionaryEditor
                     pracownik = pracownikTable.Rows[0]["IMIENAZW"].ToString();
                 }
 
+                //DictionaryEntryWindow DictionaryEntryWindow = new DictionaryEntryWindow(connection, usluga, wzorzec, slownik, pracownik, idSlownika);
                 DictionaryEntryWindow DictionaryEntryWindow = new DictionaryEntryWindow(connection, usluga, wzorzec, slownik, pracownik, idSlownika);
                 DictionaryEntryWindow.ShowDialog();
                 //MessageBox.Show(DictionaryEntryWindow.DictionaryItem.Text);
@@ -658,14 +668,15 @@ namespace KSDictionaryEditor
         {
             Button clickedButton = sender as Button;
 
-            if(P1_ListView_Dictionaries.SelectedItems.Count == 0)
+            if (P1_ListView_Dictionaries.SelectedItems.Count == 0)
             {
                 MessageBox.Show("Musisz zaznaczyć słowniki do skopiowania. \nZaznacz je w lewym panelu słowników. \nUżyj klawisza Ctrl aby zaznaczyc kilka słowników.");
             }
-            else if(P2_ListView_Personel.SelectedItems.Count == 0 && !P2_CheckBox_SharedDictionaries.IsChecked.Value)
+            else if (P2_ListView_Personel.SelectedItems.Count == 0 && !P2_CheckBox_SharedDictionaries.IsChecked.Value)
             {
                 MessageBox.Show("Musisz wybra personel któremu chcessz skopiować słowniki. \nZaznacz personel w prawym panelu Pracownicy. \nUżyj klawisza Ctrl aby zaznaczyc kilka rekordów.");
-            }else
+            }
+            else
             {
                 bool isChecked = P2_CheckBox_SharedDictionaries.IsChecked.HasValue ? P2_CheckBox_SharedDictionaries.IsChecked.Value : false;
                 CopyToPersonelWindow CopyToPersonelWindow = new CopyToPersonelWindow(connectionString, P1_ListView_Dictionaries, P2_ListView_Personel, isChecked);
@@ -707,39 +718,52 @@ namespace KSDictionaryEditor
 
         private void P1_Delete_Dictionary_Click(object sender, RoutedEventArgs e)
         {
-            try
-            {
-                connection.Open();
+            string SelectedId;
+            string sql = "update slow set del = 1 where id = @s_id";
+            int counter = 0;
 
-                string SelectedId;
-                string sql = "update slow set del = 1 where id = @s_id";
-                int counter = 0;
+            if (P1_ListView_Dictionaries.SelectedItems.Count > 0)
+            {
 
                 MessageBoxResult result = MessageBox.Show("Czy na pewno usunąć zaznaczone słowniki?", "Usunięcie słowników", MessageBoxButton.YesNo);
+
                 if (result == MessageBoxResult.Yes)
                 {
-                    foreach (DataRowView item in P1_ListView_Dictionaries.SelectedItems)
+
+                    try
                     {
-                        SelectedId = item["s_id"].ToString();
+                        connection.Open();
 
-                        FbCommand fbCommand = new FbCommand(sql, connection);
-                        fbCommand.Parameters.Add("@s_id", SelectedId);
+                        foreach (DataRowView item in P1_ListView_Dictionaries.SelectedItems)
+                        {
+                            SelectedId = item["s_id"].ToString();
 
-                        counter += fbCommand.ExecuteNonQuery();
+                            FbCommand fbCommand = new FbCommand(sql, connection);
+                            fbCommand.Parameters.Add("@s_id", SelectedId);
+
+                            counter += fbCommand.ExecuteNonQuery();
+                        }
+                        MessageBox.Show($"Usunięto {counter} słowniki/słowników z bazy danych.");
+
                     }
-                    MessageBox.Show($"Usunięto {counter} słowniki/słowników z bazy danych.");
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show(ex.ToString());
+                    }
+                    finally
+                    {
+                        connection.Close();
+                    }
                 }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.ToString());
-            }
-            finally
-            {
-                connection.Close();
             }
 
             ShowDictionaries(P1_ListView_Dictionaries);
         }
+
+        private void P1_Button_EditElement_Click(object sender, RoutedEventArgs e)
+        {
+            //P1_ListView_DictionaryElements.SelectedItem.
+        }
     }
 }
+

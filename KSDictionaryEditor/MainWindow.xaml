@@ -129,7 +129,7 @@
                     <Button x:Name="P1_Button_AddElement" Content="Dodaj pozycję" 
                             Margin="10" Click="P1_Button_AddElement_Click"/>
                     <Button x:Name="P1_Button_EditElement" Content="Popraw pozycję" 
-                            Margin="10"/>
+                            Margin="10" Click="P1_Button_EditElement_Click"/>
                     <Button x:Name="P1_Button_RemoveElement" Content="Usuń pozycje" 
                             Margin="10"/>
                 </WrapPanel>
