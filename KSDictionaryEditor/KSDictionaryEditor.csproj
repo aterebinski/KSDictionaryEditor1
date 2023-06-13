@@ -62,6 +62,9 @@
     <Compile Include="CopyToLayoutWindow.xaml.cs">
       <DependentUpon>CopyToLayoutWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="EntryWindow.xaml.cs">
+      <DependentUpon>EntryWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="TimeStamp.cs" />
     <Page Include="ConnectionWindow.xaml">
       <SubType>Designer</SubType>
@@ -74,6 +77,10 @@
     <Page Include="CopyToPersonelWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="EntryWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="DictionaryEntryWindow.xaml">
       <SubType>Designer</SubType>

@@ -1,0 +1,32 @@
+﻿<Window x:Class="KSDictionaryEditor.EntryWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:KSDictionaryEditor"
+        mc:Ignorable="d"
+        Title="ItemWindow" Height="399.327" Width="310">
+    <StackPanel Margin="0">
+        <WrapPanel>
+            <TextBlock FontWeight="Bold" Margin="5">Pracownik:</TextBlock>
+            <TextBlock x:Name="textBlockPracownik"  Margin="5"></TextBlock>
+        </WrapPanel>
+        <WrapPanel>
+            <TextBlock FontWeight="Bold" Margin="5">Usługa:</TextBlock>
+            <TextBlock x:Name="textBlockUsluga"  Margin="5"></TextBlock>
+        </WrapPanel>
+        <WrapPanel>
+            <TextBlock FontWeight="Bold" Margin="5">Wzorzec:</TextBlock>
+            <TextBlock x:Name="textBlockWzorzec"  Margin="5"></TextBlock>
+        </WrapPanel>
+        <WrapPanel>
+            <TextBlock FontWeight="Bold" Margin="5">Słownik:</TextBlock>
+            <TextBlock x:Name="textBlockSlownik"  Margin="5"></TextBlock>
+        </WrapPanel>
+
+        <TextBox x:Name="DictionaryItem" Height="154"  Margin="5"></TextBox>
+
+        <Button Content="Accept"  Margin="5" Click="AcceptButton_Click"/>
+        <Button Content="Cancel"  Margin="5" Click="CancelButton_Click"/>
+    </StackPanel>
+</Window>

@@ -537,6 +537,14 @@ namespace KSDictionaryEditor
 
         private void P1_Button_AddElement_Click(object sender, RoutedEventArgs e)
         {
+            if (P1_ListView_Dictionaries.SelectedItems.Count > 0)
+            {
+                EntryWindow EntryWindow = new EntryWindow(connection, P1_ListView_Dictionaries, P1_ListView_DictionaryElements, P1_SelectedDictionaryId, false)
+            }
+        }
+
+        private void P1_Button_AddElement_Click_Old(object sender, RoutedEventArgs e)
+        {
             string usluga, pracownik, wzorzec, slownik;
             string idPracownika;
             int idSlownika;
