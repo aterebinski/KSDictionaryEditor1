@@ -362,7 +362,11 @@ namespace KSDictionaryEditor
                         //MessageBox.Show(AsciiConverter.ASCIITOHex(item));
                         string newItem = item.Replace("˙", AsciiConverter.HEX2ASCII("0D0A"));
                         //allItems.Add(newItem);
-                        itemsList.Add(newItem);
+                        if (newItem.Length>0)
+                        {
+                            itemsList.Add(newItem);
+                        }
+                            
                     }
                     itemsListView.ItemsSource = itemsList;
                 }
@@ -537,12 +541,83 @@ namespace KSDictionaryEditor
 
         private void P1_Button_AddElement_Click(object sender, RoutedEventArgs e)
         {
+            //MessageBox.Show("Otwórz okno!");
+
             if (P1_ListView_Dictionaries.SelectedItems.Count > 0)
             {
-                EntryWindow EntryWindow = new EntryWindow(connection, P1_ListView_Dictionaries, P1_ListView_DictionaryElements, P1_SelectedDictionaryId, false)
+                EntryWindow EntryWindow = new EntryWindow(connection, P1_ListView_DictionaryElements, P1_SelectedDictionaryId, EntryWindow.WindowMode.Add);
+                EntryWindow.ShowDialog();
+                ShowElements(P1_ListView_DictionaryElements, P1_DictionaryItems, P1_ListView_Dictionaries);
             }
         }
 
+        private void P1_Button_EditElement_Click(object sender, RoutedEventArgs e)
+        {
+            //MessageBox.Show("Otwórz okno!");
+
+            if (P1_ListView_Dictionaries.SelectedItems.Count == 1)
+            {
+                EntryWindow EntryWindow = new EntryWindow(connection, P1_ListView_DictionaryElements, P1_SelectedDictionaryId, EntryWindow.WindowMode.Edit);
+                EntryWindow.ShowDialog();
+                ShowElements(P1_ListView_DictionaryElements, P1_DictionaryItems, P1_ListView_Dictionaries);
+            }
+            else if(P1_ListView_Dictionaries.SelectedItems.Count > 1)
+            {
+                MessageBox.Show("Zaznacz tylko jedną pozycję słownika do edycji");
+            }
+        }
+
+        private void P1_Button_RemoveElement_Click(object sender, RoutedEventArgs e)
+        {
+            //MessageBox.Show("Otwórz okno!");
+
+            if (P1_SelectedDictionaryId != "0" && P1_ListView_Dictionaries.SelectedItems.Count > 0)
+            {
+                if(MessageBox.Show("Usunąć zaznaczone pozycje słownika?", "Usuwanie pozycji słownika", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
+                {
+                    string description = "";
+                    int i = 0;
+                    //this.ListView_Entries.SelectedItem. = DictionaryItem.Text;
+                    foreach (var item in P1_ListView_DictionaryElements.Items)
+                    {
+                        
+                        if (P1_ListView_DictionaryElements.SelectedIndex != i)
+                        {
+                            description += item.ToString() + AsciiConverter.HEX2ASCII("0D0A");
+                        }
+
+                        i++;
+                    }
+                    string updateSql = "update slow set opis = @opis where id = @id";
+
+                    try
+                    {
+                        FbCommand updateCommand = new FbCommand(updateSql, connection);
+                        updateCommand.Parameters.AddWithValue("@opis", description);
+                        updateCommand.Parameters.AddWithValue("@id", P1_SelectedDictionaryId);
+
+                        Trace.WriteLine(updateCommand);
+
+                        connection.Open();
+                        updateCommand.ExecuteNonQuery();
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show(ex.ToString());
+                    }
+                    finally
+                    {
+                        connection.Close();
+                    }
+
+                    ShowElements(P1_ListView_DictionaryElements, P1_DictionaryItems, P1_ListView_Dictionaries);
+                }
+            }
+
+
+        }
+
+        /*
         private void P1_Button_AddElement_Click_Old(object sender, RoutedEventArgs e)
         {
             string usluga, pracownik, wzorzec, slownik;
@@ -595,6 +670,8 @@ namespace KSDictionaryEditor
                 MessageBox.Show(ex.ToString());
             }
         }
+        */
+
 
         private void P1_Personel_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -768,10 +845,7 @@ namespace KSDictionaryEditor
             ShowDictionaries(P1_ListView_Dictionaries);
         }
 
-        private void P1_Button_EditElement_Click(object sender, RoutedEventArgs e)
-        {
-            //P1_ListView_DictionaryElements.SelectedItem.
-        }
+        
     }
 }
 

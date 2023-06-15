@@ -131,7 +131,7 @@
                     <Button x:Name="P1_Button_EditElement" Content="Popraw pozycję" 
                             Margin="10" Click="P1_Button_EditElement_Click"/>
                     <Button x:Name="P1_Button_RemoveElement" Content="Usuń pozycje" 
-                            Margin="10"/>
+                            Margin="10" Click="P1_Button_RemoveElement_Click"/>
                 </WrapPanel>
                 <WrapPanel>
                     <Button x:Name="P1_Button_CopyElement" Content="Kopiuj Pozycje Słownika >>" Background="#FFE0E0E0" BorderBrush="#FFE81A1A" Foreground="#FFD60909" FontSize="20" Margin="5" Padding="5"/>
