@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:KSDictionaryEditor"
         mc:Ignorable="d"
-        Title="MainWindow" Height="800" Width="1800">
+        Title="MainWindow" Height="830" Width="1800">
     <Window.Resources>
         <DrawingImage x:Key="P1_Arrow">
             <DrawingImage.Drawing>
@@ -20,8 +20,8 @@
 
 
     </Window.Resources>
-    <StackPanel Margin="0,0,-0.4,-19.6">
-        <Grid x:Name="Main" Margin="30" HorizontalAlignment="Stretch">
+    <StackPanel Margin="0,0,0,0">
+        <Grid x:Name="Main" Margin="30,30,30,10" HorizontalAlignment="Stretch">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="29*" />
                 <ColumnDefinition Width="23*"/>
@@ -30,7 +30,7 @@
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
                 <RowDefinition />
-                <RowDefinition Height="650" />
+                <RowDefinition Height="670" />
                 <RowDefinition />
             </Grid.RowDefinitions>
             <StackPanel Grid.Column="0" Grid.Row="0">
@@ -78,7 +78,7 @@
                         </GridView>
                     </ListView.View>
                 </ListView>
-                <WrapPanel Margin="0,20,0,10">
+                <WrapPanel Margin="0,20,0,0">
                     <Button x:Name="P1_Button_CopyDictionary_ToLayout" 
                             Content="Kopiuj słowniki do innego wzorca>>" 
                             Background="#FFE0E0E0" 
@@ -88,6 +88,13 @@
                             Padding="5" 
                             Margin="0,20,20,0"
                             Click="P1_CopyDictionary_ToLayout_Click"/>
+                    <Button x:Name="P1_Export_Dictionary" 
+                            Content="Eksportuj słowniki do XML" 
+                            Margin="0,20,20,0"
+                            BorderBrush="#FF331AE8" 
+                            Foreground="#FF3109D6" 
+                            FontSize="15" 
+                            Padding="5" Click="P1_Export_Dictionary_Click"/>
                     <Button x:Name="P1_Button_CopyDictionary_ToPersonel" 
                             Content="Kopiuj słowniki do innego personelu >>" 
                             Margin="0,20,20,0"
@@ -257,9 +264,18 @@
                         </StackPanel>
                     </TabItem>
                 </TabControl>
+                <WrapPanel>
+                    <Button x:Name="P2_Import_Dictionary" 
+                            Content="Importuj słowniki z pliku XML" 
+                            Margin="0,20,20,0"
+                            BorderBrush="#FF331AE8" 
+                            Foreground="#FF3109D6" 
+                            FontSize="15" 
+                            Padding="5" Click="P2_Import_Dictionary_Click"/>
+                </WrapPanel>
             </StackPanel>
             <StackPanel Grid.Column="3" Grid.Row="2">
-                <WrapPanel/>
+                
             </StackPanel>
         </Grid>
     </StackPanel>

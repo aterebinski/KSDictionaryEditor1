@@ -1,5 +1,6 @@
 ﻿using FirebirdSql.Data.FirebirdClient;
 using System;
+using System.Xml;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Data;
@@ -17,6 +18,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Microsoft.Win32;
 
 namespace KSDictionaryEditor
 {
@@ -845,7 +847,153 @@ namespace KSDictionaryEditor
             ShowDictionaries(P1_ListView_Dictionaries);
         }
 
-        
+        private void P1_Export_Dictionary_Click(object sender, RoutedEventArgs e)
+        {
+            if (P1_ListView_Dictionaries != null && P1_SelectedDictionaryId!="0") {
+                if (MessageBox.Show("Eksportować słownik do pliku XML?", "Eksport do XML", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
+                {
+                    string filename = ((DataRowView)P1_ListView_Dictionaries.SelectedItem).Row["SLOWNIK"].ToString().Trim();
+                    string description = ((DataRowView)P1_ListView_Dictionaries.SelectedItem).Row["OPIS"].ToString();
+
+                    string[] splited = description.Split(
+                           //new string[] { AsciiConverter.HEX2ASCII("0D0A"), AsciiConverter.HEX2ASCII("0D"), AsciiConverter.HEX2ASCII("0A") },
+                           new string[] { AsciiConverter.HEX2ASCII("0D0A") },
+                           StringSplitOptions.None
+                       );
+
+                    SaveFileDialog saveFileDialog = new SaveFileDialog();
+                    saveFileDialog.Filter = "Plik XML | *.xml";
+                    saveFileDialog.FileName = filename;
+                    if (saveFileDialog.ShowDialog() == true) {
+                        filename = saveFileDialog.FileName;
+                        XmlWriter xmlWriter = XmlWriter.Create(filename);
+                        filename = saveFileDialog.SafeFileName;
+                        xmlWriter.WriteStartDocument();
+                        xmlWriter.WriteStartElement("Dictionary");
+                        //xmlWriter.WriteStartAttribute(filename, "Name");
+                        xmlWriter.WriteAttributeString("Name", filename);
+
+                        
+
+                        foreach (string item in splited)
+                        {
+                            //MessageBox.Show(AsciiConverter.ASCIITOHex(item));
+                            string newItem = item.Replace("˙", AsciiConverter.HEX2ASCII("0D0A"));
+                            if (newItem.Length > 0)
+                            {
+                                xmlWriter.WriteStartElement("Entry");
+                                xmlWriter.WriteString(newItem);
+                                xmlWriter.WriteEndElement();
+                            }
+
+                        }
+
+                        xmlWriter.WriteEndElement();
+                        xmlWriter.Close();
+                        MessageBox.Show("Słownik został wyeksportowany");
+                    };
+
+                }
+            }
+        }
+
+        private void P2_Import_Dictionary_Click(object sender, RoutedEventArgs e)
+        {
+            if (P2_ListView_Personel.SelectedItems.Count == 0 && P2_CheckBox_SharedDictionaries.IsChecked != true)
+            {
+                MessageBox.Show($"Zaznacz checkbox \"Wspólne Słowniki całęgo personelu\" lub wybierz z zakładki \"Pracownicy\" któremu chcesz zaimportować słownik");
+            }
+            else if (P2_ListView_Services.SelectedItems.Count == 0)
+            {
+                MessageBox.Show($"Wybierz z zakładki \"Wzorce i usługi\" do jakiego wzorca formularza chcesz zaimportować słownik");
+            }
+            else
+            {
+                string element;
+                string dictionaryName;
+                string description = "";
+                //FbConnection FbConnection;
+                OpenFileDialog openFileDialog = new OpenFileDialog();
+                openFileDialog.Filter = "Plik XML | *.xml";
+                if (openFileDialog.ShowDialog() == true)
+                {
+                    string sql = "insert into SLOW (IDUSLG,NAZW, DEL,USUN, IDWZFO, GODAT, GOGDZ, GIDOPER, RPDAT, RPMDAT, MODAT, MOGDZ, MIDOPER, OPIS, IDPRAC)" +
+                        " values (@IDUSLG, @NAZW, 0, 0, @IDWZFO, @GODAT, @GOGDZ, @GIDOPER, @RPDAT, @RPMDAT, @MODAT, @MOGDZ, @MIDOPER, @OPIS, @IDPRAC);";
+                    FbConnection FbConnection = new FbConnection(connectionString);
+                    XmlReader xmlReader = XmlReader.Create(openFileDialog.FileName);
+                    try
+                    {
+                        xmlReader.ReadToFollowing("Dictionary");
+                        xmlReader.MoveToAttribute("Name");
+                        dictionaryName = xmlReader.Value;
+
+                        while (xmlReader.ReadToFollowing("Entry"))
+                        {
+                            element = xmlReader.ReadElementContentAsString();
+                            description += element + AsciiConverter.HEX2ASCII("0D0A");
+                        }
+                    
+                        DateTime now = DateTime.Now;
+
+                        int howManyCopies = 0;
+
+                        FbConnection.Open();
+                        FbCommand FbCommand = new FbCommand(sql, FbConnection);
+
+                        FbCommand.Parameters.Add("@NAZW", dictionaryName);
+                        FbCommand.Parameters.Add("@OPIS", description);
+                        FbCommand.Parameters.Add("@GODAT", TimeStamp.date(now));
+                        FbCommand.Parameters.Add("@GOGDZ", TimeStamp.godz(now));
+                        FbCommand.Parameters.Add("@MODAT", TimeStamp.date(now));
+                        FbCommand.Parameters.Add("@MOGDZ", TimeStamp.godz(now));
+                        FbCommand.Parameters.Add("@RPDAT", TimeStamp.nullDate());
+                        FbCommand.Parameters.Add("@RPMDAT", TimeStamp.nullDate());
+
+                        foreach (DataRowView layout in P2_ListView_Services.SelectedItems)
+                        {
+                            FbCommand.Parameters.Add("@IDUSLG", layout["u_id"].ToString());
+                            FbCommand.Parameters.Add("@IDWZFO", layout["w_id"].ToString());
+
+                            foreach (DataRowView personel in P2_ListView_Personel.SelectedItems)
+                            {
+                                FbCommand.Parameters.Add("@GIDOPER", personel["id"].ToString());
+                                FbCommand.Parameters.Add("@MIDOPER", personel["id"].ToString());
+                                FbCommand.Parameters.Add("@IDPRAC", personel["id"].ToString());
+
+                                howManyCopies += FbCommand.ExecuteNonQuery();
+
+                                //FbCommand.Parameters.AddWithValue("@IDPOD", item["idpod"].ToString());
+                                //FbCommand.Parameters.AddWithValue("@IDINS", item["idins"].ToString());
+                                //FbCommand.Parameters.AddWithValue("@IDZRO", item["idzro"].ToString());
+
+                                //MessageBox.Show(item["u_id"].ToString());
+                                Trace.WriteLine(sql);
+
+                                FbCommand.Parameters.RemoveAt("@GIDOPER");
+                                FbCommand.Parameters.RemoveAt("@MIDOPER");
+                                FbCommand.Parameters.RemoveAt("@IDPRAC");
+                            }
+                            FbCommand.Parameters.RemoveAt("@IDUSLG");
+                            FbCommand.Parameters.RemoveAt("@IDWZFO");
+
+                            
+                        }
+
+                        MessageBox.Show($"Stworzono {howManyCopies} słowników na podstawie pliku XML.");
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show(ex.ToString());
+                    }
+                    finally {
+                        xmlReader.Close();
+                        FbConnection.Close();
+                        ShowDictionaries(P1_ListView_Dictionaries);
+                        ShowDictionaries(P2_ListView_Dictionaries);
+                    }
+                };
+            };
+        }
     }
 }
 
