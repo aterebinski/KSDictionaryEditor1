@@ -182,7 +182,7 @@ namespace KSDictionaryEditor
                 command.CommandText = query;
 
                 //MessageBox.Show(query);
-                Trace.WriteLine(query);
+                //Trace.WriteLine(query);
 
                 FbDataAdapter adapter = new FbDataAdapter(command);
                 DataTable table = new DataTable();

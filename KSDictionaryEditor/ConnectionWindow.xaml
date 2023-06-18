@@ -15,6 +15,6 @@
         <Button Content="Wybierz lokalizację KSPL.ini"
                 Margin="0,0,0,10" Click="ChooseKSPL_Click"/>
         <Button Content="Podaj własne parametry połączenia"
-                Margin="0,0,0,10" Click="EnterConnectionParameters_Click"/>
+                Margin="0,0,0,10" Click="EnterConnectionParameters_Click" IsEnabled="False"/>
     </StackPanel>
 </Window>
