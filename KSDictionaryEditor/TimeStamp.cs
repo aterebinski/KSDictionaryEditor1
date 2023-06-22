@@ -8,12 +8,13 @@ namespace KSDictionaryEditor
 {
     static class TimeStamp
     {
-
+        //zwraca godzine w formacie int
         public static int godz(DateTime dateTime)
         {
             return dateTime.Hour * 3600 + dateTime.Minute * 60 + dateTime.Second; 
         }
 
+        //zwraca date bez godziny 
         public static DateTime date(DateTime dateTime)
         {
             string sDateTime = dateTime.ToString("yyyy-mm-dd 00:00:00");
@@ -27,6 +28,7 @@ namespace KSDictionaryEditor
 
         }
 
+        //zwraca date 1800-01-01
         public static DateTime nullDate()
         {
             DateTime newDate = new DateTime();

@@ -107,8 +107,8 @@ namespace KSDictionaryEditor
 
                 foreach (string line in lines)
                 {
-                    Trace.WriteLine(line);
-                    Trace.WriteLine(line.IndexOf("="));
+                    //Trace.WriteLine(line);
+                    //Trace.WriteLine(line.IndexOf("="));
 
                     int index = line.IndexOf("=");
 
@@ -125,6 +125,7 @@ namespace KSDictionaryEditor
                         }
                     }
 
+                    //pobieranie paramertow polaczenia
                     if (index > -1)
                     {
                         string parameter = line.Substring(0, index);

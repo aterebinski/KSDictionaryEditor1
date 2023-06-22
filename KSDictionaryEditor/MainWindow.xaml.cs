@@ -19,6 +19,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Microsoft.Win32;
+using System.Runtime.Remoting.Messaging;
 
 namespace KSDictionaryEditor
 {
@@ -34,6 +35,8 @@ namespace KSDictionaryEditor
         ObservableCollection<Pracownik> P2_PersonelItems = new ObservableCollection<Pracownik>();
         ObservableCollection<Pracownik> P1_PersonelItems = new ObservableCollection<Pracownik>();
 
+
+        //Id wybranych słowników poszczególnych Setów
         string P1_SelectedDictionaryId = "0";
         string P2_SelectedDictionaryId = "0";
 
@@ -53,6 +56,8 @@ namespace KSDictionaryEditor
                 App.Current.Shutdown();
             }
 
+
+            //test połączenia
             if (connectionString != "" && connectionWindow.TestConnection())
             {
                 connection = new FbConnection(connectionString);
@@ -171,54 +176,37 @@ namespace KSDictionaryEditor
                 " where w.del = 0 and s.del = 0 and s.usun = 0" +
                 " and s.idprac in (";
 
+            //Przygotowanie zapytań sql w zalezności od Panelu (Seta).
+            //W lewym panelu możliwe jest pokazanie tylko słowników wybranych dla jednego pracownika lub wspólnych dla wszystkich pracowników (IDPRAC = 0).
+            //W prawym panelu możliwe jest pokazanie słowników wybranych dla kilku pracowników i/lub wspólnych dla wszystkich pracowników (IDPRAC = 0).
             switch (panel.Name)
             {
                 default:
                     break;
                 case "P2_ListView_Dictionaries":
-                    if (P2_ListView_Personel.SelectedItems.Count > 0)
+                    if (P2_ListView_Personel.SelectedItems.Count > 0) //dodanie wszystki zaznaczonych pracowników do sql
                     {
                         foreach (DataRowView item in P2_ListView_Personel.SelectedItems)
                         {
                             query = query + item["id"].ToString() + ",";
                         }
                     }
-                    if (P2_CheckBox_SharedDictionaries.IsChecked == true)
+                    if (P2_CheckBox_SharedDictionaries.IsChecked == true) //dodanie wspólnych słowników, jeśli opcja została zaznaczona
                     {
                         query = query + "0,";
                     }
 
-                    if (P2_TextBox_FiltrDictionary.Text.Length > 0)
-                    {
-                        switch (P2_ComboBox_FiltrDictionary.SelectedIndex)
-                        {
-                            case 0: //wszystko
-                                filter = " and (upper(u.nazw) like '%" + P2_TextBox_FiltrDictionary.Text.ToUpper() + "%' ";
-                                filter += " or upper(w.nazw) like '%" + P2_TextBox_FiltrDictionary.Text.ToUpper() + "%' ";
-                                filter += " or upper(s.nazw) like '%" + P2_TextBox_FiltrDictionary.Text.ToUpper() + "%') ";
-                                break;
-                            case 1: //Słownik
-                                filter = " and upper(s.nazw) like '%" + P2_TextBox_FiltrDictionary.Text.ToUpper() + "%' ";
-                                break;
-                            case 2: //Wzorzec
-                                filter = " and upper(w.nazw) like '%" + P2_TextBox_FiltrDictionary.Text.ToUpper() + "%' ";
-                                break;
-                            case 3: //Usługa
-                                filter = " and upper(u.nazw) like '%" + P2_TextBox_FiltrDictionary.Text.ToUpper() + "%' ";
-                                break;
-                            default:
-                                break;
-                        }
-                    }
+                    //dodanie filtrów do zapytania sql
+                    SetFilter(P2_TextBox_FiltrDictionary, P2_ComboBox_FiltrDictionary.SelectedIndex);
                     break;
 
                 case "P1_ListView_Dictionaries":
 
-                    if (P1_CheckBox_SharedDictionaries.IsChecked == true)
+                    if (P1_CheckBox_SharedDictionaries.IsChecked == true) //dodanie wspólnych słowników, jeśli opcja została zaznaczona
                     {
                         query = query + "0,";
                     }
-                    else
+                    else //lub dodanie wybranego pracownika
                     {
                         if (P1_ComboBox_Personel.SelectedValue != null)
                         {
@@ -227,28 +215,8 @@ namespace KSDictionaryEditor
                         }
                     }
 
-                    if (P1_TextBox_FiltrDictionary.Text.Length > 0)
-                    {
-                        switch (P1_ComboBox_FiltrDictionary.SelectedIndex)
-                        {
-                            case 0: //wszystko
-                                filter = " and (upper(u.nazw) like '%" + P1_TextBox_FiltrDictionary.Text.ToUpper() + "%' ";
-                                filter += " or upper(w.nazw) like '%" + P1_TextBox_FiltrDictionary.Text.ToUpper() + "%' ";
-                                filter += " or upper(s.nazw) like '%" + P1_TextBox_FiltrDictionary.Text.ToUpper() + "%') ";
-                                break;
-                            case 1: //Słownik
-                                filter = " and upper(s.nazw) like '%" + P1_TextBox_FiltrDictionary.Text.ToUpper() + "%' ";
-                                break;
-                            case 2: //Wzorzec
-                                filter = " and upper(w.nazw) like '%" + P1_TextBox_FiltrDictionary.Text.ToUpper() + "%' ";
-                                break;
-                            case 3: //Usługa
-                                filter = " and upper(u.nazw) like '%" + P1_TextBox_FiltrDictionary.Text.ToUpper() + "%' ";
-                                break;
-                            default:
-                                break;
-                        }
-                    }
+                    //dodanie filtrów do zapytania sql
+                    SetFilter(P1_TextBox_FiltrDictionary, P1_ComboBox_FiltrDictionary.SelectedIndex);
 
                     lvPersonel = P1_ComboBox_Personel;
                     checkSharedDictonaries = P1_CheckBox_SharedDictionaries;
@@ -274,6 +242,35 @@ namespace KSDictionaryEditor
             {
                 MessageBox.Show("ShowDictionaries: " + ex.ToString());
             }
+        }
+
+        private string SetFilter(TextBox textBox, int selectedIndex)
+        {
+            string filter = "";
+
+            if (textBox.Text.Length > 0)
+            {    
+                switch (selectedIndex)
+                {
+                    case 0: //wszystko
+                        filter = " and (upper(u.nazw) like '%" + textBox.Text.ToUpper() + "%' ";
+                        filter += " or upper(w.nazw) like '%" + textBox.Text.ToUpper() + "%' ";
+                        filter += " or upper(s.nazw) like '%" + textBox.Text.ToUpper() + "%') ";
+                        break;
+                    case 1: //Słownik
+                        filter = " and upper(s.nazw) like '%" + textBox.Text.ToUpper() + "%' ";
+                        break;
+                    case 2: //Wzorzec
+                        filter = " and upper(w.nazw) like '%" + textBox.Text.ToUpper() + "%' ";
+                        break;
+                    case 3: //Usługa
+                        filter = " and upper(u.nazw) like '%" + textBox.Text.ToUpper() + "%' ";
+                        break;
+                    default:
+                        break;
+                }
+            }
+            return filter;
         }
 
         //pokaz elementy slownika 
@@ -302,6 +299,8 @@ namespace KSDictionaryEditor
                     adapter.Fill(table);
                     string info = table.Rows[0].Field<string>("opis").ToString();
 
+
+                    //podziel pozycje slownika z pola OPIS i wrzuć do tablicy
                     string[] podzielone = info.Split(
                             new string[] { AsciiConverter.HEX2ASCII("0D0A") },
                             StringSplitOptions.None
@@ -367,9 +366,11 @@ namespace KSDictionaryEditor
 
         }
 
-        private void UpdatePersonel_TextBox_P2()
+        private void UpdatePersonel_TextBox_P2() //wyświe
         {
             int printedElements = 0;
+
+            //wyświetl <WSPÓŁNE SŁOWNIKI> w polu P2_TextBlock_Personel, jeśli zaznaczony checkbox
             if (P2_CheckBox_SharedDictionaries.IsChecked == true)
             {
                 P2_TextBlock_Personel.Text = "<WSPÓŁNE SŁOWNIKI>";
@@ -384,20 +385,22 @@ namespace KSDictionaryEditor
             {
                 try
                 {
+
+                    //pobierz listę personelu
                     string sql = "select imie||' '||nazw as imienazw from prac where id in(-99";
                     int i = 0;
-
                     foreach (DataRowView item in P2_ListView_Personel.SelectedItems)
                     {
                         sql += "," + item[i].ToString();
                     }
                     sql += ")";
-
                     FbCommand command = new FbCommand(sql, connection);
                     FbDataAdapter dataAdapter = new FbDataAdapter(command);
                     DataTable PersonelTable = new DataTable();
                     dataAdapter.Fill(PersonelTable);
 
+
+                    //uzupełnij pole P2_TextBlock_Personel o listę wybranego personelu
                     foreach (DataRow item in PersonelTable.Rows)
                     {
                         if (printedElements > 0)
@@ -424,11 +427,11 @@ namespace KSDictionaryEditor
 
         private void UpdatePersonel_TextBox_P1()
         {
-            if (P1_CheckBox_SharedDictionaries.IsChecked == true)
+            if (P1_CheckBox_SharedDictionaries.IsChecked == true) //wyświetl <WSPÓŁNE SŁOWNIKI> w polu P2_TextBlock_Personel, jeśli zaznaczony checkbox
             {
                 P1_TextBlock_Personel.Text = "<WSPÓŁNE SŁOWNIKI>";
             }
-            else
+            else // lub wyświetl zaznaczonego pracownika w polu P2_TextBlock_Personel
             {
                 P1_TextBlock_Personel.Text = "";
                 if (P1_ComboBox_Personel.SelectedValue != null)
@@ -518,7 +521,8 @@ namespace KSDictionaryEditor
                 {
                     string description = "";
                     int i = 0;
-                    //this.ListView_Entries.SelectedItem. = DictionaryItem.Text;
+                    
+                    //stwórz liste elementów z pominięciem usuniętego elementu
                     foreach (var item in P1_ListView_DictionaryElements.Items)
                     {
                         
@@ -536,8 +540,8 @@ namespace KSDictionaryEditor
                         FbCommand updateCommand = new FbCommand(updateSql, connection);
                         updateCommand.Parameters.AddWithValue("@opis", description);
                         updateCommand.Parameters.AddWithValue("@id", P1_SelectedDictionaryId);
-
-                        Trace.WriteLine(updateCommand);
+                        
+                        //Trace.WriteLine(updateCommand);
 
                         connection.Open();
                         updateCommand.ExecuteNonQuery();
@@ -634,6 +638,7 @@ namespace KSDictionaryEditor
         }
 
 
+        //kopiowanie słowników do innych pracowników (id wzorca formularza ten sam co w źródle)
         private void P1_CopyDictionary_ToPersonel_Click(object sender, RoutedEventArgs e)
         {
             Button clickedButton = sender as Button;
@@ -654,6 +659,7 @@ namespace KSDictionaryEditor
             }
         }
 
+        //kopiowanie słowników do innych wzorców (id personelu ten sam co w źródle)
         private void P1_CopyDictionary_ToLayout_Click(object sender, RoutedEventArgs e)
         {
             Button clickedButton = sender as Button;
@@ -694,12 +700,10 @@ namespace KSDictionaryEditor
 
             if (P1_ListView_Dictionaries.SelectedItems.Count > 0)
             {
-
                 MessageBoxResult result = MessageBox.Show("Czy na pewno usunąć zaznaczone słowniki?", "Usunięcie słowników", MessageBoxButton.YesNo);
 
                 if (result == MessageBoxResult.Yes)
                 {
-
                     try
                     {
                         connection.Open();
@@ -710,7 +714,6 @@ namespace KSDictionaryEditor
 
                             FbCommand fbCommand = new FbCommand(sql, connection);
                             fbCommand.Parameters.Add("@s_id", SelectedId);
-
                             counter += fbCommand.ExecuteNonQuery();
                         }
                         MessageBox.Show($"Usunięto {counter} słowniki/słowników z bazy danych.");
@@ -729,6 +732,7 @@ namespace KSDictionaryEditor
             ShowDictionaries(P1_ListView_Dictionaries);
         }
 
+        //eksport słowika do pliku XML
         private void P1_Export_Dictionary_Click(object sender, RoutedEventArgs e)
         {
             if (P1_ListView_Dictionaries != null && P1_SelectedDictionaryId!="0") {
@@ -753,7 +757,7 @@ namespace KSDictionaryEditor
                         xmlWriter.WriteStartElement("Dictionary");
                         xmlWriter.WriteAttributeString("Name", filename);
 
-
+                        //zapisanie poszczególnych pozycji słownika
                         foreach (string item in splited)
                         {
                             string newItem = item.Replace("˙", AsciiConverter.HEX2ASCII("0D0A"));
@@ -773,6 +777,7 @@ namespace KSDictionaryEditor
             }
         }
 
+        //import słownka z pliku XML
         private void P2_Import_Dictionary_Click(object sender, RoutedEventArgs e)
         {
             if (P2_ListView_Personel.SelectedItems.Count == 0 && P2_CheckBox_SharedDictionaries.IsChecked != true)
@@ -803,12 +808,21 @@ namespace KSDictionaryEditor
                         xmlReader.MoveToAttribute("Name");
                         dictionaryName = xmlReader.Value;
 
-                        while (xmlReader.ReadToFollowing("Entry"))
+                        while (xmlReader.Read())
                         {
-                            element = xmlReader.ReadElementContentAsString();
-                            description += element + AsciiConverter.HEX2ASCII("0D0A");
+                            if (xmlReader.NodeType == XmlNodeType.Element && xmlReader.Name == "Entry")
+                            {
+                                xmlReader.Read();
+                                if (xmlReader.NodeType == XmlNodeType.Text)
+                                {
+                                    element = xmlReader.Value;
+                                    description += element + AsciiConverter.HEX2ASCII("0D0A");
+                                    Trace.WriteLine(description);
+                                }
+                            }
                         }
-                    
+
+
                         DateTime now = DateTime.Now;
 
                         int howManyCopies = 0;

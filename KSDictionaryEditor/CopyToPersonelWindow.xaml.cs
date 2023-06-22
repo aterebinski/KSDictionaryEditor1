@@ -38,9 +38,8 @@ namespace KSDictionaryEditor
             SourceDictionaryPanel = sourceDictionaryPanel;
             DestinationPersonelPanel = destinationPersonelPanel;
 
-            //SkopiujDomyslnie_Text1.Text = "Skopiuj wybrane słowniki: ";
-
-            string prefix = "";
+            //zmień wygląd okna w zależności od wybranych opcji
+            UpdateWindowLayout(destinationPersonelPanel, isCheckedSharedDictionaries);
 
             if (SourceDictionaryPanel is ListView)
             {
@@ -50,7 +49,16 @@ namespace KSDictionaryEditor
                 }
             }
 
-            if (isCheckedSharedDictionaries) //wspolne slowniki
+            foreach (DataRowView personelDataRow in DestinationPersonelPanel.SelectedItems)
+            {
+                Copy_ListView_Personel.Items.Add(personelDataRow);
+            }
+
+        }
+
+        private void UpdateWindowLayout(ListView destinationPersonelPanel, bool isCheckedSharedDictionaries)
+        {
+            if (isCheckedSharedDictionaries) //jeśli wybrane są wspolne slowniki
             {
                 SkopiujDomyslnie_Text2.Visibility = Visibility.Visible;
 
@@ -66,7 +74,7 @@ namespace KSDictionaryEditor
                 }
 
             }
-            else //bez wspólnych słowników
+            else //jeśli nie są wybrane wspolne slowniki
             {
 
                 if (destinationPersonelPanel.SelectedItems.Count > 0) //jesli zaznaczony jest rekord na liscie
@@ -75,22 +83,20 @@ namespace KSDictionaryEditor
                 }
 
             }
-
-            foreach (DataRowView personelDataRow in DestinationPersonelPanel.SelectedItems)
-            {
-                Copy_ListView_Personel.Items.Add(personelDataRow);
-            }
-
         }
 
         private void Copy_Button_Click(object sender, RoutedEventArgs e)
+        {
+            CopyDictionary();
+            this.Close();
+        }
+
+        private void CopyDictionary()
         {
             bool isDictionaryCopied = false;
 
             FbConnection FbConnection = new FbConnection(ConnectionString);
             FbConnection.Open();
-
-
 
             string sql = "insert into SLOW (IDUSLG,NAZW, DEL,USUN, IDWZFO, GODAT, GOGDZ, GIDOPER, RPDAT, RPMDAT, MODAT, MOGDZ, MIDOPER, IDPOD, IDINS, IDZRO, OPIS, IDPRAC)" +
                     " values (@IDUSLG, @NAZW, 0, 0, @IDWZFO, @GODAT, @GOGDZ, @GIDOPER, @RPDAT, @RPMDAT, @MODAT, @MOGDZ, @MIDOPER, @IDPOD, @IDINS, @IDZRO, @OPIS, @IDPRAC);";
@@ -121,23 +127,20 @@ namespace KSDictionaryEditor
                     FbCommand.Parameters.AddWithValue("@IDZRO", item["idzro"].ToString());
                     FbCommand.Parameters.AddWithValue("@OPIS", item["opis"].ToString());
 
-
-                    //MessageBox.Show(item["u_id"].ToString());
-                    Trace.WriteLine(sql);
-
+                    //Trace.WriteLine(sql);
 
                     FbCommand.Parameters.AddWithValue("@GIDOPER", prac["id"].ToString());
                     FbCommand.Parameters.AddWithValue("@MIDOPER", prac["id"].ToString());
                     FbCommand.Parameters.AddWithValue("@IDPRAC", prac["id"].ToString());
 
-                    Trace.WriteLine(sql);
+                    //Trace.WriteLine(sql);
 
                     try
                     {
                         int iloscRekordow = FbCommand.ExecuteNonQuery();
                         if (iloscRekordow > 0)
                         {
-                            isDictionaryCopied = true;  
+                            isDictionaryCopied = true;
                         }
                         Trace.WriteLine("Ilosc rekordow : " + iloscRekordow.ToString());
                     }
@@ -155,7 +158,6 @@ namespace KSDictionaryEditor
                 MessageBox.Show("Słowniki zostały skopioiwane.");
             }
             FbConnection.Close();
-            this.Close();
         }
     }
 }

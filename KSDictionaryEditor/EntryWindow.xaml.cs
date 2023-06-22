@@ -50,16 +50,21 @@ namespace KSDictionaryEditor
             this.connection = connection;
             DictionaryItem.Focus();
 
-            
-            string slownikSql = "select s.idprac as idprac, s.nazw as slownik, w.nazw as wzorzec, u.nazw as usluga from slow s " +
+            setWindowTextFields();
+
+        }
+
+        private void setWindowTextFields()
+        {
+            string dictionarySql = "select s.idprac as idprac, s.nazw as slownik, w.nazw as wzorzec, u.nazw as usluga from slow s " +
                     "join wzfo w on s.idwzfo = w.id " +
                     "join uslg u on u.id = w.iduslg  " +
                     "where s.id = @id";
-                    
+
             try
             {
 
-                FbCommand dictionaryCommand = new FbCommand(slownikSql, connection);
+                FbCommand dictionaryCommand = new FbCommand(dictionarySql, connection);
                 dictionaryCommand.Parameters.AddWithValue("@id", dictionaryId);
                 FbDataAdapter dictionaryAdapter = new FbDataAdapter(dictionaryCommand);
                 DataTable dictionaryTable = new DataTable();
@@ -70,6 +75,8 @@ namespace KSDictionaryEditor
                 this.layout = dictionaryTable.Rows[0]["WZORZEC"].ToString();
                 this.dictionary = dictionaryTable.Rows[0]["SLOWNIK"].ToString();
 
+
+                //ustaw pole z nazwą personelu
                 if (personelId == "0")
                 {
                     personel = "<<WSPÓLNY SŁOWNIK>>";
@@ -85,7 +92,7 @@ namespace KSDictionaryEditor
                     personel = personelTable.Rows[0]["IMIENAZW"].ToString();
                 }
 
-                if(this.windowMode==WindowMode.Edit) //jesli edytujemy
+                if (this.windowMode == WindowMode.Edit) //jesli edytujemy pobież edytowany element slownika
                 {
                     DictionaryItem.Text = (string)this.ListView_Entries.SelectedValue;
                 }
@@ -98,7 +105,7 @@ namespace KSDictionaryEditor
             catch (Exception ex)
             {
                 MessageBox.Show(ex.ToString());
-            } 
+            }
         }
 
 
@@ -109,66 +116,75 @@ namespace KSDictionaryEditor
 
         private void AcceptButton_Click(object sender, RoutedEventArgs e)
         {
-            if (this.windowMode == WindowMode.Edit) //edytujemy element
+            if (this.windowMode == WindowMode.Edit) //jeśli edytujemy element
             {
-                string description = "";
-                int i= 0;
-
-                foreach (var item in this.ListView_Entries.Items)
-                {
-                    if (ListView_Entries.SelectedIndex == i)
-                    {
-                        description += DictionaryItem.Text + AsciiConverter.HEX2ASCII("0D0A");
-                    }
-                    else
-                    {
-                        description += item.ToString() + AsciiConverter.HEX2ASCII("0D0A");
-                    }
-                    
-                    i++;
-                }
-                string updateSql = "update slow set opis = @opis where id = @id";
-                FbCommand updateCommand = new FbCommand(updateSql, connection);
-                updateCommand.Parameters.AddWithValue("@opis", description);
-                updateCommand.Parameters.AddWithValue("@id", dictionaryId);
-
-                Trace.WriteLine(updateCommand);
-
-                connection.Open();
-                updateCommand.ExecuteNonQuery();
-                connection.Close();
-
-
+                SaveEditedElement();
             }
-            else if(this.windowMode == WindowMode.Add)//dodajemy element
+            else if(this.windowMode == WindowMode.Add)//jeśli dodajemy element
             {
-                try
-                {
-                    string sql = "select opis from slow where id = @id";
-                    FbCommand command = new FbCommand(sql, connection);
-                    command.Parameters.AddWithValue("@id", dictionaryId);
-                    FbDataAdapter adapter = new FbDataAdapter(command);
-                    DataTable slowDataTable = new DataTable();
-                    adapter.Fill(slowDataTable);
-                    string opis = slowDataTable.Rows[0]["OPIS"].ToString();
-                    opis = opis + DictionaryItem.Text + AsciiConverter.HEX2ASCII("0D0A");
-                    string updateSql = "update slow set opis = @opis where id = @id";
-                    FbCommand updateCommand = new FbCommand(updateSql, connection);
-                    updateCommand.Parameters.AddWithValue("@opis", opis);
-                    updateCommand.Parameters.AddWithValue("@id", dictionaryId);
-                    connection.Open();
-                    updateCommand.ExecuteNonQuery();
-                    connection.Close();
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show(ex.ToString());
-                }
+                SaveAddedElement();
             }
-            
 
             this.Close();
             
+        }
+
+        private void SaveEditedElement()
+        {
+            string description = "";
+            int i = 0;
+
+            //stworz zawartosc pola OPIS
+            foreach (var item in this.ListView_Entries.Items)
+            {
+                if (ListView_Entries.SelectedIndex == i)
+                {
+                    description += DictionaryItem.Text + AsciiConverter.HEX2ASCII("0D0A"); //dodaj poprawiona wersje edytowanej pozycji słownika
+                }
+                else
+                {
+                    description += item.ToString() + AsciiConverter.HEX2ASCII("0D0A"); //dodaj pozostałe pozycje słownika
+                }
+
+                i++;
+            }
+
+            string updateSql = "update slow set opis = @opis where id = @id";
+            FbCommand updateCommand = new FbCommand(updateSql, connection);
+            updateCommand.Parameters.AddWithValue("@opis", description);
+            updateCommand.Parameters.AddWithValue("@id", dictionaryId);
+
+            //Trace.WriteLine(updateCommand);
+
+            connection.Open();
+            updateCommand.ExecuteNonQuery();
+            connection.Close();
+        }
+
+        private void SaveAddedElement()
+        {
+            try
+            {
+                string sql = "select opis from slow where id = @id";
+                FbCommand command = new FbCommand(sql, connection);
+                command.Parameters.AddWithValue("@id", dictionaryId);
+                FbDataAdapter adapter = new FbDataAdapter(command);
+                DataTable slowDataTable = new DataTable();
+                adapter.Fill(slowDataTable);
+                string opis = slowDataTable.Rows[0]["OPIS"].ToString();
+                opis = opis + DictionaryItem.Text + AsciiConverter.HEX2ASCII("0D0A");
+                string updateSql = "update slow set opis = @opis where id = @id";
+                FbCommand updateCommand = new FbCommand(updateSql, connection);
+                updateCommand.Parameters.AddWithValue("@opis", opis);
+                updateCommand.Parameters.AddWithValue("@id", dictionaryId);
+                connection.Open();
+                updateCommand.ExecuteNonQuery();
+                connection.Close();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.ToString());
+            }
         }
     }
 }

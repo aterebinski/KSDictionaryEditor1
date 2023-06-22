@@ -53,6 +53,12 @@ namespace KSDictionaryEditor
 
         private void Copy_Button_Click(object sender, RoutedEventArgs e)
         {
+            copyDictionary();
+            this.Close();
+        }
+
+        private void copyDictionary()
+        {
             bool isDictionaryCopied = false;
 
             FbConnection FbConnection = new FbConnection(ConnectionString);
@@ -73,7 +79,7 @@ namespace KSDictionaryEditor
 
                     FbCommand.Parameters.Add("@IDUSLG", item["u_id"].ToString());
                     FbCommand.Parameters.AddWithValue("@NAZW", item["slownik"].ToString());
-                    
+
                     FbCommand.Parameters.AddWithValue("@GODAT", TimeStamp.date(now));
                     FbCommand.Parameters.AddWithValue("@GOGDZ", TimeStamp.godz(now));
 
@@ -95,16 +101,16 @@ namespace KSDictionaryEditor
 
                     FbCommand.Parameters.AddWithValue("@IDWZFO", wzfo["w_id"].ToString());
 
-                    Trace.WriteLine(sql);
+                    //Trace.WriteLine(sql);
 
                     try
                     {
                         int iloscRekordow = FbCommand.ExecuteNonQuery();
                         if (iloscRekordow > 0)
                         {
-                            isDictionaryCopied = true;  
+                            isDictionaryCopied = true;
                         }
-                        Trace.WriteLine("Ilosc rekordow : " + iloscRekordow.ToString());
+                        //Trace.WriteLine("Ilosc rekordow : " + iloscRekordow.ToString());
                     }
                     catch (Exception ex)
                     {
@@ -120,7 +126,6 @@ namespace KSDictionaryEditor
                 MessageBox.Show("Słowniki zostały skopioiwane.");
             }
             FbConnection.Close();
-            this.Close();
         }
     }
 }

@@ -34,7 +34,7 @@
                 <RowDefinition />
             </Grid.RowDefinitions>
             <StackPanel Grid.Column="0" Grid.Row="0">
-                <TextBlock FontSize="36" FontWeight="Bold" Foreground="#FF973030">Set 1:</TextBlock>
+                <TextBlock FontSize="36" FontWeight="Bold" Foreground="#FF973030">Panel 1:</TextBlock>
                 
             </StackPanel>
             <StackPanel Grid.Column="0" Grid.Row="1" Margin="0,0,0,0">
@@ -50,7 +50,7 @@
                 </ComboBox>
                 <WrapPanel Margin="0,0,0,5">
                     <CheckBox  x:Name="P1_CheckBox_SharedDictionaries" Click="P1_CheckBox_SharedDictionaries_Click" />
-                    <TextBlock Text="Wspólne słowniki" Margin="5,0,0,0" />
+                    <TextBlock Text="Pokaż wspólne słowniki dla całego personelu" Margin="5,0,0,0" />
                 </WrapPanel>
                 <TextBlock Margin="0,15,0,5" Foreground="Red" FontWeight="Bold">Słowniki:</TextBlock>
                 <WrapPanel>
@@ -153,7 +153,7 @@
                 
             </Grid>
             <StackPanel Grid.Column="3" Grid.Row="0">
-                <TextBlock FontSize="36" FontWeight="Bold" Foreground="#FF973030">Set 2:</TextBlock>
+                <TextBlock FontSize="36" FontWeight="Bold" Foreground="#FF973030">Panel 2:</TextBlock>
                 <WrapPanel>
                     <TextBlock Foreground="Red" FontWeight="Bold">Pracownicy:</TextBlock>
                     <TextBlock Foreground="Red" FontWeight="Bold" x:Name="P2_TextBlock_Personel" Margin="0,0,0,5"></TextBlock>
