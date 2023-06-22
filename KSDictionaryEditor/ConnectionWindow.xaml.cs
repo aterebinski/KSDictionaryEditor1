@@ -176,7 +176,7 @@ namespace KSDictionaryEditor
                         connectionString = "Server=localhost;User=" + userParameter + ";Password=" + passwordParameter + ";Database=" + databaseParameter;
                         break;
                     case "ORACLE":
-                        connectionString = "Server=localhost;User=gabinet;Password=flavamed;Database=C:\\KS\\KS-PLW\\BAZY\\med1250.KSB";
+                        //connectionString = "Server=localhost;User=gabinet;Password=flavamed;Database=C:\\KS\\KS-PLW\\BAZY\\med1250.KSB";
                         break;
                     default:
                         break;

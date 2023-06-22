@@ -14,7 +14,6 @@ namespace KSDictionaryEditor
             return dateTime.Hour * 3600 + dateTime.Minute * 60 + dateTime.Second; 
         }
 
-        //public static string date(DateTime dateTime)
         public static DateTime date(DateTime dateTime)
         {
             string sDateTime = dateTime.ToString("yyyy-mm-dd 00:00:00");

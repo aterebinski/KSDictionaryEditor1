@@ -97,47 +97,6 @@ namespace KSDictionaryEditor
             }
         }
 
-        private void ShowPersonelAlternate(Selector panel, ObservableCollection<Pracownik> PersonelItemsList)
-        {
-            string query = "select id, imie, nazw, imie||' '||nazw as imienazw from prac where del=0";
-
-            try
-            {
-                connection.Open();
-
-                FbCommand command = new FbCommand(query, connection);
-                FbDataReader reader = command.ExecuteReader();
-
-                while (reader.Read())
-                {
-                    int Id = reader.GetInt32(reader.GetOrdinal("Id"));
-                    string Imie = reader.GetString(reader.GetOrdinal("Imie"));
-                    string Nazw = reader.GetString(reader.GetOrdinal("Nazw"));
-
-                    PersonelItemsList.Add(new Pracownik()
-                    {
-                        IsSelected = false,
-                        Id = Id,
-                        Imie = Imie,
-                        Nazw = Nazw,
-                        ImieNazw = Imie + " " + Nazw
-                    });
-                };
-
-                panel.ItemsSource = PersonelItemsList;
-                panel.DisplayMemberPath = "ImieNazw";
-                panel.SelectedValuePath = "Id";
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("ShowPersonel: " + ex.ToString());
-            }
-            finally
-            {
-                connection.Close();
-            }
-        }
-
         //Pokaz Wzorce i Usługi
         private void ShowServices(ListView panel)
         {
@@ -170,9 +129,6 @@ namespace KSDictionaryEditor
                         break;
                 }
             }
-
-            //lvPersonel = P1_ComboBox_Personel;
-            //checkSharedDictonaries = P1_CheckBox_SharedDictionaries;
 
             try
             {
@@ -346,29 +302,18 @@ namespace KSDictionaryEditor
                     adapter.Fill(table);
                     string info = table.Rows[0].Field<string>("opis").ToString();
 
-                    /*
                     string[] podzielone = info.Split(
-                            new string[] { "\r\n", "\r", "\n" }, 
-                            StringSplitOptions.None
-                        );
-                        */
-
-                    string[] podzielone = info.Split(
-                            //new string[] { AsciiConverter.HEX2ASCII("0D0A"), AsciiConverter.HEX2ASCII("0D"), AsciiConverter.HEX2ASCII("0A") },
                             new string[] { AsciiConverter.HEX2ASCII("0D0A") },
                             StringSplitOptions.None
                         );
 
                     foreach (string item in podzielone)
                     {
-                        //MessageBox.Show(AsciiConverter.ASCIITOHex(item));
                         string newItem = item.Replace("˙", AsciiConverter.HEX2ASCII("0D0A"));
-                        //allItems.Add(newItem);
                         if (newItem.Length>0)
                         {
                             itemsList.Add(newItem);
                         }
-                            
                     }
                     itemsListView.ItemsSource = itemsList;
                 }
@@ -439,7 +384,6 @@ namespace KSDictionaryEditor
             {
                 try
                 {
-                    //P1_TextBlock_Personel.Text = P1_ComboBox_Personel.SelectedValue
                     string sql = "select imie||' '||nazw as imienazw from prac where id in(-99";
                     int i = 0;
 
@@ -491,7 +435,6 @@ namespace KSDictionaryEditor
                 {
                     try
                     {
-                        //P1_TextBlock_Personel.Text = P1_ComboBox_Personel.SelectedValue
                         string sql = "select imie||' '||nazw as imienazw from prac where id  = @id";
                         FbCommand command = new FbCommand(sql, connection);
                         command.Parameters.AddWithValue("@id", P1_ComboBox_Personel.SelectedValue);
@@ -543,8 +486,6 @@ namespace KSDictionaryEditor
 
         private void P1_Button_AddElement_Click(object sender, RoutedEventArgs e)
         {
-            //MessageBox.Show("Otwórz okno!");
-
             if (P1_ListView_Dictionaries.SelectedItems.Count > 0)
             {
                 EntryWindow EntryWindow = new EntryWindow(connection, P1_ListView_DictionaryElements, P1_SelectedDictionaryId, EntryWindow.WindowMode.Add);
@@ -555,7 +496,6 @@ namespace KSDictionaryEditor
 
         private void P1_Button_EditElement_Click(object sender, RoutedEventArgs e)
         {
-            //MessageBox.Show("Otwórz okno!");
 
             if (P1_ListView_Dictionaries.SelectedItems.Count == 1)
             {
@@ -571,7 +511,6 @@ namespace KSDictionaryEditor
 
         private void P1_Button_RemoveElement_Click(object sender, RoutedEventArgs e)
         {
-            //MessageBox.Show("Otwórz okno!");
 
             if (P1_SelectedDictionaryId != "0" && P1_ListView_Dictionaries.SelectedItems.Count > 0)
             {
@@ -618,62 +557,6 @@ namespace KSDictionaryEditor
 
 
         }
-
-        /*
-        private void P1_Button_AddElement_Click_Old(object sender, RoutedEventArgs e)
-        {
-            string usluga, pracownik, wzorzec, slownik;
-            string idPracownika;
-            int idSlownika;
-            string slownikSql = "select s.idprac as idprac, s.nazw as slownik, w.nazw as wzorzec, u.nazw as usluga from slow s " +
-                    "join wzfo w on s.idwzfo = w.id " +
-                    "join uslg u on u.id = w.iduslg  " +
-                    "where s.id = @id";
-
-            try
-            {
-                string sIdSlownika = ((DataRowView)P1_ListView_Dictionaries.SelectedItems[0]).Row["S_ID"].ToString();
-
-                idSlownika = Convert.ToInt32(sIdSlownika);
-
-                FbCommand slownikCommand = new FbCommand(slownikSql, connection);
-                slownikCommand.Parameters.AddWithValue("@id", sIdSlownika);
-                FbDataAdapter slownikAdapter = new FbDataAdapter(slownikCommand);
-                DataTable slownikTable = new DataTable();
-                slownikAdapter.Fill(slownikTable);
-
-                idPracownika = slownikTable.Rows[0]["IDPRAC"].ToString();
-                usluga = slownikTable.Rows[0]["USLUGA"].ToString();
-                wzorzec = slownikTable.Rows[0]["WZORZEC"].ToString();
-                slownik = slownikTable.Rows[0]["SLOWNIK"].ToString();
-
-                if (idPracownika == "0")
-                {
-                    pracownik = "<<WSPÓLNY SŁOWNIK>>";
-                }
-                else
-                {
-                    string pracownikSql = "select imie||' '||nazw as IMIENAZW from prac where id = @id";
-                    FbCommand pracownikCommand = new FbCommand(pracownikSql, connection);
-                    pracownikCommand.Parameters.AddWithValue("@id", idPracownika);
-                    FbDataAdapter pracownikAdapter = new FbDataAdapter(pracownikCommand);
-                    DataTable pracownikTable = new DataTable();
-                    pracownikAdapter.Fill(pracownikTable);
-                    pracownik = pracownikTable.Rows[0]["IMIENAZW"].ToString();
-                }
-
-                //DictionaryEntryWindow DictionaryEntryWindow = new DictionaryEntryWindow(connection, usluga, wzorzec, slownik, pracownik, idSlownika);
-                DictionaryEntryWindow DictionaryEntryWindow = new DictionaryEntryWindow(connection, usluga, wzorzec, slownik, pracownik, idSlownika);
-                DictionaryEntryWindow.ShowDialog();
-                //MessageBox.Show(DictionaryEntryWindow.DictionaryItem.Text);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.ToString());
-            }
-        }
-        */
-
 
         private void P1_Personel_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -843,7 +726,6 @@ namespace KSDictionaryEditor
                     }
                 }
             }
-
             ShowDictionaries(P1_ListView_Dictionaries);
         }
 
@@ -856,7 +738,6 @@ namespace KSDictionaryEditor
                     string description = ((DataRowView)P1_ListView_Dictionaries.SelectedItem).Row["OPIS"].ToString();
 
                     string[] splited = description.Split(
-                           //new string[] { AsciiConverter.HEX2ASCII("0D0A"), AsciiConverter.HEX2ASCII("0D"), AsciiConverter.HEX2ASCII("0A") },
                            new string[] { AsciiConverter.HEX2ASCII("0D0A") },
                            StringSplitOptions.None
                        );
@@ -870,14 +751,11 @@ namespace KSDictionaryEditor
                         filename = saveFileDialog.SafeFileName;
                         xmlWriter.WriteStartDocument();
                         xmlWriter.WriteStartElement("Dictionary");
-                        //xmlWriter.WriteStartAttribute(filename, "Name");
                         xmlWriter.WriteAttributeString("Name", filename);
 
-                        
 
                         foreach (string item in splited)
                         {
-                            //MessageBox.Show(AsciiConverter.ASCIITOHex(item));
                             string newItem = item.Replace("˙", AsciiConverter.HEX2ASCII("0D0A"));
                             if (newItem.Length > 0)
                             {
@@ -885,14 +763,12 @@ namespace KSDictionaryEditor
                                 xmlWriter.WriteString(newItem);
                                 xmlWriter.WriteEndElement();
                             }
-
                         }
 
                         xmlWriter.WriteEndElement();
                         xmlWriter.Close();
                         MessageBox.Show("Słownik został wyeksportowany");
                     };
-
                 }
             }
         }
@@ -912,7 +788,7 @@ namespace KSDictionaryEditor
                 string element;
                 string dictionaryName;
                 string description = "";
-                //FbConnection FbConnection;
+
                 OpenFileDialog openFileDialog = new OpenFileDialog();
                 openFileDialog.Filter = "Plik XML | *.xml";
                 if (openFileDialog.ShowDialog() == true)
@@ -962,11 +838,6 @@ namespace KSDictionaryEditor
 
                                 howManyCopies += FbCommand.ExecuteNonQuery();
 
-                                //FbCommand.Parameters.AddWithValue("@IDPOD", item["idpod"].ToString());
-                                //FbCommand.Parameters.AddWithValue("@IDINS", item["idins"].ToString());
-                                //FbCommand.Parameters.AddWithValue("@IDZRO", item["idzro"].ToString());
-
-                                //MessageBox.Show(item["u_id"].ToString());
                                 Trace.WriteLine(sql);
 
                                 FbCommand.Parameters.RemoveAt("@GIDOPER");
@@ -975,8 +846,6 @@ namespace KSDictionaryEditor
                             }
                             FbCommand.Parameters.RemoveAt("@IDUSLG");
                             FbCommand.Parameters.RemoveAt("@IDWZFO");
-
-                            
                         }
 
                         MessageBox.Show($"Stworzono {howManyCopies} słowników na podstawie pliku XML.");

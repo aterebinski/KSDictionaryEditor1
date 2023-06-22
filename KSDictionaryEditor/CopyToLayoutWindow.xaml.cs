@@ -95,7 +95,6 @@ namespace KSDictionaryEditor
 
                     FbCommand.Parameters.AddWithValue("@IDWZFO", wzfo["w_id"].ToString());
 
-
                     Trace.WriteLine(sql);
 
                     try

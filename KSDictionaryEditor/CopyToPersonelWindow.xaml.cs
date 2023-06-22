@@ -46,15 +46,9 @@ namespace KSDictionaryEditor
             {
                 foreach (DataRowView dictionaryDataRow in ((ListView)SourceDictionaryPanel).SelectedItems)
                 {
-                    //SkopiujDomyslnie_Text1.Text += prefix + dataRow["SLOWNIK"].ToString();
-                    //prefix = ", ";
-                    //SkopiujDomyslnie_Button.ToolTip += item.ToString();
                     Copy_ListView_CopyDictionary.Items.Add(dictionaryDataRow);
                 }
             }
-
-            //prefix = "";
-
 
             if (isCheckedSharedDictionaries) //wspolne slowniki
             {
@@ -81,28 +75,6 @@ namespace KSDictionaryEditor
                 }
 
             }
-
-            /*
-            if (destinationPersonelPanel.Items.Count > 0) //jesli zaznaczony jest rekord na liscie
-            {
-                SkopiujDomyslnie_Text2.Visibility = Visibility.Visible;
-                if (isCheckedSharedDictionaries)
-                {
-                    SkopiujDomyslnie_Text3.Text = "oraz do pracowników:";
-                }else
-                {
-                    SkopiujDomyslnie_Text3.Visibility = Visibility.Collapsed;
-                    Copy_ListView_Personel.Visibility = Visibility.Collapsed;
-                }
-            }
-            else
-            {
-                if (isCheckedSharedDictionaries)
-                {
-                    SkopiujDomyslnie_Text3.Text = "Do personelu:";
-                }
-            }
-            */
 
             foreach (DataRowView personelDataRow in DestinationPersonelPanel.SelectedItems)
             {

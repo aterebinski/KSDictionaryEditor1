@@ -40,21 +40,6 @@ namespace KSDictionaryEditor
             Delete
         }
 
-        /*
-        public EntryWindow(FbConnection connection, string Usluga, string Wzorzec, string Slownik, string Pracownik, int idSlownika)
-        {
-            InitializeComponent();
-            this.textBlockPracownik.Text = Pracownik;
-            this.textBlockUsluga.Text = Usluga;
-            this.textBlockWzorzec.Text = Wzorzec;
-            this.textBlockSlownik.Text = Slownik;
-            this.idSlownika = idSlownika;
-            this.connection = connection;
-            DictionaryItem.Focus();
-        }
-        */
-
-        //public EntryWindow(FbConnection connection, string Usluga, string Wzorzec, string Slownik, string Pracownik, int idSlownika)
         public EntryWindow(FbConnection connection, ListView ListView_Entries, string dictionaryId, WindowMode windowMode)
         {
             InitializeComponent();
@@ -73,9 +58,6 @@ namespace KSDictionaryEditor
                     
             try
             {
-                //string sIdSlownika = ((DataRowView)P1_ListView_Dictionaries.SelectedItems[0]).Row["S_ID"].ToString();
-
-                //idSlownika = Convert.ToInt32(sIdSlownika);
 
                 FbCommand dictionaryCommand = new FbCommand(slownikSql, connection);
                 dictionaryCommand.Parameters.AddWithValue("@id", dictionaryId);
@@ -83,7 +65,6 @@ namespace KSDictionaryEditor
                 DataTable dictionaryTable = new DataTable();
                 dictionaryAdapter.Fill(dictionaryTable);
 
-                //string idPracownika = from entry in ListView_Dictionaries.SelectedItems where entry.Item
                 this.personelId = dictionaryTable.Rows[0]["IDPRAC"].ToString();
                 this.service = dictionaryTable.Rows[0]["USLUGA"].ToString();
                 this.layout = dictionaryTable.Rows[0]["WZORZEC"].ToString();
@@ -132,7 +113,7 @@ namespace KSDictionaryEditor
             {
                 string description = "";
                 int i= 0;
-                //this.ListView_Entries.SelectedItem. = DictionaryItem.Text;
+
                 foreach (var item in this.ListView_Entries.Items)
                 {
                     if (ListView_Entries.SelectedIndex == i)
@@ -186,8 +167,6 @@ namespace KSDictionaryEditor
             }
             
 
-            //adapter.Fill()
-            //string newItem = item.Replace("˙", AsciiConverter.HEX2ASCII("0D0A"));
             this.Close();
             
         }
