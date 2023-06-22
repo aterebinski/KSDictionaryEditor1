@@ -8,10 +8,12 @@ Funkcjonalności:
 - dodanie/poprawa/ususnięcie pozycji słownika,
 - filtrowanie słowników, wzorców i usług
 
+Uwaga: Zaznaczenie kilku pozycji list ListView (Personel, Słowniki, Pozycje słowników) - Ctrl+klik, Shift+klik
+
 TODO:
 - obsługa Oracle,
 - refaktoryzacja, rozbicie kodu na większą liczbę funkcji, dodanie komentarzy,
 - eksport i import kilku słowników w jednym pliku,
-- własne parametry połączenia z bazą danych,
+- dodanie możliwości podania własnych parametrów połączenia z bazą danych,
 - logowanie na użytkownika SOMED
 - 
